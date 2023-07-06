@@ -6,22 +6,6 @@ if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['role'] 
     header("Location: ./admin/index.php");
 }
 require_once './config.php';
-$alternatif = $koneksi->query("SELECT a.nama_alternatif, a.id_alternatif, a.latitude, a.longitude,
-MAX(CASE WHEN k.nama_kriteria = 'Fasilitas' THEN kak.id_alt_kriteria END) AS id_sub_C1,
-MIN(CASE WHEN k.nama_kriteria = 'Jarak' THEN kak.id_alt_kriteria END) AS id_sub_C2,
-MIN(CASE WHEN k.nama_kriteria = 'Biaya' THEN kak.id_alt_kriteria END) AS id_sub_C3,
-MAX(CASE WHEN k.nama_kriteria = 'Luas Kamar' THEN kak.id_alt_kriteria END) AS id_sub_C4,
-MAX(CASE WHEN k.nama_kriteria = 'Keamanan' THEN kak.id_alt_kriteria END) AS id_sub_C5,
-MAX(CASE WHEN k.nama_kriteria = 'Fasilitas' THEN sk.nama_sub_kriteria END) AS nama_C1,
-MIN(CASE WHEN k.nama_kriteria = 'Jarak' THEN sk.nama_sub_kriteria END) AS nama_C2,
-MIN(CASE WHEN k.nama_kriteria = 'Biaya' THEN sk.nama_sub_kriteria END) AS nama_C3,
-MAX(CASE WHEN k.nama_kriteria = 'Luas Kamar' THEN sk.nama_sub_kriteria END) AS nama_C4,
-MAX(CASE WHEN k.nama_kriteria = 'Keamanan' THEN sk.nama_sub_kriteria END) AS nama_C5
-FROM alternatif a
-JOIN kecocokan_alt_kriteria kak ON a.id_alternatif = kak.f_id_alternatif
-JOIN sub_kriteria sk ON kak.f_id_sub_kriteria = sk.id_sub_kriteria
-JOIN kriteria k ON kak.f_id_kriteria = k.id_kriteria
-GROUP BY a.nama_alternatif;");
 
 ?>
 
@@ -29,10 +13,16 @@ GROUP BY a.nama_alternatif;");
 <html>
 
 <head>
-    <title>SPK Pemilihan Kost</title>
+    <title>SPK Beasiswa</title>
     <style>
-    #mapid {
-        height: 100vh;
+    .navbar-transparent {
+        background-color: hsl(0, 0%, 96%);
+    }
+
+    @media (min-width: 992px) {
+        .navbar-transparent {
+            margin-bottom: -40px;
+        }
     }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -42,19 +32,51 @@ GROUP BY a.nama_alternatif;");
     <link
         href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Prompt&family=Righteous&family=Roboto:wght@500&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 
 <body>
-    <div class="container">
-        <div class="logo-section p-2 d-flex">
-            <h3 class="mt-2" style="font-family: 'Righteous' cursive">SPK PEMILIHAN KOST</h3>
-            <div class="navbar-nav ms-auto">
-                <a class="btn btn-primary mt-2 px-4 py-1 btn-sm" href="./auth/login.php">Login</a>
+
+    <section class="">
+        <!-- Section: Design Block -->
+        <nav class="navbar fixed-top navbar-transparent">
+            <div class="container-fluid d-flex justify-content-end">
+                <a href="./auth/login.php" class="btn btn-outline-secondary mt-3 me-md-5">LOGIN</a>
+            </div>
+        </nav>
+        <hr>
+        <hr class="navbar-transparent">
+        <!-- Jumbotron -->
+        <div class="text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+            <div class="container d-flex" style="height:100vh;">
+                <div class="row gx-lg-5 align-items-center text-center">
+                    <div class="col-lg-6 text-start mb-5 mb-lg-0">
+                        <h1 class="my-4 display-5 fw-bolder ls-tight">
+                            Sistem Pendukung Keputusan <br />
+                            <span style="color:#E7B10A">SELEKSI CALON
+                                PENERIMA BEASISWA</span>
+                        </h1>
+                        <h4 style="color: hsl(217, 10%, 50.8%)">
+                            PADA JENJANG PENDIDIKAN
+                            SEKOLAH MENENGAH ATAS (SMA) DAN PERGURUAN
+                            TINGGI DI GMIT PAULUS KUPANG MENGGUNAKAN
+                            METODE PROFILE MATCHING</i>
+                        </h4>
+
+                    </div>
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <div class="gambar text-end">
+                            <!-- <div class="card-body d-flex justify-content-center" style="width:100%;height:100%;"> -->
+                            <img style="width:400px; height:400px; border-radius:0.3em;" class="shadow-lg"
+                                src="./assets/images/gereja.jpg" alt="">
+                            <!-- </div> -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div id="mapid"></div>
+        <!-- Jumbotron -->
+    </section>
+    <!-- Section: Design Block -->
     <footer class="bg-white text-center text-lg-start">
         <!-- Copyright -->
         <div class="text-center p-3" style="background-color: #F0F0F0;">
@@ -65,24 +87,6 @@ GROUP BY a.nama_alternatif;");
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script>
-
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script>
-    var mymap = L.map('mapid').setView([-10.178443, 123.577572], 13);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(mymap);
-
-    <?php
-      foreach ($alternatif as $location) {
-        if($location['latitude'] != '-' && $location['longitude'] != '-'){
-            echo "var marker = L.marker([" . $location['latitude'] . ", " . $location['longitude'] . "]).addTo(mymap);";
-            echo "marker.bindPopup('<b>" . $location['nama_alternatif'] . "</b><br>Fasilitas : " . $location['nama_C1'] . "<br>Jarak : " . $location['nama_C2'] . "<br>Biaya : " . $location['nama_C3'] . "<br>Luas Kamar : " . $location['nama_C4'] . "<br>Keamanan : " . $location['nama_C5'] . "').openPopup();";
-        }
-      }
-    ?>
     </script>
 </body>
 

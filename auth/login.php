@@ -1,8 +1,8 @@
 <?php 
 session_start();
-if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['role'] == 1){
+if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['level'] == "pelamar"){
     header("Location: ../user/index.php");
-}else if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['role'] == 0) {
+}else if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['level'] == 0) {
     header("Location: ../admin/index.php");
 }
 require_once '../config.php';
@@ -11,31 +11,39 @@ require_once '../config.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
-    $result = $koneksi->query("SELECT * FROM user WHERE username='$username'");
-    if(mysqli_num_rows($result) > 0){
-        $fetch = mysqli_fetch_assoc($result);
+    $cekPelamar = $koneksi->query("SELECT * FROM login_pelamar WHERE username='$username'");
+    $cekAdmin = $koneksi->query("SELECT * FROM admin WHERE username='$username'");
+    if(mysqli_num_rows($cekPelamar) > 0){
+        $fetch = mysqli_fetch_assoc($cekPelamar);
         $password_hash = password_verify($password, $fetch['password']);
-        if ($result && $password_hash && $fetch['role'] == 1) {
+        if ($cekPelamar && $password_hash) {
                 $_SESSION['login'] = true;
-                $_SESSION['role'] = $fetch['role']; 
-                $_SESSION['id_user'] = $fetch['id_user']; 
+                $_SESSION['username'] = $username;
+                $_SESSION['jenjang'] = $fetch['jenjang']; 
+                $_SESSION['id_user'] = $fetch['id_login']; 
                 // Jika role nya admin, redirect ke halaman index.php
                 header("Location: ../user/index.php");
                 exit();
+        }else {
+            $_SESSION['error'] = 'Login Gagal';
         }
-        else if ($result && $password_hash && $fetch['role'] == 0) {
+    } 
+    if(mysqli_num_rows($cekAdmin) > 0){
+        $fetch = mysqli_fetch_assoc($cekAdmin);
+        $password_hash = password_verify($password, $fetch['password']);
+        if ($cekAdmin && $password_hash) {
             $_SESSION['login'] = true;
-            $_SESSION['role'] = $fetch['role']; 
-            $_SESSION['id_user'] = $fetch['id_user']; 
+            $_SESSION['username'] = $username;
+            $_SESSION['level'] = $fetch['level']; 
+            $_SESSION['id_user'] = $fetch['id_admin']; 
             // Jika role nya admin, redirect ke halaman index.php
             header("Location: ../admin/index.php");
             exit();
-        } 
-        else {
+        }else {
             $_SESSION['error'] = 'Login Gagal';
         }
     }
-    else {
+    if(!mysqli_num_rows($cekPelamar) > 0 && !mysqli_num_rows($cekAdmin) > 0) {
         $_SESSION['error'] = 'Login Gagal';
     }
 }
@@ -91,22 +99,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Jumbotron -->
         <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
             <div class="container" style="height:100vh;">
-                <div class="row gx-lg-5 align-items-center">
-                    <div class="col-lg-6 mb-5 mb-lg-0">
-                        <h1 class="my-5 display-3 fw-bold ls-tight">
-                            Sistem Pendukung Keputusan <br />
-                            <span class="text-primary">Pemilihan Kost</span>
-                        </h1>
-                        <h4 style="color: hsl(217, 10%, 50.8%)">
-                            Sistem pendukung keputusan menggunakan metode <i style="color:#116A7B">Simple Additive
-                                Weighting</i>
-                        </h4>
-                    </div>
-
-                    <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="row gx-lg-5 d-flex mt-5 justify-content-center align-items-center">
+                    <div class="col-lg-5 mb-5 mb-lg-0">
                         <div class="card">
                             <div class="card-body py-5 px-md-5">
-                                <h1 class="mt-2 mb-5">Login Form</h1>
+                                <h1 class="mt-2 text-center mb-5">LOGIN</h1>
                                 <form method="post" action="">
                                     <!-- Email input -->
                                     <div class="form-outline mb-4">
@@ -122,11 +119,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             class="form-control" />
                                     </div>
                                     <!-- Submit button -->
-                                    <button type="submit" name="login" class="btn col-12 btn-primary btn-block mb-2">
+                                    <button type="submit" name="login" class="btn col-12 btn-primary btn-block mb-3">
                                         Login
                                     </button>
-                                    <a href="../daftar.php" class="btn col-12 btn-danger btn-block mb-4">
-                                        Daftar
+                                    <span>Belum punya akun ?</span>
+                                    <a href="../daftar.php">
+                                        Daftar disini
                                     </a>
                                 </form>
                             </div>
@@ -137,15 +135,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <!-- Jumbotron -->
     </section>
-    <!-- Section: Design Block -->
-    <footer class="bg-white text-center text-lg-start">
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: #F0F0F0;">
-            © 2023 Copyright:
-            <a class="text-dark" href="https://www.instagram.com/ilkom19_unc/">Intel'19</a>
-        </div>
-        <!-- Copyright -->
-    </footer>
 </body>
 
 

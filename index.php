@@ -1,10 +1,10 @@
 <?php
 require_once 'config.php';
-$sql = "SELECT * FROM user WHERE role=0";
+$sql = "SELECT * FROM admin WHERE level=0";
 $res = $koneksi->query($sql);
-if($res->num_rows <= 0){
+if($res->num_rows < 1){
     $password_hash = password_hash("admin",PASSWORD_BCRYPT);
-    $sql1 = "INSERT INTO user (id_user,username,password,role) VALUES (null,'admin','$password_hash',0)";
+    $sql1 = "INSERT INTO admin (id_admin,username,password,level) VALUES (null,'admin','$password_hash',0)";
     $result = $koneksi->query($sql1);
 }
 // Mengambil URL yang dikirimkan melalui aturan rewriting

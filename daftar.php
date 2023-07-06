@@ -1,8 +1,8 @@
 <?php 
 session_start();
-if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['role'] != 1){
+if(isset($_SESSION['login']) && $_SESSION['login'] == true && ($_SESSION['level'] == "sma" || $_SESSION['level'] == "pt")){
     header("Location: ./user/index.php");
-}else if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['role'] == 1){
+}else if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['level'] == 1){
     header("Location: ./admin/index.php");
 }
 require_once './config.php';
@@ -10,9 +10,10 @@ require_once './config.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = $_POST["username"];
   $password = $_POST["password"];
+  $jenjang = $_POST["jenjang"];
   $password_hash = password_hash($password, PASSWORD_BCRYPT);
   // Mengecek apakah username dan password sesuai
-  $sql = "INSERT INTO user (id_user,username,password,role) VALUES (null,'$username','$password_hash',1)";
+  $sql = "INSERT INTO login_pelamar (id_login,username,password,jenjang) VALUES (null,'$username','$password_hash','$jenjang')";
   $result = $koneksi->query($sql);
   if ($result) {
     echo "<script>alert('Daftar berhasil!');</script>";
@@ -51,42 +52,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Jumbotron -->
         <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
             <div class="container" style="height:100vh;">
-                <div class="row gx-lg-5 align-items-center">
-                    <div class="col-lg-6 mb-5 mb-lg-0">
-                        <h1 class="my-5 display-3 fw-bold ls-tight">
-                            Sistem Pendukung Keputusan <br />
-                            <span class="text-primary">Pemilihan Kost</span>
-                        </h1>
-                        <h4 style="color: hsl(217, 10%, 50.8%)">
-                            Sistem pendukung keputusan menggunakan metode <i style="color:#116A7B">Simple Additive
-                                Weighting</i>
-                        </h4>
-                    </div>
-
-                    <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="row gx-lg-5 d-flex mt-5 justify-content-center align-items-center">
+                    <div class="col-lg-5 mb-5 mb-lg-0">
                         <div class="card">
-                            <div class="card-body py-5 px-md-5">
-                                <h1 class="mt-2 mb-5">Daftar Akun</h1>
+                            <div class="card-body py-3 px-md-5">
+                                <h1 class="mt-2 text-center mb-3">REGISTRASI</h1>
                                 <form method="post" action="">
                                     <!-- Email input -->
-                                    <div class="form-outline mb-4">
-                                        <label class="form-label" for="username">Username</label>
-                                        <input type="text" id="username" required name="username"
+                                    <div class="form-outline mb-3">
+                                        <label class="form-label" for="username">Username <small
+                                                class="text-danger">*</small></label>
+                                        <input type="text" id="username" placeholder="username" required name="username"
                                             class="form-control" />
                                     </div>
-
                                     <!-- Password input -->
+                                    <div class="form-outline mb-3">
+                                        <label class="form-label" for="password">Password <small
+                                                class="text-danger">*</small></label>
+                                        <input type="password" id="password" placeholder="******" required
+                                            name="password" class="form-control" />
+                                    </div>
+                                    <div class="form-outline mb-3">
+                                        <label class="form-label" for="password-konfirmation">Konfirmasi Password <small
+                                                class="text-danger">*</small></label>
+                                        <input type="password" id="password-konfirmation" placeholder="******" required
+                                            name="password-konfirmation" class="form-control" />
+                                    </div>
                                     <div class="form-outline mb-4">
-                                        <label class="form-label" for="password">Password</label>
-                                        <input type="password" id="password" required name="password"
-                                            class="form-control" />
+                                        <label class="form-label" for="jenjang">Jenjang <small
+                                                class="text-danger">*</small></label>
+                                        <select class="form-select" name="jenjang" required
+                                            aria-label="Default select example">
+                                            <option value="">-- Pilih Jenjang --</option>
+                                            <option value="sma">SMA/SMK Sederajat</option>
+                                            <option value="pt">Perguruan Tinggi</option>
+                                        </select>
                                     </div>
                                     <!-- Submit button -->
-                                    <button type="submit" name="daftar" class="btn col-12 btn-primary btn-block mb-2">
-                                        Daftar
+                                    <button type="submit" name="daftar" class="btn col-12 btn-primary btn-block mb-3">
+                                        Register
                                     </button>
-                                    <a href="./auth/login.php" class="btn col-12 btn-danger btn-block mb-4">
-                                        Login
+                                    <span>Sudah punya akun ?</span>
+                                    <a href="./auth/login.php">
+                                        Login disini
                                     </a>
                                 </form>
                             </div>
@@ -107,5 +115,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <script src="../assets/DataTables/jquery.js"></script>
 <script src="../assets/DataTables/datatables.min.js"></script>
+<script>
+// Mendapatkan referensi elemen input password dan konfirmasi password
+var passwordInput = document.getElementById("password");
+var confirmPasswordInput = document.getElementById("password-konfirmation");
+
+// Menambahkan event listener pada input konfirmasi password
+confirmPasswordInput.addEventListener("input", validatePassword);
+
+function validatePassword() {
+    var password = passwordInput.value;
+    var confirmPassword = confirmPasswordInput.value;
+
+    // Memeriksa apakah password dan konfirmasi password sama
+    if (password !== confirmPassword) {
+        confirmPasswordInput.setCustomValidity("Konfirmasi password tidak sesuai");
+    } else {
+        confirmPasswordInput.setCustomValidity("");
+    }
+}
+</script>
+
 <!-- Sweet Alert -->
 <script>
