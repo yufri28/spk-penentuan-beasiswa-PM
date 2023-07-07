@@ -4,8 +4,12 @@ $sql = "SELECT * FROM admin WHERE level=0";
 $res = $koneksi->query($sql);
 if($res->num_rows < 1){
     $password_hash = password_hash("admin",PASSWORD_BCRYPT);
-    $sql1 = "INSERT INTO admin (id_admin,username,password,level) VALUES (null,'admin','$password_hash',0)";
-    $result = $koneksi->query($sql1);
+    $sql1 = "INSERT INTO rayon (id_rayon,nama_rayon)VALUES(1,'umum')";
+    $result1 = $koneksi->query($sql1);
+    if($result1){
+        $sql2 = "INSERT INTO admin (id_admin,username,password,level,f_id_rayon) VALUES (null,'admin','$password_hash',0,1)";
+        $result2 = $koneksi->query($sql2);
+    }
 }
 // Mengambil URL yang dikirimkan melalui aturan rewriting
 $url = isset($_GET['url']) ? $_GET['url'] : '';

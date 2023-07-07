@@ -35,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['login'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['level'] = $fetch['level']; 
+            $_SESSION['id_rayon'] = $fetch['id_rayon']; 
             $_SESSION['id_user'] = $fetch['id_admin']; 
             // Jika role nya admin, redirect ke halaman index.php
             header("Location: ../admin/index.php");

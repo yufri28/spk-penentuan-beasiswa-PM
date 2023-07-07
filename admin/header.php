@@ -1,12 +1,17 @@
 <?php 
 require_once '../config.php';
-
+require_once './functions/verifikasi.php';
 if(!isset($_SESSION['login']) && $_SESSION['login'] != true){
     header("Location: ../index.php");
 }
-else if($_SESSION['level'] != 0){
+else if($_SESSION['level'] != 0 && $_SESSION['level'] != 1){
     header("Location: ../404.php");
     exit;
+}
+
+if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
+    $countVerifikasi = $Verifikasi->countVerifikasi((int)$_SESSION['id_rayon']);
+    $countBelumVerifikasi = $Verifikasi->countBelumVerifikasi((int)$_SESSION['id_rayon']);
 }
 ?>
 
@@ -71,12 +76,12 @@ else if($_SESSION['level'] != 0){
                     <span>Dashboard</span></a>
             </li>
             <!-- Nav Item - Charts -->
+            <?php if($_SESSION['level'] == 0): ?>
             <li class="nav-item <?= $_SESSION['menu'] == 'pelamar' ? 'active':'';?>">
                 <a class="nav-link" href="./data_pelamar.php">
                     <i class="fas fa-user"></i>
                     <span>Data Pelamar</span></a>
             </li>
-
             <!-- Nav Item - Tables -->
             <li class="nav-item <?= $_SESSION['menu'] == 'kriteria' ? 'active':'';?>">
                 <a class="nav-link" href="./kriteria.php">
@@ -93,6 +98,33 @@ else if($_SESSION['level'] != 0){
                     <i class="fas fa-user"></i>
                     <span>Data user</span></a>
             </li>
+            <li class="nav-item <?= $_SESSION['menu'] == 'setting' ? 'active':'';?>">
+                <a class="nav-link" href="./setting.php">
+                    <i class="fa fa-cog"></i>
+                    <span>Setting</span></a>
+            </li>
+            <?php endif;?>
+            <!-- data pelamar koordinator rayon -->
+            <?php if($_SESSION['level'] == 1): ?>
+            <li
+                class="nav-item <?= $_SESSION['menu'] == 'verifikasi' || $_SESSION['menu'] == 'belum-verifikasi' ? 'active':'';?>">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user"></i>
+                    <span>Data Pelamar</span></a>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item <?= $_SESSION['menu'] == 'verifikasi' ? 'active':'';?>"
+                            href="verifikasi.php">Terverifikasi <strong class="text-white bg-primary"
+                                style="border-radius:100%; padding:1px 5px;"><?=$countVerifikasi['jumlah'];?></strong></a>
+                        <a class="collapse-item <?= $_SESSION['menu'] == 'belum-verifikasi' ? 'active':'';?>"
+                            href="belum_verifikasi.php">Belum Verifikasi <strong class="text-white bg-primary"
+                                style="border-radius:100%; padding:1px 5px;"><?=$countBelumVerifikasi['jumlah'];?></strong></a>
+                    </div>
+                </div>
+            </li>
+            <?php endif;?>
             <li class="nav-item">
                 <a class="nav-link" href="../auth/logout.php">
                     <i class="fas fa-sign-out-alt"></i>
@@ -119,18 +151,67 @@ else if($_SESSION['level'] != 0){
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
+                                <span class="badge badge-danger badge-counter">3+</span>
+                            </a>
+                            <!-- notifikasi -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">Alerts Center</h6>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fas fa-file-alt text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">December 12, 2019</div>
+                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-success">
+                                            <i class="fas fa-donate text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">December 7, 2019</div>
+                                        $290.29 has been deposited into your account!
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-warning">
+                                            <i class="fas fa-exclamation-triangle text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">December 2, 2019</div>
+                                        Spending Alert: We've noticed unusually high spending for
+                                        your account.
+                                    </div>
+                                </a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                            </div>
+                        </li>
+                        <!-- end notifikasi -->
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span
-                                    class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$_SESSION['username'];?></span>
-                                <img class="rounded-circle mr-5" src="../assets/img/undraw_profile_2.svg" />
+                                <span class="d-none d-lg-inline text-gray-600 small"><?=$_SESSION['username'];?></span>
+                                <img class="rounded-circle ml-2" style="width:30px; height:30px;"
+                                    src="../assets/img/undraw_profile_2.svg" />
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
