@@ -37,9 +37,9 @@ $data_pelamar = $dataPelamar->getPelamar();
                                 <?php foreach ($data_pelamar as $key => $pelamar):?>
                                 <tr>
                                     <th scope="row"><?=$key+1;?></th>
-                                    <th><?=$pelamar['nama'];?></th>
+                                    <td><?=$pelamar['nama'];?></td>
                                     <td><?=$pelamar['sekolah'];?></td>
-                                    <td><?=$pelamar['rayon'];?></td>
+                                    <td><?=$pelamar['nama_rayon'];?></td>
                                     <td><?=$pelamar['jenjang'];?></td>
                                     <td>Hapus</td>
                                 </tr>

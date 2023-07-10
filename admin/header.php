@@ -48,6 +48,7 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
 </head>
 
 <body id="page-top">
+
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
@@ -221,7 +222,6 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
-
                             </div>
                         </li>
                     </ul>
