@@ -7,8 +7,9 @@ unset($_SESSION['menu']);
 $_SESSION['menu'] = 'belum-verifikasi';
 require_once './header.php';
 require_once './functions/data_pelamar.php';
+require_once './functions/verifikasi.php';
 
-$data_pelamar = $dataPelamar->getPelamar();
+$data_pelamar = $Verifikasi->getPelamarBelumVerifikasi();
 ?>
 
 <div class="row">
@@ -41,7 +42,12 @@ $data_pelamar = $dataPelamar->getPelamar();
                                     <td><?=$pelamar['sekolah'];?></td>
                                     <td><?=$pelamar['nama_rayon'];?></td>
                                     <td><?=$pelamar['jenjang'];?></td>
-                                    <td>Hapus</td>
+                                    <td>
+                                        <a href="./verifikasi_data.php?id_pel=<?=base64_encode(urlencode($pelamar['id_pelamar']));?>&id_log=<?=base64_encode(urlencode($pelamar['f_id_login']));?>"
+                                            class="btn btn-sm btn-primary">
+                                            Verifikasi
+                                        </a>
+                                    </td>
                                 </tr>
                                 <?php endforeach;?>
                             </tbody>

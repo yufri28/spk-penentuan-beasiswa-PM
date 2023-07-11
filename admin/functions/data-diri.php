@@ -137,16 +137,13 @@ class DataDiri{
                 $suket_beasiswa_lain =  $data['suket_beasiswa_lain'];
                 $raport_khs =  $data['raport_khs'];
                 $id_pelamar = $data['id_pelamar'];
-                $f_id_penerima = $data['f_id_penerima'];
-                $f_id_pengirim = $data['f_id_pengirim'];
-                $nama_pengirim = $data['nama_pengirim'];
                 
                 $update = $this->db->query(
                     "UPDATE data_pelamar
                     SET s_aktif_sekolah='$suket_aktif_kuliah',s_beasiswa_lain='$suket_beasiswa_lain',
                     raport_khs='$raport_khs' WHERE id_pelamar=$id_pelamar");
                 foreach ($kriteria_pelamar as $key => $kriteria) {
-                    $update = $this->db->query("UPDATE pelamar_kriteria SET f_id_kriteria='$key',f_id_sub_kriteria=$kriteria,f_id_pelamar=$id_pelamar WHERE id_pelamar_kriteria=$data_kriteria[$key]");
+                    $update = $this->db->query("UPDATE pelamar_kriteria SET f_id_kriteria='$key',f_id_sub_kriteria=$kriteria,f_id_pelamar=$id_pelamar WHERE id_pelamar_kriteria=$data_kriteria[$key]    ");
                 }
                 if($update){
                     $_SESSION['success'] = "Data berhasil diedit";
@@ -157,44 +154,20 @@ class DataDiri{
         }
     }
 
-    public function getStatusJemaat(){
-        return $this->db->query("SELECT * FROM sub_kriteria WHERE f_id_kriteria='K1'");
-    }
-    public function getKeaktifan(){
-        return $this->db->query("SELECT * FROM sub_kriteria WHERE f_id_kriteria='K2'");
-    }
-    public function getStatusKeluarga(){
-        return $this->db->query("SELECT * FROM sub_kriteria WHERE f_id_kriteria='K3'");
-    }
-    public function getPendapatanOrtu(){
-        return $this->db->query("SELECT * FROM sub_kriteria WHERE f_id_kriteria='K4'");
-    }
-    public function getJumlahTanggungan(){
-        return $this->db->query("SELECT * FROM sub_kriteria WHERE f_id_kriteria='K5'");
-    }
     public function cekDataPelamar($id_login){
         return $this->db->query("SELECT * FROM data_pelamar dp JOIN rayon r ON dp.f_id_rayon=r.id_rayon WHERE f_id_login='$id_login'");
     }
     public function cekPelamarKriteria($id_pelamar){
         return $this->db->query("SELECT * FROM pelamar_kriteria pk JOIN kriteria k ON pk.f_id_kriteria=k.id_kriteria JOIN sub_kriteria sk ON sk.f_id_kriteria = k.id_kriteria WHERE pk.f_id_pelamar=$id_pelamar GROUP BY pk.f_id_kriteria;");
     }
-    public function getK1($id_pelamar){
-        return $this->db->query("SELECT * FROM pelamar_kriteria pk JOIN kriteria k ON pk.f_id_kriteria=k.id_kriteria JOIN sub_kriteria sk ON sk.f_id_kriteria = k.id_kriteria WHERE pk.f_id_pelamar=$id_pelamar AND k.id_kriteria='K1' GROUP BY pk.f_id_kriteria LIMIT 1;");
+    public function getK6(){
+        return $this->db->query("SELECT * FROM sub_kriteria sk JOIN kriteria k ON sk.f_id_kriteria=k.id_kriteria WHERE sk.nama_sub_kriteria='Ada' AND k.id_kriteria='K6'");
     }
-    public function getK2($id_pelamar){
-        return $this->db->query("SELECT * FROM pelamar_kriteria pk JOIN kriteria k ON pk.f_id_kriteria=k.id_kriteria JOIN sub_kriteria sk ON sk.f_id_kriteria = k.id_kriteria WHERE pk.f_id_pelamar=$id_pelamar AND k.id_kriteria='K2' GROUP BY pk.f_id_kriteria LIMIT 1;");
+    public function getK7(){
+        return $this->db->query("SELECT * FROM sub_kriteria sk JOIN kriteria k ON sk.f_id_kriteria=k.id_kriteria WHERE sk.nama_sub_kriteria='Ada'AND k.id_kriteria='K7'");
     }
-    public function getK3($id_pelamar){
-        return $this->db->query("SELECT * FROM pelamar_kriteria pk JOIN kriteria k ON pk.f_id_kriteria=k.id_kriteria JOIN sub_kriteria sk ON sk.f_id_kriteria = k.id_kriteria WHERE pk.f_id_pelamar=$id_pelamar AND k.id_kriteria='K3' GROUP BY pk.f_id_kriteria LIMIT 1;");
-    }
-    public function getK4($id_pelamar){
-        return $this->db->query("SELECT * FROM pelamar_kriteria pk JOIN kriteria k ON pk.f_id_kriteria=k.id_kriteria JOIN sub_kriteria sk ON sk.f_id_kriteria = k.id_kriteria WHERE pk.f_id_pelamar=$id_pelamar AND k.id_kriteria='K4' GROUP BY pk.f_id_kriteria LIMIT 1;");
-    }
-    public function getK5($id_pelamar){
-        return $this->db->query("SELECT * FROM pelamar_kriteria pk JOIN kriteria k ON pk.f_id_kriteria=k.id_kriteria JOIN sub_kriteria sk ON sk.f_id_kriteria = k.id_kriteria WHERE pk.f_id_pelamar=$id_pelamar AND k.id_kriteria='K5' GROUP BY pk.f_id_kriteria LIMIT 1;");
-    }
-    public function getAdmin($id_rayon=null){
-        return $this->db->query("SELECT * FROM admin WHERE f_id_rayon=$id_rayon");
+    public function getK8(){
+        return $this->db->query("SELECT * FROM sub_kriteria sk JOIN kriteria k ON sk.f_id_kriteria=k.id_kriteria WHERE sk.nama_sub_kriteria='Ada'AND k.id_kriteria='K8'");
     }
 
 }

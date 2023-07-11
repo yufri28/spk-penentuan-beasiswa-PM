@@ -8,7 +8,7 @@ $_SESSION['menu'] = 'verifikasi';
 require_once './header.php';
 require_once './functions/data_pelamar.php';
 
-$data_pelamar = $dataPelamar->getPelamar();
+$data_pelamar = $Verifikasi->getPelamarVerifikasi();
 ?>
 
 <div class="row">
@@ -37,11 +37,16 @@ $data_pelamar = $dataPelamar->getPelamar();
                                 <?php foreach ($data_pelamar as $key => $pelamar):?>
                                 <tr>
                                     <th scope="row"><?=$key+1;?></th>
-                                    <th><?=$pelamar['nama'];?></th>
+                                    <td><?=$pelamar['nama'];?></td>
                                     <td><?=$pelamar['sekolah'];?></td>
-                                    <td><?=$pelamar['rayon'];?></td>
+                                    <td><?=$pelamar['nama_rayon'];?></td>
                                     <td><?=$pelamar['jenjang'];?></td>
-                                    <td>Hapus</td>
+                                    <td>
+                                        <a href="./lihat_verifikasi.php?id_pel=<?=base64_encode(urlencode($pelamar['id_pelamar']));?>&id_log=<?=base64_encode(urlencode($pelamar['f_id_login']));?>"
+                                            class="btn btn-sm btn-primary">
+                                            Lihat
+                                        </a>
+                                    </td>
                                 </tr>
                                 <?php endforeach;?>
                             </tbody>

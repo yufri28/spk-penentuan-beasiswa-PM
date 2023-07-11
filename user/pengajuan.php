@@ -8,6 +8,7 @@ require_once './functions/pengajuan.php';
 
 $cekDataPelamar = $dataDiri->cekDataPelamar($_SESSION['id_user']);
 $fecthDataPelamar = mysqli_fetch_assoc($cekDataPelamar);
+$admin = mysqli_fetch_assoc($dataDiri->getAdmin($fecthDataPelamar['f_id_rayon']));
 $num_rows = 0;
 
 if(mysqli_num_rows($cekDataPelamar) > 0){
@@ -22,7 +23,16 @@ $numRowsVerifikasi = mysqli_num_rows($Pengajuan->getVerifikasi($id_pelamar));
 
 if(isset($_POST['ajukan'])){
     $idPelamar = $_POST['id_pelamar'];
-    $Pengajuan->ajukanBeasiswa($idPelamar);
+    $idPengirim = $_SESSION['id_user'];
+    $id_penerima = $admin['id_admin'];
+    $namaPelamar = $fecthDataPelamar['nama'];
+    $data = [
+        'f_id_pelamar' => $idPelamar,
+        'f_id_pengirim' => $idPengirim,
+        'f_id_penerima' => $id_penerima,
+        'nama_pelamar' => $namaPelamar,
+    ];
+    $Pengajuan->ajukanBeasiswa($data);
 }
 ?>
 <?php if (isset($_SESSION['success'])): ?>
@@ -69,7 +79,7 @@ Swal.fire({
                     <p class="text-end">Setelah data diri anda sudah lengkap, silahkan melakukan
                         pengajuan beasiswa dengan klik menu ajukan.</p>
                     <form action="" method="post">
-                        <input type="hidden" name="id_pelamar" value=<?= isset($id_pelamar) ? $id_pelamar:'-';?>>
+                        <input type="hidden" name="id_pelamar" value="<?= isset($id_pelamar) ? $id_pelamar:'-';?>">
                         <button type="submit" name="ajukan" class="btn btn-primary px-5">
                             <h5>Ajukan</h5>
                         </button>

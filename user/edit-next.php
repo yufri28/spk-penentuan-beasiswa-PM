@@ -16,6 +16,8 @@ $getK3 = mysqli_fetch_assoc($dataDiri->getK3($id_pelamar));
 $getK4 = mysqli_fetch_assoc($dataDiri->getK4($id_pelamar));
 $getK5 = mysqli_fetch_assoc($dataDiri->getK5($id_pelamar));
 $fetch_pelamar_kriteria = mysqli_fetch_assoc($cekPelamarKriteria);
+$getAdmin = $dataDiri->getAdmin($fetch_data_pelamar['id_rayon']);
+$id_penerima = mysqli_fetch_assoc($getAdmin);
 
 if (isset($_POST["simpan"])) {
     // Pastikan ada file gambar yang diunggah
@@ -97,7 +99,10 @@ if (isset($_POST["simpan"])) {
             'suket_aktif_kuliah' => isset($uploadedFiles['suket_aktif_kuliah']) ? $uploadedFiles['suket_aktif_kuliah'] : $_POST["suket_aktif_kuliah_lama"],
             'suket_beasiswa_lain' => isset($uploadedFiles['suket_beasiswa_lain']) ? $uploadedFiles['suket_beasiswa_lain'] : $_POST["suket_beasiswa_lain_lama"],
             'raport_khs' => isset($uploadedFiles['raport_khs']) ? $uploadedFiles['raport_khs'] : $_POST["raport_khs_lama"],
-            'id_pelamar' => $id_pelamar
+            'id_pelamar' => $id_pelamar,
+            'f_id_pengirim' => $_SESSION['id_user'],
+            'nama_pengirim' => $fetch_data_pelamar['nama'],
+            'f_id_penerima' => $id_penerima['id_admin']
         ];
         $dataDiri->editDataDiriNext($data_diri);
     } else {
@@ -120,7 +125,10 @@ if (isset($_POST["simpan"])) {
             'suket_aktif_kuliah' => $_POST["suket_aktif_kuliah_lama"],
             'suket_beasiswa_lain' => $_POST["suket_beasiswa_lain_lama"],
             'raport_khs' => $_POST["raport_khs_lama"],
-            'id_pelamar' => $id_pelamar
+            'id_pelamar' => $id_pelamar,
+            'f_id_pengirim' => $_SESSION['id_user'],
+            'nama_pengirim' => $fetch_data_pelamar['nama'],
+            'f_id_penerima' => $id_penerima['id_admin']
         ];
         $dataDiri->editDataDiriNext($data_diri);
     }

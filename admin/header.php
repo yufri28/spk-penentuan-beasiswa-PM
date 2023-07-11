@@ -1,6 +1,8 @@
 <?php 
 require_once '../config.php';
 require_once './functions/verifikasi.php';
+require_once './functions/notifikasi.php';
+require_once './functions/data-diri.php';
 if(!isset($_SESSION['login']) && $_SESSION['login'] != true){
     header("Location: ../index.php");
 }
@@ -9,11 +11,55 @@ else if($_SESSION['level'] != 0 && $_SESSION['level'] != 1){
     exit;
 }
 
+
+function modifWaktu($tanggal=null){
+    date_default_timezone_set('Asia/Taipei');
+    // Menghitung selisih waktu dalam detik antara waktu asli dan waktu sekarang
+    $now = date('Y-m-d H:i:s');
+    $diff = abs(strtotime($now) - strtotime($tanggal));
+
+    // Mengonversi selisih waktu ke detik, menit, jam, hari, bulan, dan tahun
+    $seconds = $diff;
+    $minutes = round($diff / 60);
+    $hours = round($diff / 3600);
+    $days = round($diff / 86400);
+    $months = round($diff / 2592000);
+    $years = round($diff / 31536000);
+
+    // Membentuk pesan dengan format yang sesuai
+    $message = '';
+    if ($seconds < 60) {
+        $message = $seconds . " detik yang lalu";
+    } elseif ($minutes < 60) {
+        $message = $minutes . " menit yang lalu";
+    } elseif ($hours < 24) {
+        $message = $hours . " jam yang lalu";
+    } elseif ($days < 30) {
+        $message = $days . " hari yang lalu";
+    } elseif ($months < 12) {
+        $message = $months . " bulan yang lalu";
+    } else {
+        $message = $years . " tahun yang lalu";
+    }
+    return $message;
+}
+
+
 if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
     $countVerifikasi = $Verifikasi->countVerifikasi((int)$_SESSION['id_rayon']);
     $countBelumVerifikasi = $Verifikasi->countBelumVerifikasi((int)$_SESSION['id_rayon']);
+    $getNotifikasi = $Notifikasi->getNotifikasi((int)$_SESSION['id_user']);
+    $showNotif = $Notifikasi->getNotifikasiBelumDibuka((int)$_SESSION['id_user']);
+    $fetchGetNotifikasi = mysqli_fetch_assoc($getNotifikasi);
+    $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION['id_user']));
+    $id_pel = mysqli_fetch_assoc($dataDiri->cekDataPelamar($fetchGetNotifikasi['f_id_pengirim']));
+
+    $idPel = $id_pel['id_pelamar'];
+    $idLog = $id_pel['f_id_login'];
 }
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -160,47 +206,50 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter"><?=$countBelumDibaca?></span>
                             </a>
                             <!-- notifikasi -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">Alerts Center</h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                <h6 class="dropdown-header">Notifikasi</h6>
+                                <?php if(mysqli_num_rows($showNotif) > 0):?>
+                                <?php foreach ($showNotif as $key => $notifikasi) :?>
+                                <?php if($notifikasi['jenis_notif'] == 'data-diri'):?>
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="./verifikasi_data.php?id_pel=<?=base64_encode($idPel)?>&id_log=<?=base64_encode($idLog)?>&n=<?=base64_encode($notifikasi['id_notif'])?>">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
                                             <i class="fas fa-file-alt text-white"></i>
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                        <div class="small text-gray-500"><?=modifWaktu($notifikasi['tanggal']);?></div>
+                                        <span
+                                            class="<?=$notifikasi['dibuka'] == '0'?'font-weight-bold':'';?>"><?=$notifikasi['isi_notif'];?>.</span>
                                     </div>
                                 </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                <?php else:?>
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="./verifikasi_data.php?id_pel=<?=base64_encode($idPel)?>&id_log=<?=base64_encode($idLog)?>&n=<?=base64_encode($notifikasi['id_notif'])?>">
                                     <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fas fa-file-alt text-white"></i>
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
+                                        <div class="small text-gray-500"><?=modifWaktu($notifikasi['tanggal']);?></div>
+                                        <span
+                                            class="<?=$notifikasi['dibuka'] == '0'?'font-weight-bold':'';?>"><?=$notifikasi['isi_notif'];?>.</span>
                                     </div>
                                 </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for
-                                        your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                <?php endif;?>
+                                <?php endforeach;?>
+                                <?php else:?>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <p class="text-center"><i>Tidak ada notifikasi.</i></p>
+                                </div>
+                                <?php endif;?>
+                                <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a> -->
                             </div>
                         </li>
                         <!-- end notifikasi -->

@@ -1,7 +1,7 @@
 <?php 
 session_start();
 unset($_SESSION['menu']);
-$_SESSION['menu'] = 'pelamar';
+$_SESSION['menu'] = 'belum-verifikasi';
 require_once './header.php';
 require_once './functions/data_pelamar.php';
 

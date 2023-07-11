@@ -1,5 +1,7 @@
 <?php 
 require_once '../config.php';
+require_once '../user/functions/pesan.php';
+require_once './functions/notifikasi.php';
 if(!isset($_SESSION['login']) && $_SESSION['login'] != true){
     header("Location: ../index.php");
 }
@@ -7,6 +9,53 @@ else if($_SESSION['jenjang'] != 'sma' && $_SESSION['jenjang'] != 'pt'){
     header("Location: ../404.php");
     exit;
 }
+$countBelumDibaca = $Pesan->countBelumDibaca($_SESSION['id_user']);
+$getPesan = $Pesan->getPesan($_SESSION['id_user']);
+$dataPesan = mysqli_fetch_assoc($getPesan);
+$jumlah_pesan =  mysqli_num_rows($countBelumDibaca);
+
+function modifWaktu($tanggal=null){
+    date_default_timezone_set('Asia/Taipei');
+    // Menghitung selisih waktu dalam detik antara waktu asli dan waktu sekarang
+    $now = date('Y-m-d H:i:s');
+    $diff = abs(strtotime($now) - strtotime($tanggal));
+
+    // Mengonversi selisih waktu ke detik, menit, jam, hari, bulan, dan tahun
+    $seconds = $diff;
+    $minutes = round($diff / 60);
+    $hours = round($diff / 3600);
+    $days = round($diff / 86400);
+    $months = round($diff / 2592000);
+    $years = round($diff / 31536000);
+
+    // Membentuk pesan dengan format yang sesuai
+    $message = '';
+    if ($seconds < 60) {
+        $message = $seconds . " detik yang lalu";
+    } elseif ($minutes < 60) {
+        $message = $minutes . " menit yang lalu";
+    } elseif ($hours < 24) {
+        $message = $hours . " jam yang lalu";
+    } elseif ($days < 30) {
+        $message = $days . " hari yang lalu";
+    } elseif ($months < 12) {
+        $message = $months . " bulan yang lalu";
+    } else {
+        $message = $years . " tahun yang lalu";
+    }
+    return $message;
+}
+// update pesan
+if(isset($_POST['dibuka'])){
+    $id_pesan = htmlspecialchars($_POST['id_pesan']);
+    $Pesan->updatePesan($id_pesan);
+}
+
+$getNotifikasi = $Notifikasi->getNotifikasi((int)$_SESSION['id_user']);
+$showNotif = $Notifikasi->getNotifikasiBelumDibuka((int)$_SESSION['id_user']);
+$fetchGetNotifikasi = mysqli_fetch_assoc($getNotifikasi);
+$countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION['id_user']));
+
 ?>
 
 <!DOCTYPE html>
@@ -81,6 +130,11 @@ else if($_SESSION['jenjang'] != 'sma' && $_SESSION['jenjang'] != 'pt'){
                     <i class="fa fa-table" aria-hidden="true"></i>
                     <span>Pengajuan Beasiswa</span></a>
             </li>
+            <!-- <li class="nav-item <?= $_SESSION['menu'] == 'pesan' ? 'active':'';?>">
+                <a class="nav-link" href="pesan.php">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span>Pesan</span></a>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="../auth/logout.php">
                     <i class="fas fa-sign-out-alt"></i>
@@ -108,53 +162,74 @@ else if($_SESSION['jenjang'] != 'sma' && $_SESSION['jenjang'] != 'pt'){
                     </button>
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - Messages -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-envelope fa-fw"></i>
+                                <!-- Counter - Messages -->
+                                <span class="badge badge-danger badge-counter"><?=$jumlah_pesan;?></span>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="messagesDropdown">
+                                <h6 class="dropdown-header">Pesan</h6>
+                                <?php foreach ($getPesan as $key => $pesan):?>
+                                <button
+                                    class="dropdown-item d-flex align-items-center <?=$pesan['dibuka'] == '0' ? 'bg-light':'bg-white'?>"
+                                    bs-target="button" data-toggle="modal"
+                                    data-target="#lihatPesan<?=$pesan['id_pesan'];?>">
+                                    <div class="dropdown-list-image mr-3">
+                                        <img class="rounded-circle" src="../assets/img/undraw_profile_2.svg"
+                                            alt="..." />
+                                        <div class="status-indicator bg-success"></div>
+                                    </div>
+                                    <div class="<?=$pesan['dibuka'] == '0' ? 'font-weight-bold':''?>">
+                                        <div class="text-truncate">
+                                            <?=$pesan['pesan']?>
+                                        </div>
+                                        <div class="small text-gray-500"><?=$pesan['username']?> ·
+                                            <?=$message;?></div>
+                                    </div>
+                                </button>
+                                <?php endforeach;?>
+                                <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a> -->
+                            </div>
+                        </li>
+
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter"><?=$countBelumDibaca?></span>
                             </a>
                             <!-- notifikasi -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">Alerts Center</h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                <h6 class="dropdown-header">Notifikasi</h6>
+                                <?php if(mysqli_num_rows($showNotif) > 0):?>
+                                <?php foreach ($showNotif as $key => $notifikasi) :?>
+                                <a class="dropdown-item d-flex align-items-center" href="">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
                                             <i class="fas fa-file-alt text-white"></i>
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                        <div class="small text-gray-500"><?=modifWaktu($notifikasi['tanggal']);?></div>
+                                        <span
+                                            class="<?=$notifikasi['dibuka'] == '0'?'font-weight-bold':'';?>"><?=$notifikasi['isi_notifikasi'];?>.</span>
                                     </div>
                                 </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for
-                                        your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                <?php endforeach;?>
+                                <?php else:?>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <p class="text-center"><i>Tidak ada notifikasi.</i></p>
+                                </div>
+                                <?php endif;?>
+                                <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a> -->
                             </div>
                         </li>
                         <!-- end notifikasi -->
@@ -196,3 +271,44 @@ else if($_SESSION['jenjang'] != 'sma' && $_SESSION['jenjang'] != 'pt'){
               > -->
                     </div>
                     <!-- Content Row -->
+
+                    <!-- modal pesan -->
+                    <?php foreach ($getPesan as $key => $pesan):?>
+                    <div class="modal fade" id="lihatPesan<?=$pesan['id_pesan'];?>" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">PESAN</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card-body" style="font-family: 'Lato', sans-serif;">
+                                        <label class="">
+                                            Dari : <strong><?=$pesan['username']?></strong>
+                                        </label><br>
+                                        <label for="isi_pesan">Isi Pesan : </label>
+                                        <div class="alert alert-info" role="alert">
+                                            <p class="text-end"><?=$pesan['pesan']?></p>
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <small class="text-end"><i><?=$message;?></i></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <?php if($pesan['dibuka'] == '0'):?>
+                                    <form action="" method="post">
+                                        <input type="hidden" name="id_pesan" value="<?=$pesan['id_pesan'];?>">
+                                        <button type="submit" name="dibuka" class="btn btn-primary">OK</button>
+                                    </form>
+                                    <?php else:?>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                                    <?php endif;?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach;?>
