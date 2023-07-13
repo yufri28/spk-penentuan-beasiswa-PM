@@ -20,7 +20,7 @@ class PDT{
                $insert = $this->db->query("INSERT INTO pdt(id_pdt,f_id_kriteria,f_id_sub_kriteria,f_id_pelamar,f_id_periode)VALUES(0,'$key',$pdt,$id_pelamar,$id_periode)");
             }
             if($this->db->affected_rows > 0 && $insert){
-                $this->db->query("UPDATE verifikasi SET status='1'");
+                $this->db->query("UPDATE verifikasi SET status='1' WHERE f_id_pelamar=$id_pelamar");
                 $isi_notif = "Data anda telah diverifikasi.";
                 $this->db->query("INSERT INTO notifikasi_pelamar(id_notif,f_id_pengirim,f_id_penerima,isi_notifikasi,tanggal,dibuka)VALUES(0,$f_id_pengirim,$f_id_penerima,'$isi_notif',NOW(),'0')");
                 $_SESSION['success'] = "Verifikasi berhasil.";

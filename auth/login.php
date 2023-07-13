@@ -13,14 +13,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
     $cekPelamar = $koneksi->query("SELECT * FROM login_pelamar WHERE username='$username'");
     $cekAdmin = $koneksi->query("SELECT * FROM admin WHERE username='$username'");
+    $selectPeriode = $koneksi->query("SELECT * FROM `periode` ORDER BY id_periode DESC LIMIT 1;");
     if(mysqli_num_rows($cekPelamar) > 0){
         $fetch = mysqli_fetch_assoc($cekPelamar);
+        $fetchPeriode = mysqli_fetch_assoc($selectPeriode);
         $password_hash = password_verify($password, $fetch['password']);
         if ($cekPelamar && $password_hash) {
                 $_SESSION['login'] = true;
                 $_SESSION['username'] = $username;
                 $_SESSION['jenjang'] = $fetch['jenjang']; 
                 $_SESSION['id_user'] = $fetch['id_login']; 
+                $_SESSION['id_periode'] = $fetchPeriode['id_periode'];
                 // Jika role nya admin, redirect ke halaman index.php
                 header("Location: ../user/index.php");
                 exit();

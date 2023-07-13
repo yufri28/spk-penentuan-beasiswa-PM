@@ -65,7 +65,6 @@ if(mysqli_num_rows($cekDataPelamar) > 0){
     $num_rows = mysqli_num_rows($cekPelamarKriteria);
 }
 
-
 // kirim pesan
 if(isset($_POST['kirim-pesan'])){
     $f_id_penerima = htmlspecialchars($_POST['id_penerima']);
@@ -96,6 +95,7 @@ if(isset($_POST['lengkap'])){
         $_POST['kriteria'][6] => $_POST['sub_kriteria'][6],
         $_POST['kriteria'][7] => $_POST['sub_kriteria'][7]
     ];
+    
     $PDT->addPdt($data,$_POST['f_id_login'],$_POST['id_pelamar'],$_SESSION['id_user']);
 }
 ?>

@@ -1,0 +1,15 @@
+SELECT dp.id_pelamar, dp.nama, dp.f_id_rayon,dp.f_id_login,
+            MAX(CASE WHEN k.nama_kriteria = 'Status jemaat' THEN sk.nama_sub_kriteria END) AS nama_C1,
+            MAX(CASE WHEN k.nama_kriteria = 'Keaktifan kegiatan bergereja' THEN sk.nama_sub_kriteria END) AS nama_C2,
+            MAX(CASE WHEN k.nama_kriteria = 'Status keluarga' THEN sk.bobot_sub_kriteria END) AS nama_C3,
+            MAX(CASE WHEN k.nama_kriteria = 'Pendapatan orang tua' THEN sk.nama_sub_kriteria END) AS nama_C4,
+            MAX(CASE WHEN k.nama_kriteria = 'Jumlah tanggungan orang tua' THEN sk.nama_sub_kriteria END) AS nama_C5,
+            MAX(CASE WHEN k.nama_kriteria = 'Surat keterangan aktif sekolah atau kuliah' THEN sk.nama_sub_kriteria END) AS nama_C6,
+            MAX(CASE WHEN k.nama_kriteria = 'Surat keterangan tidak menerima beasiswa lain' THEN sk.nama_sub_kriteria END) AS nama_C7,
+            MAX(CASE WHEN k.nama_kriteria = 'Raport pendidikan / Kartu Hasil Studi (KHS)' THEN sk.nama_sub_kriteria END) AS nama_C8
+            FROM data_pelamar dp
+            JOIN login_pelamar lp ON lp.id_login=dp.f_id_login
+            JOIN pdt pdt ON dp.id_pelamar = pdt.f_id_pelamar
+            JOIN sub_kriteria sk ON pdt.f_id_sub_kriteria = sk.id_sub_kriteria
+            JOIN kriteria k ON pdt.f_id_kriteria = k.id_kriteria
+            GROUP BY dp.nama;

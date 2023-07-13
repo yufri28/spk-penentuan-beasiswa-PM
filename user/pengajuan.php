@@ -20,14 +20,17 @@ if(mysqli_num_rows($cekDataPelamar) > 0){
     $cekPelamarKriteria = $dataDiri->cekPelamarKriteria($id_pelamar);
     $fetchPelamarKriteria = mysqli_fetch_assoc($cekPelamarKriteria);
     $num_rows = mysqli_num_rows($cekPelamarKriteria);
-    $dataVerifikasi = $Pengajuan->getVerifikasi($id_pelamar);
+    $dataVerifikasi = $Pengajuan->getVerifikasi($id_pelamar,$_SESSION['id_periode']);
 }
 
 if(isset($_GET['n'])){
     $id_notif = base64_decode($_GET['n']);
     $Notifikasi->updateNotif($id_notif);
 }
-
+$dataPeriode = "";
+if(isset($_SESSION['id_periode'])){
+    $dataPeriode = mysqli_fetch_assoc($Pengajuan->getPeiode($_SESSION['id_periode']));
+}
 
 if(isset($_POST['ajukan'])){
     $idPelamar = $_POST['id_pelamar'];
@@ -85,6 +88,8 @@ Swal.fire({
 
                     <!-- jika belum ada data di tabel verifikasi dan sudah ada data di tabel data pelamar -->
                     <?php if(mysqli_num_rows($dataVerifikasi) < 1 && mysqli_num_rows($cekDataPelamar) > 0) :?>
+                    <p class="text-end">Pembukaan pendaftaran beasiswa
+                        <?=isset($dataPeriode['deskripsi']) ? $dataPeriode['deskripsi']:'-';?> telah dibuka.</p>
                     <p class="text-end">Setelah data diri anda sudah lengkap, silahkan melakukan
                         pengajuan beasiswa dengan klik menu ajukan.</p>
                     <form action="" method="post">

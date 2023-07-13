@@ -13,8 +13,8 @@
     public function getPeriode(){
         return $this->db->query("SELECT * FROM periode ORDER BY id_periode LIMIT 1");
     }
-    public function getVerifikasi($id_pelamar){
-        return $this->db->query("SELECT * FROM verifikasi WHERE f_id_pelamar=$id_pelamar");
+    public function getVerifikasi($id_pelamar=null,$id_periode=null){
+        return $this->db->query("SELECT * FROM verifikasi WHERE f_id_pelamar=$id_pelamar AND f_id_periode=$id_periode");
     }
 
     public function ajukanBeasiswa($data=[]){
@@ -37,6 +37,9 @@
             }
         }
     }
+    public function getPeiode($id_periode=null){
+        return $this->db->query("SELECT * FROM periode WHERE id_periode=$id_periode");
+    }   
 
  }
 

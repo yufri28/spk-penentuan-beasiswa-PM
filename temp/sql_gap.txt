@@ -1,0 +1,47 @@
+SELECT
+    dp.id_pelamar,
+    dp.nama,
+    dp.f_id_rayon,
+    dp.f_id_login,
+    MAX(CASE WHEN k.id_kriteria = 'K1' THEN sk.nama_sub_kriteria END) AS nama_C1,
+    MAX(CASE WHEN k.id_kriteria = 'K2' THEN sk.nama_sub_kriteria END) AS nama_C2,
+    MAX(CASE WHEN k.id_kriteria = 'K3' THEN sk.bobot_sub_kriteria END) AS nama_C3,
+    MAX(CASE WHEN k.id_kriteria = 'K4' THEN sk.nama_sub_kriteria END) AS nama_C4,
+    MAX(CASE WHEN k.id_kriteria = 'K5' THEN sk.nama_sub_kriteria END) AS nama_C5,
+    MAX(CASE WHEN k.id_kriteria = 'K6' THEN sk.nama_sub_kriteria END) AS nama_C6,
+    MAX(CASE WHEN k.id_kriteria = 'K7' THEN sk.nama_sub_kriteria END) AS nama_C7,
+    MAX(CASE WHEN k.id_kriteria = 'K8' THEN sk.nama_sub_kriteria END) AS nama_C8,
+    MAX(CASE WHEN k.id_kriteria = 'K1' THEN k.profile_target END) AS pt_C1,
+    MAX(CASE WHEN k.id_kriteria = 'K2' THEN k.profile_target END) AS pt_C2,
+    MAX(CASE WHEN k.id_kriteria = 'K3' THEN k.profile_target END) AS pt_C3,
+    MAX(CASE WHEN k.id_kriteria = 'K4' THEN k.profile_target END) AS pt_C4,
+    MAX(CASE WHEN k.id_kriteria = 'K5' THEN k.profile_target END) AS pt_C5,
+    MAX(CASE WHEN k.id_kriteria = 'K6' THEN k.profile_target END) AS pt_C6,
+    MAX(CASE WHEN k.id_kriteria = 'K7' THEN k.profile_target END) AS pt_C7,
+    MAX(CASE WHEN k.id_kriteria = 'K8' THEN k.profile_target END) AS pt_C8,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K1' THEN sk.bobot_sub_kriteria END)) AS bobot_C1,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K2' THEN sk.bobot_sub_kriteria END)) AS bobot_C2,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K3' THEN sk.bobot_sub_kriteria END)) AS bobot_C3,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K4' THEN sk.bobot_sub_kriteria END)) AS bobot_C4,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K5' THEN sk.bobot_sub_kriteria END)) AS bobot_C5,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K6' THEN sk.bobot_sub_kriteria END)) AS bobot_C6,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K7' THEN sk.bobot_sub_kriteria END)) AS bobot_C7,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K8' THEN sk.bobot_sub_kriteria END)) AS bobot_C8,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K1' THEN sk.bobot_sub_kriteria END) - MAX(CASE WHEN k.id_kriteria = 'K1' THEN k.profile_target END)) AS gap_C1,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K2' THEN sk.bobot_sub_kriteria END) - MAX(CASE WHEN k.id_kriteria = 'K2' THEN k.profile_target END)) AS gap_C2,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K3' THEN sk.bobot_sub_kriteria END) - MAX(CASE WHEN k.id_kriteria = 'K3' THEN k.profile_target END)) AS gap_C3,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K4' THEN sk.bobot_sub_kriteria END) - MAX(CASE WHEN k.id_kriteria = 'K4' THEN k.profile_target END)) AS gap_C4,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K5' THEN sk.bobot_sub_kriteria END) - MAX(CASE WHEN k.id_kriteria = 'K5' THEN k.profile_target END)) AS gap_C5,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K6' THEN sk.bobot_sub_kriteria END) - MAX(CASE WHEN k.id_kriteria = 'K6' THEN k.profile_target END)) AS gap_C6,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K7' THEN sk.bobot_sub_kriteria END) - MAX(CASE WHEN k.id_kriteria = 'K7' THEN k.profile_target END)) AS gap_C7,
+    (SELECT MAX(CASE WHEN k.id_kriteria = 'K8' THEN sk.bobot_sub_kriteria END) - MAX(CASE WHEN k.id_kriteria = 'K8' THEN k.profile_target END)) AS gap_C8
+FROM
+    data_pelamar dp
+    JOIN login_pelamar lp ON lp.id_login = dp.f_id_login
+    JOIN pdt pdt ON dp.id_pelamar = pdt.f_id_pelamar
+    JOIN sub_kriteria sk ON pdt.f_id_sub_kriteria = sk.id_sub_kriteria
+    JOIN kriteria k ON pdt.f_id_kriteria = k.id_kriteria
+WHERE
+    lp.jenjang = 'pt'
+GROUP BY
+    dp.id_pelamar, dp.nama, dp.f_id_rayon, dp.f_id_login;
