@@ -149,6 +149,8 @@ class DataDiri{
                     $update = $this->db->query("UPDATE pelamar_kriteria SET f_id_kriteria='$key',f_id_sub_kriteria=$kriteria,f_id_pelamar=$id_pelamar WHERE id_pelamar_kriteria=$data_kriteria[$key]");
                 }
                 if($update){
+                    $isi_notif = $nama_pengirim." telah memperbaharui data dirinya.";
+                    $this->db->query("INSERT INTO notifikasi_admin(id_notif,f_id_penerima,f_id_pengirim,isi_notif,tanggal,dibuka,jenis_notif)VALUES(0,$f_id_penerima,$f_id_pengirim,'$isi_notif',NOW(),'0','data-diri')");
                     $_SESSION['success'] = "Data berhasil diedit";
                     echo '<script>window.location.href = "./data_diri.php";</script>';
                 }else{

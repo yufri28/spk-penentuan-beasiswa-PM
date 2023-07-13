@@ -50,7 +50,6 @@ if(isset($_POST['dibuka'])){
     $id_pesan = htmlspecialchars($_POST['id_pesan']);
     $Pesan->updatePesan($id_pesan);
 }
-
 $getNotifikasi = $Notifikasi->getNotifikasi((int)$_SESSION['id_user']);
 $showNotif = $Notifikasi->getNotifikasiBelumDibuka((int)$_SESSION['id_user']);
 $fetchGetNotifikasi = mysqli_fetch_assoc($getNotifikasi);
@@ -189,7 +188,7 @@ $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION
                                             <?=$pesan['pesan']?>
                                         </div>
                                         <div class="small text-gray-500"><?=$pesan['username']?> ·
-                                            <?=$message;?></div>
+                                            <?=modifWaktu($pesan['tanggal_kirim']);?></div>
                                     </div>
                                 </button>
                                 <?php endforeach;?>
@@ -211,7 +210,8 @@ $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION
                                 <h6 class="dropdown-header">Notifikasi</h6>
                                 <?php if(mysqli_num_rows($showNotif) > 0):?>
                                 <?php foreach ($showNotif as $key => $notifikasi) :?>
-                                <a class="dropdown-item d-flex align-items-center" href="">
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="./pengajuan.php?n=<?=base64_encode($notifikasi['id_notif']);?>">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
                                             <i class="fas fa-file-alt text-white"></i>
@@ -294,7 +294,8 @@ $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION
                                             <p class="text-end"><?=$pesan['pesan']?></p>
                                         </div>
                                         <div class="d-flex justify-content-end">
-                                            <small class="text-end"><i><?=$message;?></i></small>
+                                            <small
+                                                class="text-end"><i><?=modifWaktu($pesan['tanggal_kirim']);?></i></small>
                                         </div>
                                     </div>
                                 </div>

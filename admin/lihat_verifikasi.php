@@ -29,12 +29,12 @@ else if(!isset($_GET['id'])){
 }
 
 
-$cekDataPelamar = $dataDiri->cekDataPelamar($id_login);
+$cekDataPelamar = $dataDiri->cekDataPelamar($id_login,$_SESSION['id_rayon']);
 $fecthDataPelamar = mysqli_fetch_assoc($cekDataPelamar);
 $num_rows = 0;
 
 if(mysqli_num_rows($cekDataPelamar) > 0){
-    $cekPelamarKriteria = $dataDiri->cekPelamarKriteria($id_pelamar);
+    $cekPelamarKriteria = $dataDiri->cekPelamarKriteria($id_login);
     $fetchPelamarKriteria = mysqli_fetch_assoc($cekPelamarKriteria);
     $num_rows = mysqli_num_rows($cekPelamarKriteria);
 }
@@ -73,6 +73,7 @@ if(isset($_POST['lengkap'])){
     ];
     $PDT->addPdt($data,$_POST['id_pelamar']);
 }
+
 ?>
 
 <?php if (isset($_SESSION['success'])): ?>

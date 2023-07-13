@@ -11,6 +11,9 @@
         public function getPelamar(){
             return $this->db->query("SELECT * FROM data_pelamar dp JOIN login_pelamar lp ON dp.f_id_login = lp.id_login JOIN rayon r ON r.id_rayon = dp.f_id_rayon");
         }
+        public function getAllPelamar(){
+            return $this->db->query("SELECT * FROM data_pelamar dp JOIN login_pelamar lp ON dp.f_id_login = lp.id_login JOIN rayon r ON r.id_rayon = dp.f_id_rayon");
+        }
     }
 
     $dataPelamar = new Pelamar();

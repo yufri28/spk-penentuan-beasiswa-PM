@@ -28,7 +28,6 @@ if (isset($_POST["simpan"])) {
     ) {
         // Array informasi file yang diunggah
         $files = [];
-
         if (isset($_FILES['suket_aktif_kuliah']) && $_FILES['suket_aktif_kuliah']['error'] === UPLOAD_ERR_OK) {
             $files['suket_aktif_kuliah'] = $_FILES['suket_aktif_kuliah'];
         }

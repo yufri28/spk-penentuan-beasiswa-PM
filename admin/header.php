@@ -44,18 +44,31 @@ function modifWaktu($tanggal=null){
     return $message;
 }
 
+$countBelumDibaca = 0;
 
 if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
     $countVerifikasi = $Verifikasi->countVerifikasi((int)$_SESSION['id_rayon']);
     $countBelumVerifikasi = $Verifikasi->countBelumVerifikasi((int)$_SESSION['id_rayon']);
-    $getNotifikasi = $Notifikasi->getNotifikasi((int)$_SESSION['id_user']);
-    $showNotif = $Notifikasi->getNotifikasiBelumDibuka((int)$_SESSION['id_user']);
-    $fetchGetNotifikasi = mysqli_fetch_assoc($getNotifikasi);
+    
+    $getNotifikasi = $Notifikasi->getNotifikasi((int)$_SESSION['id_user']); 
+    $showNotif = $Notifikasi->getNotifikasiBelumDibuka((int)$_SESSION['id_user']);  
     $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION['id_user']));
-    $id_pel = mysqli_fetch_assoc($dataDiri->cekDataPelamar($fetchGetNotifikasi['f_id_pengirim']));
-
-    $idPel = $id_pel['id_pelamar'];
-    $idLog = $id_pel['f_id_login'];
+    
+    $fetchGetNotifikasi = mysqli_fetch_assoc($getNotifikasi);
+    if($fetchGetNotifikasi != null){
+        $id_pel = mysqli_fetch_assoc($dataDiri->cekDataPelamar($fetchGetNotifikasi['f_id_pengirim']));
+        if($id_pel != null){
+            $idPel = $id_pel['id_pelamar'];
+            $idLog = $id_pel['f_id_login'];
+        }else{
+            $idPel = null;
+            if(!empty($showNotif) && mysqli_num_rows($showNotif) > 0){
+                $idLog = mysqli_fetch_assoc($showNotif)['f_id_pengirim'];
+            }else{
+                $idLog = null;
+            }
+        }
+    }
 }
 
 ?>
@@ -154,7 +167,7 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
             <!-- data pelamar koordinator rayon -->
             <?php if($_SESSION['level'] == 1): ?>
             <li
-                class="nav-item <?= $_SESSION['menu'] == 'verifikasi' || $_SESSION['menu'] == 'belum-verifikasi' ? 'active':'';?>">
+                class="nav-item <?= $_SESSION['menu'] == 'verifikasi' || $_SESSION['menu'] == 'belum-verifikasi' || $_SESSION['menu'] == 'verifikasi-data' ? 'active':'';?>">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user"></i>
@@ -200,6 +213,7 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
                     </button>
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <?php if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1):?>
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -216,7 +230,7 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
                                 <?php foreach ($showNotif as $key => $notifikasi) :?>
                                 <?php if($notifikasi['jenis_notif'] == 'data-diri'):?>
                                 <a class="dropdown-item d-flex align-items-center"
-                                    href="./verifikasi_data.php?id_pel=<?=base64_encode($idPel)?>&id_log=<?=base64_encode($idLog)?>&n=<?=base64_encode($notifikasi['id_notif'])?>">
+                                    href="./verifikasi_data.php?jn=<?=base64_encode('data-diri')?>&id_log=<?=base64_encode($idLog)?>&n=<?=base64_encode($notifikasi['id_notif'])?>">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
                                             <i class="fas fa-file-alt text-white"></i>
@@ -254,7 +268,7 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
                         </li>
                         <!-- end notifikasi -->
                         <div class="topbar-divider d-none d-sm-block"></div>
-
+                        <?php endif;?>
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"

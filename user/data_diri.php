@@ -86,14 +86,15 @@ Swal.fire({
         </div>
         <div class="col-lg-12">
             <div class="d-flex justify-content-center mb-4">
-                <?php if($num_rows != 5):?>
+                <?php if(($num_rows != 5)):?>
                 <a href="./add-data-diri.php" class="btn btn-primary">
                     Tambah Data
                 </a>
-                <?php endif;?>
+                <?php else:?>
                 <a href="./edit-data-diri.php" class="btn btn-secondary ml-2">
                     Edit Data
                 </a>
+                <?php endif;?>
             </div>
         </div>
     </div>

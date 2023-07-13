@@ -1,11 +1,16 @@
 <?php 
 session_start();
 unset($_SESSION['menu']);
-$_SESSION['menu'] = 'belum-verifikasi';
-require_once './header.php';
 require_once './functions/data_pelamar.php';
+if($_SESSION['level'] == 1){
+    $_SESSION['menu'] = 'belum-verifikasi';
+    $data_pelamar = $dataPelamar->getPelamar();
+}else if($_SESSION['level'] == 0){
+    $_SESSION['menu'] = 'pelamar';
+    $data_pelamar = $dataPelamar->getAllPelamar();
+}
+require_once './header.php';
 
-$data_pelamar = $dataPelamar->getPelamar();
 ?>
 
 <div class="row">
@@ -36,7 +41,7 @@ $data_pelamar = $dataPelamar->getPelamar();
                                     <th scope="row"><?=$key+1;?></th>
                                     <th><?=$pelamar['nama'];?></th>
                                     <td><?=$pelamar['sekolah'];?></td>
-                                    <td><?=$pelamar['rayon'];?></td>
+                                    <td><?=$pelamar['nama_rayon'];?></td>
                                     <td><?=$pelamar['jenjang'];?></td>
                                     <td>Hapus</td>
                                 </tr>

@@ -9,7 +9,7 @@ require_once './header.php';
 require_once './functions/data_pelamar.php';
 require_once './functions/verifikasi.php';
 
-$data_pelamar = $Verifikasi->getPelamarBelumVerifikasi();
+$data_pelamar = $Verifikasi->getPelamarBelumVerifikasi($_SESSION['id_rayon']);
 ?>
 
 <div class="row">

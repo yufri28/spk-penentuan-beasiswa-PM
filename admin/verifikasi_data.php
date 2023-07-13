@@ -4,37 +4,63 @@ if($_SESSION['level'] != 1){
     header("Location: ./index.php");
 }
 unset($_SESSION['menu']);
-$_SESSION['menu'] = 'belum-verifikasi';
+$_SESSION['menu'] = 'verifikasi-data';
 require_once './header.php';
 require_once './functions/data-diri.php';
 require_once './functions/notifikasi.php';
 require_once './functions/data_pelamar.php';
 require_once './functions/pesan.php';
 require_once './functions/pdt.php';
+require_once './functions/verifikasi.php';
 
 // $data_pelamar = $dataPelamar->getPelamar();
+// jika pengajuan beasiswa
 if(isset($_GET['id_pel']) && isset($_GET['id_log']) && isset($_GET['n'])){
     $id_pelamar = base64_decode($_GET['id_pel']);
     $id_login = base64_decode($_GET['id_log']);
     $id_notif = base64_decode($_GET['n']);
-    // update notif
-    $Notifikasi->updateNotif($id_notif);
     
-}else if(isset($_GET['id_pel']) && isset($_GET['id_log'])){
+    if($id_notif != null && $id_login != null){
+        // update notif
+        $Notifikasi->updateNotif($id_notif);
+        // cek verifikasi 
+        $cekVerifikasiUser = $Verifikasi->cekVerifikasiUser($id_login,$_SESSION['id_rayon']);
+        if($cekVerifikasiUser['status'] == 1){
+            echo '<script>window.location.href = "./verifikasi.php";</script>';
+        }else if($cekVerifikasiUser['status'] == 0){
+            echo '<script>window.location.href = "./belum_verifikasi.php";</script>';
+        }
+    }
+    
+}
+else if(isset($_GET['id_pel']) && isset($_GET['id_log'])){
+    if(isset($_GET['n'])){
+        $id_notif = base64_decode($_GET['n']);
+        $Notifikasi->updateNotif($id_notif);
+    }
     $id_pelamar = base64_decode($_GET['id_pel']);
     $id_login = base64_decode($_GET['id_log']);
-}
-else if(!isset($_GET['id'])){
-    echo '<script>window.location.href = "./data_pelamar.php";</script>';
+    // cek verifikasi 
+    $cekVerifikasiUser = $Verifikasi->cekVerifikasiUser($id_login,$_SESSION['id_rayon']);
+    $cekDataPelamar = $dataDiri->cekDataPelamar($id_login,$_SESSION['id_rayon']);
+    $fecthDataPelamar = mysqli_fetch_assoc($cekDataPelamar);
+}else{
+    if(isset($_GET['n'])){
+        $id_notif = base64_decode($_GET['n']);
+        $Notifikasi->updateNotif($id_notif);
+    }
+    $id_login = base64_decode($_GET['id_log']);
+    $cekVerifikasiUser = $Verifikasi->cekVerifikasiUser($id_login,$_SESSION['id_rayon']);
+    $cekDataPelamar = $dataDiri->cekDataPelamar($id_login,$_SESSION['id_rayon']);
+    $fecthDataPelamar = mysqli_fetch_assoc($cekDataPelamar);
 }
 
 
-$cekDataPelamar = $dataDiri->cekDataPelamar($id_login);
-$fecthDataPelamar = mysqli_fetch_assoc($cekDataPelamar);
+
 $num_rows = 0;
 
 if(mysqli_num_rows($cekDataPelamar) > 0){
-    $cekPelamarKriteria = $dataDiri->cekPelamarKriteria($id_pelamar);
+    $cekPelamarKriteria = $dataDiri->cekPelamarKriteria($id_login);
     $fetchPelamarKriteria = mysqli_fetch_assoc($cekPelamarKriteria);
     $num_rows = mysqli_num_rows($cekPelamarKriteria);
 }
@@ -151,6 +177,7 @@ Swal.fire({
     <div class="col-lg-6">
         <div class="card shadow mb-4">
             <div class="card-body">
+                <?php if(isset($cekVerifikasiUser['status']) && $cekVerifikasiUser['status'] != 1):?>
                 <div class="alert alert-warning" role="alert">
                     <small>
                         <strong>Jika data belum lengkap silahkan kirim pesan kepada pelamar melalui No WA/menu Kirim
@@ -158,170 +185,180 @@ Swal.fire({
                             diri.</strong>
                     </small>
                 </div>
-
                 <div class="mt-n4 d-flex justify-content-center flex-row align-items-center"
                     style="font-family: 'Lato', sans-serif; padding: 20px 20px">
-                    <table style="width:100%">
-                        <?php if(mysqli_num_rows($cekDataPelamar) > 0):?>
-                        <?php foreach ($cekPelamarKriteria as $key => $pelamar_kriteria) :?>
-                        <tr class="border-bottom">
-                            <input type="hidden" name="kriteria[]" value="<?=$pelamar_kriteria['id_kriteria'];?>">
-                            <td><?= $pelamar_kriteria['nama_kriteria'];?></td>
-                            <td>: </td>
-                            <input type="hidden" name="sub_kriteria[]"
-                                value="<?=$pelamar_kriteria['id_sub_kriteria'];?>">
-                            <td><?= $pelamar_kriteria['nama_sub_kriteria'];?></td>
-                        </tr>
-                        <?php endforeach;?>
-                        <tr class="border-bottom">
-                            <td>Rayon</td>
-                            <td>: </td>
-                            <td> <?=$fecthDataPelamar['nama_rayon'];?></td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <input type="hidden" name="kriteria[]" value="K6">
-                            <input type="hidden" name="sub_kriteria[]" value="<?=$fecthK6['id_sub_kriteria'];?>">
-                            <td>Surat Aktif Sekolah <small><i>(jpg, png, jpeg)</i></small></td>
-                            <td>: </td>
-                            <td>
-                                <a href="../user/uploads/berkas/<?=$fecthDataPelamar['s_aktif_sekolah'];?>">
-                                    <img style="width:100px;height:100px;"
-                                        src="../user/uploads/berkas/<?=$fecthDataPelamar['s_aktif_sekolah'];?>" alt="">
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <input type="hidden" name="kriteria[]" value="K7">
-                            <input type="hidden" name="sub_kriteria[]" value="<?=$fecthK7['id_sub_kriteria'];?>">
-                            <td>Suket Beasiswa Lain <small><i>(jpg, png, jpeg)</i></small></td>
-                            <td>: </td>
-                            <td class="d-flex">
-                                <a class="mr-3"
-                                    href="../user/uploads/berkas/<?=$fecthDataPelamar['s_beasiswa_lain'];?>">
-                                    <img style="width:100px;height:100px;"
-                                        src="../user/uploads/berkas/<?=$fecthDataPelamar['s_beasiswa_lain'];?>" alt="">
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <input type="hidden" name="kriteria[]" value="K8">
-                            <input type="hidden" name="sub_kriteria[]" value="<?=$fecthK8['id_sub_kriteria'];?>">
-                            <td>Raport/KHS <small><i>(jpg, png, jpeg)</i></small></td>
-                            <td>: </td>
-                            <td><a href="../user/uploads/berkas/<?=$fecthDataPelamar['raport_khs'];?>">
-                                    <img style="width:100px;height:100px;"
-                                        src="../user/uploads/berkas/<?=$fecthDataPelamar['raport_khs'];?>" alt="">
-                                </a>
-                            </td>
-                        </tr>
-                        <?php else:?>
-                        <tr class="border-bottom">
-                            <td>Status Jemaat</td>
-                            <td>: </td>
-                            <td>-</td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td>Keaktifan kegiatan bergereja</td>
-                            <td>: </td>
-                            <td>-</td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td>Status keluarga</td>
-                            <td>: </td>
-                            <td>-</td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td>Pendapatan orang tua</td>
-                            <td>: </td>
-                            <td>-</td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td>Jumlah tanggungan orang tua</td>
-                            <td>: </td>
-                            <td>-</td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td>Rayon</td>
-                            <td>: </td>
-                            <td> - </td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td>Surat Aktif Sekolah <small><i>(jpg, png, jpeg)</i></small></td>
-                            <td>: </td>
-                            <td>
-                                <a href="../assets/images/no_images.png">
-                                    <img style="width:100px;height:100px;" src="../assets/images/no_images.png" alt="">
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td>Suket Beasiswa Lain <small><i>(jpg, png, jpeg)</i></small></td>
-                            <td>: </td>
-                            <td><a href="../assets/images/no_images.png">
-                                    <img style="width:100px;height:100px;" src="../assets/images/no_images.png" alt="">
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td>Raport/KHS <small><i>(jpg, png, jpeg)</i></small></td>
-                            <td>: </td>
-                            <td><a href="../assets/images/no_images.png">
-                                    <img style="width:100px;height:100px;" src="../assets/images/no_images.png" alt="">
-                                </a>
-                            </td>
-                        </tr>
+                    <?php else:?>
+                    <div class="d-flex justify-content-center flex-row align-items-center"
+                        style="font-family: 'Lato', sans-serif; padding: 20px 20px">
                         <?php endif;?>
+                        <table style="width:100%">
+                            <?php if(mysqli_num_rows($cekDataPelamar) > 0):?>
+                            <?php foreach ($cekPelamarKriteria as $key => $pelamar_kriteria) :?>
+                            <tr class="border-bottom">
+                                <input type="hidden" name="kriteria[]" value="<?=$pelamar_kriteria['id_kriteria'];?>">
+                                <td><?= $pelamar_kriteria['nama_kriteria'];?></td>
+                                <td>: </td>
+                                <input type="hidden" name="sub_kriteria[]"
+                                    value="<?=$pelamar_kriteria['id_sub_kriteria'];?>">
+                                <td><?= $pelamar_kriteria['nama_sub_kriteria'];?></td>
+                            </tr>
+                            <?php endforeach;?>
+                            <tr class="border-bottom">
+                                <td>Rayon</td>
+                                <td>: </td>
+                                <td> <?=$fecthDataPelamar['nama_rayon'];?></td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <input type="hidden" name="kriteria[]" value="K6">
+                                <input type="hidden" name="sub_kriteria[]" value="<?=$fecthK6['id_sub_kriteria'];?>">
+                                <td>Surat Aktif Sekolah <small><i>(jpg, png, jpeg)</i></small></td>
+                                <td>: </td>
+                                <td>
+                                    <a href="../user/uploads/berkas/<?=$fecthDataPelamar['s_aktif_sekolah'];?>">
+                                        <img style="width:100px;height:100px;"
+                                            src="../user/uploads/berkas/<?=$fecthDataPelamar['s_aktif_sekolah'];?>"
+                                            alt="">
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <input type="hidden" name="kriteria[]" value="K7">
+                                <input type="hidden" name="sub_kriteria[]" value="<?=$fecthK7['id_sub_kriteria'];?>">
+                                <td>Suket Beasiswa Lain <small><i>(jpg, png, jpeg)</i></small></td>
+                                <td>: </td>
+                                <td class="d-flex">
+                                    <a class="mr-3"
+                                        href="../user/uploads/berkas/<?=$fecthDataPelamar['s_beasiswa_lain'];?>">
+                                        <img style="width:100px;height:100px;"
+                                            src="../user/uploads/berkas/<?=$fecthDataPelamar['s_beasiswa_lain'];?>"
+                                            alt="">
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <input type="hidden" name="kriteria[]" value="K8">
+                                <input type="hidden" name="sub_kriteria[]" value="<?=$fecthK8['id_sub_kriteria'];?>">
+                                <td>Raport/KHS <small><i>(jpg, png, jpeg)</i></small></td>
+                                <td>: </td>
+                                <td><a href="../user/uploads/berkas/<?=$fecthDataPelamar['raport_khs'];?>">
+                                        <img style="width:100px;height:100px;"
+                                            src="../user/uploads/berkas/<?=$fecthDataPelamar['raport_khs'];?>" alt="">
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php else:?>
+                            <tr class="border-bottom">
+                                <td>Status Jemaat</td>
+                                <td>: </td>
+                                <td>-</td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td>Keaktifan kegiatan bergereja</td>
+                                <td>: </td>
+                                <td>-</td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td>Status keluarga</td>
+                                <td>: </td>
+                                <td>-</td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td>Pendapatan orang tua</td>
+                                <td>: </td>
+                                <td>-</td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td>Jumlah tanggungan orang tua</td>
+                                <td>: </td>
+                                <td>-</td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td>Rayon</td>
+                                <td>: </td>
+                                <td> - </td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td>Surat Aktif Sekolah <small><i>(jpg, png, jpeg)</i></small></td>
+                                <td>: </td>
+                                <td>
+                                    <a href="../assets/images/no_images.png">
+                                        <img style="width:100px;height:100px;" src="../assets/images/no_images.png"
+                                            alt="">
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td>Suket Beasiswa Lain <small><i>(jpg, png, jpeg)</i></small></td>
+                                <td>: </td>
+                                <td><a href="../assets/images/no_images.png">
+                                        <img style="width:100px;height:100px;" src="../assets/images/no_images.png"
+                                            alt="">
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <td>Raport/KHS <small><i>(jpg, png, jpeg)</i></small></td>
+                                <td>: </td>
+                                <td><a href="../assets/images/no_images.png">
+                                        <img style="width:100px;height:100px;" src="../assets/images/no_images.png"
+                                            alt="">
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php endif;?>
 
-                    </table>
-                </div>
-                <div class="d-flex justify-content-center mb-4">
-                    <a href="./belum_verifikasi.php" class="btn btn-secondary">
-                        Kembali
-                    </a>
-                    <button type="submit" name="lengkap" class="btn btn-primary ml-2">
-                        Simpan
-                    </button>
-                    <button type="button" class="btn btn-info ml-2" data-toggle="modal" data-target="#pesan">
-                        Kirim pesan
-                    </button>
-                </div>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- modal pesan -->
-<!-- Modal -->
-<div class="modal fade" id="pesan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pesan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="exampleFormControlInput1">Penerima :
-                            <?= isset($fecthDataPelamar['nama']) ? $fecthDataPelamar['nama']:'-';?></label>
-                        <input type="hidden" name="id_penerima"
-                            value="<?= isset($fecthDataPelamar['f_id_login']) ? $fecthDataPelamar['f_id_login']:'-';?>"
-                            class="form-control" id="exampleFormControlInput1">
+                        </table>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Pesan</label>
-                        <textarea name="isi_pesan" class="form-control" id="exampleFormControlTextarea1"
-                            rows="3"></textarea>
+                    <div class="d-flex justify-content-center mb-4">
+                        <a href="./belum_verifikasi.php" class="btn btn-secondary">
+                            Kembali
+                        </a>
+                        <?php if(isset($cekVerifikasiUser['status']) && $cekVerifikasiUser['status'] != 1):?>
+                        <button type="submit" name="lengkap" class="btn btn-primary ml-2">
+                            Simpan
+                        </button>
+                        <?php endif;?>
+                        <button type="button" class="btn btn-info ml-2" data-toggle="modal" data-target="#pesan">
+                            Kirim pesan
+                        </button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                    <button type="submit" name="kirim-pesan" class="btn btn-primary">Kirim</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<?php require './footer.php';?>
+    <!-- modal pesan -->
+    <!-- Modal -->
+    <div class="modal fade" id="pesan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Pesan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Penerima :
+                                <?= isset($fecthDataPelamar['nama']) ? $fecthDataPelamar['nama']:'-';?></label>
+                            <input type="hidden" name="id_penerima"
+                                value="<?= isset($fecthDataPelamar['f_id_login']) ? $fecthDataPelamar['f_id_login']:'-';?>"
+                                class="form-control" id="exampleFormControlInput1">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Pesan</label>
+                            <textarea name="isi_pesan" class="form-control" id="exampleFormControlTextarea1"
+                                rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                        <button type="submit" name="kirim-pesan" class="btn btn-primary">Kirim</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php require './footer.php';?>

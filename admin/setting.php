@@ -7,13 +7,43 @@ unset($_SESSION['menu']);
 $_SESSION['menu'] = 'setting';
 require_once './header.php';
 require_once './functions/setting.php';
+require_once './functions/user.php';
 
+$dataKoordinator = $User->getKoordinator();
 $dataRayon = $Setting->getRayon();
 
+
+// if(isset($_POST['tambah-koordinator'])){
+//     $level = htmlspecialchars($_POST['level']);
+//     $username = htmlspecialchars($_POST['username']);
+//     $password = htmlspecialchars($_POST['password']);
+//     $id_rayon = htmlspecialchars($_POST['id_rayon']);
+
+//     $data = [
+//         'username' => $username,
+//         'password' => $password,
+//         'level' => $level,
+//         'id_rayon' => $id_rayon
+//     ];
+//     $User->addKoordinator($data);
+// }
+
+
 if(isset($_POST['tambah-rayon'])){
+    $level = htmlspecialchars($_POST['level']);
+    $username = htmlspecialchars($_POST['username']);
+    $password = htmlspecialchars($_POST['password']);
     $nama_rayon = htmlspecialchars($_POST['nama_rayon']);
-    $Setting->addRayon($nama_rayon);
+
+    $data = [
+        'nama_rayon' => $nama_rayon,
+        'username' => $username,
+        'password' => $password,
+        'level' => $level,
+    ];
+    $Setting->addRayon($data);
 }
+
 if(isset($_POST['edit-rayon'])){
     $id_rayon = htmlspecialchars($_POST['id_rayon']);
     $nama_rayon = htmlspecialchars($_POST['nama_rayon']);
@@ -117,10 +147,23 @@ Swal.fire({
             </div>
             <form action="" method="post">
                 <div class="modal-body">
+                    <strong>Data Rayon</strong>
                     <div class="form-group">
-                        <label for="nama_rayon">Nama Rayon</label>
-                        <input class="form-control form-control-sm" name="nama_rayon" type="text"
+                        <label for="nama_rayon">Nama Rayon <small class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" required name="nama_rayon" type="text"
                             placeholder="Cth: Rayon I">
+                    </div>
+                    <strong>Data Koordinator Rayon</strong>
+                    <div class="form-group">
+                        <input type="hidden" name="level" value="1">
+                        <label for="username">Username <small class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" required name="username" type="text"
+                            placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password <small class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" required name="password" type="password"
+                            placeholder="******">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -147,8 +190,8 @@ Swal.fire({
                     <div class="form-group">
                         <input type="hidden" name="id_rayon" value="<?=$rayon['id_rayon'];?>">
                         <label for="nama_rayon">Nama Rayon</label>
-                        <input class="form-control form-control-sm" value="<?=$rayon['nama_rayon'];?>" name="nama_rayon"
-                            type="text" placeholder="Cth: Rayon I">
+                        <input class="form-control form-control-sm" required value="<?=$rayon['nama_rayon'];?>"
+                            name="nama_rayon" type="text" placeholder="Cth: Rayon I">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -174,7 +217,7 @@ Swal.fire({
             <form action="" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="hidden" name="id_rayon" value="<?=$rayon['id_rayon'];?>">
+                        <input type="hidden" name="id_rayon" required value="<?=$rayon['id_rayon'];?>">
                         <p>Anda yakin ingin menghapus data <strong><?=$rayon['nama_rayon'];?></strong> ?</p>
                     </div>
                 </div>

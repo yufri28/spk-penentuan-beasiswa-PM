@@ -8,7 +8,7 @@ $_SESSION['menu'] = 'verifikasi';
 require_once './header.php';
 require_once './functions/data_pelamar.php';
 
-$data_pelamar = $Verifikasi->getPelamarVerifikasi();
+$data_pelamar = $Verifikasi->getPelamarVerifikasi($_SESSION['id_rayon']);
 ?>
 
 <div class="row">

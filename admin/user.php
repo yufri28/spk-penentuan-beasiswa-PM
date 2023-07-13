@@ -90,9 +90,9 @@ Swal.fire({
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="justify-content-center p-5">
-                <button type="button" class="btn mb-2 btn-primary" data-toggle="modal" data-target="#tambahKoordinator">
+                <!-- <button type="button" class="btn mb-2 btn-primary" data-toggle="modal" data-target="#tambahKoordinator">
                     + Tambah Data
-                </button>
+                </button> -->
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Data Akun Koordinator Rayon</h6>
                 </div>
@@ -188,16 +188,17 @@ Swal.fire({
                     <div class="form-group">
                         <input type="hidden" name="level" value="1">
                         <label for="username">Username <small class="text-danger">*</small></label>
-                        <input class="form-control form-control-sm" name="username" type="text" placeholder="Username">
+                        <input required class="form-control form-control-sm" name="username" type="text"
+                            placeholder="Username">
                     </div>
                     <div class="form-group">
                         <label for="password">Password <small class="text-danger">*</small></label>
-                        <input class="form-control form-control-sm" name="password" type="password"
+                        <input required class="form-control form-control-sm" name="password" type="password"
                             placeholder="******">
                     </div>
                     <div class="form-group">
                         <label for="Rayon">Rayon <small class="text-danger">*</small></label>
-                        <select class="form-control form-control-sm" name="id_rayon" id="Rayon">
+                        <select required class="form-control form-control-sm" name="id_rayon" id="Rayon">
                             <option value="">-- Pilih Rayon --</option>
                             <?php foreach ($dataRayon as $key => $koordinator_rayon):?>
                             <option value="<?=$koordinator_rayon['id_rayon'];?>">
@@ -230,18 +231,18 @@ Swal.fire({
                     <div class="form-group">
                         <input type="hidden" name="id_admin" value="<?=$koordinator_rayon['id_admin'];?>">
                         <label for="username">Username <small class="text-danger">*</small></label>
-                        <input class="form-control form-control-sm" value="<?=$koordinator_rayon['username']?>"
+                        <input class="form-control form-control-sm" required value="<?=$koordinator_rayon['username']?>"
                             name="username" type="text" placeholder="Username">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input class="form-control form-control-sm" name="password" type="password"
+                        <input class="form-control form-control-sm" required name="password" type="password"
                             placeholder="******">
                         <small><i>Jika tidak ingin mengubah password, silahkan kosongkan.</i></small>
                     </div>
                     <div class="form-group">
                         <label for="Rayon">Rayon <small class="text-danger">*</small></label>
-                        <select class="form-control form-control-sm" name="id_rayon" id="Rayon">
+                        <select required class="form-control form-control-sm" name="id_rayon" id="Rayon">
                             <option value="">-- Pilih Rayon --</option>
                             <?php foreach ($dataRayon as $key => $rayon):?>
                             <option <?=$koordinator_rayon['f_id_rayon'] == $rayon['id_rayon'] ? 'selected':'';?>
@@ -274,7 +275,7 @@ Swal.fire({
             <form action="" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="hidden" name="id_admin" value="<?=$koordinator_rayon['id_admin'];?>">
+                        <input type="hidden" required name="id_admin" value="<?=$koordinator_rayon['id_admin'];?>">
                         <p>Anda yakin ingin menghapus akun <strong><?=$koordinator_rayon['username'];?></strong> ?</p>
                     </div>
                 </div>

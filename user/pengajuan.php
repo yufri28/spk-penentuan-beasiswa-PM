@@ -4,22 +4,30 @@ unset($_SESSION['menu']);
 $_SESSION['menu'] = 'pengajuan';
 require '../includes/header.php';
 require_once './functions/data-diri.php';
+require_once './functions/notifikasi.php';
 require_once './functions/pengajuan.php';
 
 $cekDataPelamar = $dataDiri->cekDataPelamar($_SESSION['id_user']);
-$fecthDataPelamar = mysqli_fetch_assoc($cekDataPelamar);
-$admin = mysqli_fetch_assoc($dataDiri->getAdmin($fecthDataPelamar['f_id_rayon']));
+if(!empty($cekDataPelamar) && mysqli_num_rows($cekDataPelamar) > 0){
+    $fecthDataPelamar = mysqli_fetch_assoc($cekDataPelamar);
+    $admin = mysqli_fetch_assoc($dataDiri->getAdmin($fecthDataPelamar['f_id_rayon']));
+}
 $num_rows = 0;
+$numRowsVerifikasi = 0;
 
 if(mysqli_num_rows($cekDataPelamar) > 0){
     $id_pelamar = $fecthDataPelamar['id_pelamar'];
     $cekPelamarKriteria = $dataDiri->cekPelamarKriteria($id_pelamar);
     $fetchPelamarKriteria = mysqli_fetch_assoc($cekPelamarKriteria);
     $num_rows = mysqli_num_rows($cekPelamarKriteria);
+    $dataVerifikasi = $Pengajuan->getVerifikasi($id_pelamar);
 }
 
+if(isset($_GET['n'])){
+    $id_notif = base64_decode($_GET['n']);
+    $Notifikasi->updateNotif($id_notif);
+}
 
-$numRowsVerifikasi = mysqli_num_rows($Pengajuan->getVerifikasi($id_pelamar));
 
 if(isset($_POST['ajukan'])){
     $idPelamar = $_POST['id_pelamar'];
@@ -74,8 +82,9 @@ Swal.fire({
                 style="font-family: 'Lato', sans-serif; padding: 60px 60px">
                 <h1 class="text-end">Menu Pengajuan Beasiswa</h1>
                 <div class="alert alert-warning" role="alert">
-                    <?php if($numRowsVerifikasi < 1) :?>
-                    <?php if(isset($id_pelamar)):?>
+
+                    <!-- jika belum ada data di tabel verifikasi dan sudah ada data di tabel data pelamar -->
+                    <?php if(mysqli_num_rows($dataVerifikasi) < 1 && mysqli_num_rows($cekDataPelamar) > 0) :?>
                     <p class="text-end">Setelah data diri anda sudah lengkap, silahkan melakukan
                         pengajuan beasiswa dengan klik menu ajukan.</p>
                     <form action="" method="post">
@@ -84,12 +93,23 @@ Swal.fire({
                             <h5>Ajukan</h5>
                         </button>
                     </form>
-                    <?php else:?>
-                    <p class="text-end">Data anda belum lengkap, silahkan lengkapi terlebih dahulu.</p>
                     <?php endif;?>
-                    <?php else:?>
+                    <!-- jika data belum ada di tabel data pelamar -->
+                    <?php if(mysqli_num_rows($cekDataPelamar) < 1):?>
+                    <p class="text-end">Data diri anda belum lengkap, silahkan <a href="./data_diri.php">lengkapi</a>
+                        terlebih dahulu.
+                    </p>
+                    <?php endif;?>
+                    <?php if(mysqli_num_rows($dataVerifikasi) > 0):?>
+                    <?php foreach ($dataVerifikasi as $key => $verifikasi):?>
+                    <?php if($verifikasi['status'] == 0 ):?>
+                    <!-- jika sudah ada data di tabel verifikasi -->
                     <p class="text-end">Anda sudah melakukan pengajuan. Silahkan menunggu verifikasi dari koordinator
                         rayon.</p>
+                    <?php else:?>
+                    <p class="text-end">Data anda sudah diverifikasi. Silahkan menunggu hasil seleksi.</p>
+                    <?php endif;?>
+                    <?php endforeach;?>
                     <?php endif;?>
                 </div>
             </div>

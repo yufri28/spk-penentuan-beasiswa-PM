@@ -154,11 +154,11 @@ class DataDiri{
         }
     }
 
-    public function cekDataPelamar($id_login){
-        return $this->db->query("SELECT * FROM data_pelamar dp JOIN rayon r ON dp.f_id_rayon=r.id_rayon WHERE f_id_login='$id_login'");
+    public function cekDataPelamar($id_login=null,$id_rayon=null){
+        return $this->db->query("SELECT * FROM data_pelamar dp JOIN rayon r ON dp.f_id_rayon=r.id_rayon WHERE f_id_login='$id_login' AND dp.f_id_rayon='$id_rayon'");
     }
-    public function cekPelamarKriteria($id_pelamar){
-        return $this->db->query("SELECT * FROM pelamar_kriteria pk JOIN kriteria k ON pk.f_id_kriteria=k.id_kriteria JOIN sub_kriteria sk ON sk.f_id_kriteria = k.id_kriteria WHERE pk.f_id_pelamar=$id_pelamar GROUP BY pk.f_id_kriteria;");
+    public function cekPelamarKriteria($id_login=null){
+        return $this->db->query("SELECT * FROM pelamar_kriteria pk JOIN kriteria k ON pk.f_id_kriteria=k.id_kriteria JOIN sub_kriteria sk ON sk.f_id_kriteria = k.id_kriteria JOIN data_pelamar dp ON dp.id_pelamar=pk.f_id_pelamar JOIN login_pelamar lp ON lp.id_login=dp.f_id_login WHERE dp.f_id_login=$id_login GROUP BY pk.f_id_kriteria;");
     }
     public function getK6(){
         return $this->db->query("SELECT * FROM sub_kriteria sk JOIN kriteria k ON sk.f_id_kriteria=k.id_kriteria WHERE sk.nama_sub_kriteria='Ada' AND k.id_kriteria='K6'");
