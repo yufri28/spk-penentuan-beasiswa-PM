@@ -86,7 +86,7 @@ Swal.fire({
         </div>
         <div class="col-lg-12">
             <div class="d-flex justify-content-center mb-4">
-                <?php if(($num_rows != 5)):?>
+                <?php if(($num_rows != 7)):?>
                 <a href="./add-data-diri.php" class="btn btn-primary">
                     Tambah Data
                 </a>
@@ -125,12 +125,11 @@ Swal.fire({
                             <td> <?=$fecthDataPelamar['nama_rayon'];?></td>
                         </tr>
                         <tr class="border-bottom">
-                            <td>Surat Aktif Sekolah <small><i>(jpg, png, jpeg)</i></small></td>
+                            <td>Kartu Keluarga <small><i>(jpg, png, jpeg)</i></small></td>
                             <td>: </td>
-                            <td>
-                                <a href="./uploads/berkas/<?=$fecthDataPelamar['s_aktif_sekolah'];?>">
+                            <td><a href="./uploads/berkas/<?=$fecthDataPelamar['kartu_keluarga'];?>">
                                     <img style="width:100px;height:100px;"
-                                        src="./uploads/berkas/<?=$fecthDataPelamar['s_aktif_sekolah'];?>" alt="">
+                                        src="./uploads/berkas/<?=$fecthDataPelamar['kartu_keluarga'];?>" alt="">
                                 </a>
                             </td>
                         </tr>
@@ -179,15 +178,24 @@ Swal.fire({
                             <td>-</td>
                         </tr>
                         <tr class="border-bottom">
+                            <td>IPK/Nilai Raport</td>
+                            <td>: </td>
+                            <td> - </td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td>Semester</td>
+                            <td>: </td>
+                            <td> - </td>
+                        </tr>
+                        <tr class="border-bottom">
                             <td>Rayon</td>
                             <td>: </td>
                             <td> - </td>
                         </tr>
                         <tr class="border-bottom">
-                            <td>Surat Aktif Sekolah <small><i>(jpg, png, jpeg)</i></small></td>
+                            <td>Kartu Keluarga <small><i>(jpg, png, jpeg)</i></small></td>
                             <td>: </td>
-                            <td>
-                                <a href="../assets/images/no_images.png">
+                            <td><a href="../assets/images/no_images.png">
                                     <img style="width:100px;height:100px;" src="../assets/images/no_images.png" alt="">
                                 </a>
                             </td>

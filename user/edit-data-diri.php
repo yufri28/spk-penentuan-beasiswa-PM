@@ -162,8 +162,8 @@ Swal.fire({
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="Rayon">Rayon <small class="text-danger">*</small></label>
-                        <select required class="form-control form-control-sm" name="data_diri[]" id="Rayon">
+                        <label hidden for="Rayon">Rayon <small class="text-danger">*</small></label>
+                        <select hidden required class="form-control form-control-sm" name="data_diri[]" id="Rayon">
                             <option value="">-- Pilih Rayon --</option>
                             <?php foreach ($dataRayon as $key => $koordinator_rayon):?>
                             <option <?=$koordinator_rayon['id_rayon'] == $fecthDataPelamar['id_rayon']?'selected':'';?>

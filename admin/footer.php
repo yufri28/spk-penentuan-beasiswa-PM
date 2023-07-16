@@ -103,6 +103,24 @@ $(document).ready(function() {
         "scrollX": true,
         "scrollY": true,
     });
+    var table = $('#hasil-sma').DataTable({
+        responsive: true,
+        "lengthMenu": [
+            [5, 10, 15, 20, 100, -1],
+            [5, 10, 15, 20, 100, "All"]
+        ],
+        "scrollX": true,
+        "scrollY": true,
+    });
+    var table = $('#hasil-pt').DataTable({
+        responsive: true,
+        "lengthMenu": [
+            [5, 10, 15, 20, 100, -1],
+            [5, 10, 15, 20, 100, "All"]
+        ],
+        "scrollX": true,
+        "scrollY": true,
+    });
 });
 </script>
 </body>

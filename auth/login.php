@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } 
     if(mysqli_num_rows($cekAdmin) > 0){
         $fetch = mysqli_fetch_assoc($cekAdmin);
+        $fetchPeriode = mysqli_fetch_assoc($selectPeriode);
         $password_hash = password_verify($password, $fetch['password']);
         if ($cekAdmin && $password_hash) {
             $_SESSION['login'] = true;
@@ -40,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['level'] = $fetch['level']; 
             $_SESSION['id_rayon'] = $fetch['f_id_rayon'];
             $_SESSION['id_user'] = $fetch['id_admin']; 
+            $_SESSION['id_periode'] = $fetchPeriode['id_periode'];
             // Jika role nya admin, redirect ke halaman index.php
             header("Location: ../admin/index.php");
             exit();

@@ -13,8 +13,8 @@
     public function getPeriode(){
         return $this->db->query("SELECT * FROM periode ORDER BY id_periode LIMIT 1");
     }
-    public function getVerifikasi($id_pelamar=null,$id_periode=null){
-        return $this->db->query("SELECT * FROM verifikasi WHERE f_id_pelamar=$id_pelamar AND f_id_periode=$id_periode");
+    public function getVerifikasi($id_login=null,$id_periode=null){
+        return $this->db->query("SELECT * FROM verifikasi v JOIN data_pelamar dp ON dp.id_pelamar=v.f_id_pelamar JOIN login_pelamar lp ON lp.id_login=dp.f_id_login WHERE lp.id_login=$id_login AND v.f_id_periode=$id_periode");
     }
 
     public function ajukanBeasiswa($data=[]){
@@ -37,9 +37,13 @@
             }
         }
     }
-    public function getPeiode($id_periode=null){
+    public function getPeriodeById($id_periode=null){
         return $this->db->query("SELECT * FROM periode WHERE id_periode=$id_periode");
     }   
+
+    public function getHasil($id_login=null,$id_periode){
+        return $this->db->query("SELECT * FROM hasil_akhir ha JOIN data_pelamar dp ON dp.id_pelamar = ha.f_id_pelamar JOIN login_pelamar lp ON lp.id_login=dp.f_id_login JOIN periode p ON p.id_periode=ha.f_id_periode WHERE lp.id_login = $id_login AND ha.f_id_periode=$id_periode;");
+    }
 
  }
 

@@ -53,10 +53,6 @@ if(isset($_POST['kirim-pesan'])){
     $Pesan->kirimPesan($pesan);
 }
 
-$fecthK6 = mysqli_fetch_assoc($dataDiri->getK6()); 
-$fecthK7 = mysqli_fetch_assoc($dataDiri->getK7()); 
-$fecthK8 = mysqli_fetch_assoc($dataDiri->getK8()); 
-
 
 // verifikasi
 if(isset($_POST['lengkap'])){
@@ -68,8 +64,7 @@ if(isset($_POST['lengkap'])){
         $_POST['kriteria'][3] => $_POST['sub_kriteria'][3],
         $_POST['kriteria'][4] => $_POST['sub_kriteria'][4],
         $_POST['kriteria'][5] => $_POST['sub_kriteria'][5],
-        $_POST['kriteria'][6] => $_POST['sub_kriteria'][6],
-        $_POST['kriteria'][7] => $_POST['sub_kriteria'][7]
+        $_POST['kriteria'][6] => $_POST['sub_kriteria'][6]
     ];
     $PDT->addPdt($data,$_POST['id_pelamar']);
 }
@@ -170,33 +165,24 @@ Swal.fire({
                             <td> <?=$fecthDataPelamar['nama_rayon'];?></td>
                         </tr>
                         <tr class="border-bottom">
-                            <input type="hidden" name="kriteria[]" value="K6">
-                            <input type="hidden" name="sub_kriteria[]" value="<?=$fecthK6['id_sub_kriteria'];?>">
-                            <td>Surat Aktif Sekolah <small><i>(jpg, png, jpeg)</i></small></td>
+                            <td>Kartu Keluarga <small><i>(jpg, png, jpeg)</i></small></td>
                             <td>: </td>
-                            <td>
-                                <a href="../user/uploads/berkas/<?=$fecthDataPelamar['s_aktif_sekolah'];?>">
+                            <td><a href="../user/uploads/berkas/<?=$fecthDataPelamar['kartu_keluarga'];?>">
                                     <img style="width:100px;height:100px;"
-                                        src="../user/uploads/berkas/<?=$fecthDataPelamar['s_aktif_sekolah'];?>" alt="">
+                                        src="../user/uploads/berkas/<?=$fecthDataPelamar['kartu_keluarga'];?>" alt="">
                                 </a>
                             </td>
                         </tr>
                         <tr class="border-bottom">
-                            <input type="hidden" name="kriteria[]" value="K7">
-                            <input type="hidden" name="sub_kriteria[]" value="<?=$fecthK7['id_sub_kriteria'];?>">
                             <td>Suket Beasiswa Lain <small><i>(jpg, png, jpeg)</i></small></td>
                             <td>: </td>
-                            <td class="d-flex">
-                                <a class="mr-3"
-                                    href="../user/uploads/berkas/<?=$fecthDataPelamar['s_beasiswa_lain'];?>">
+                            <td><a href="../user/uploads/berkas/<?=$fecthDataPelamar['s_beasiswa_lain'];?>">
                                     <img style="width:100px;height:100px;"
                                         src="../user/uploads/berkas/<?=$fecthDataPelamar['s_beasiswa_lain'];?>" alt="">
                                 </a>
                             </td>
                         </tr>
                         <tr class="border-bottom">
-                            <input type="hidden" name="kriteria[]" value="K8">
-                            <input type="hidden" name="sub_kriteria[]" value="<?=$fecthK8['id_sub_kriteria'];?>">
                             <td>Raport/KHS <small><i>(jpg, png, jpeg)</i></small></td>
                             <td>: </td>
                             <td><a href="../user/uploads/berkas/<?=$fecthDataPelamar['raport_khs'];?>">

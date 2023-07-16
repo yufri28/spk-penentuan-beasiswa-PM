@@ -129,6 +129,11 @@ $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION
                     <i class="fa fa-table" aria-hidden="true"></i>
                     <span>Pengajuan Beasiswa</span></a>
             </li>
+            <li class="nav-item <?= $_SESSION['menu'] == 'hasil-seleksi' ? 'active':'';?>">
+                <a class="nav-link" href="hasil_seleksi.php">
+                    <i class="fa fa-table" aria-hidden="true"></i>
+                    <span>Hasil Seleksi</span></a>
+            </li>
             <!-- <li class="nav-item <?= $_SESSION['menu'] == 'pesan' ? 'active':'';?>">
                 <a class="nav-link" href="pesan.php">
                     <i class="fa fa-envelope" aria-hidden="true"></i>

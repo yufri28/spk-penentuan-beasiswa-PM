@@ -7,20 +7,35 @@ require_once './functions/data-diri.php';
 require_once './functions/notifikasi.php';
 require_once './functions/pengajuan.php';
 
+$dataPeriode = "";
+if(isset($_SESSION['id_periode'])){
+    $dataPeriode = mysqli_fetch_assoc($Pengajuan->getPeriodeById($_SESSION['id_periode']));
+}
+
+
+
+$numRowsDataPelamar = 0;
 $cekDataPelamar = $dataDiri->cekDataPelamar($_SESSION['id_user']);
+$numRowsDataPelamar = mysqli_num_rows($cekDataPelamar);
 if(!empty($cekDataPelamar) && mysqli_num_rows($cekDataPelamar) > 0){
     $fecthDataPelamar = mysqli_fetch_assoc($cekDataPelamar);
     $admin = mysqli_fetch_assoc($dataDiri->getAdmin($fecthDataPelamar['f_id_rayon']));
 }
 $num_rows = 0;
 $numRowsVerifikasi = 0;
-
+$dataVerifikasi = 0;
 if(mysqli_num_rows($cekDataPelamar) > 0){
     $id_pelamar = $fecthDataPelamar['id_pelamar'];
     $cekPelamarKriteria = $dataDiri->cekPelamarKriteria($id_pelamar);
     $fetchPelamarKriteria = mysqli_fetch_assoc($cekPelamarKriteria);
     $num_rows = mysqli_num_rows($cekPelamarKriteria);
-    $dataVerifikasi = $Pengajuan->getVerifikasi($id_pelamar,$_SESSION['id_periode']);
+    $dataVerifikasi = $Pengajuan->getVerifikasi($_SESSION['id_user'],$_SESSION['id_periode']);
+    $numRowsVerifikasi = mysqli_num_rows($dataVerifikasi);
+
+}
+
+if($dataVerifikasi  == null){
+    $_SESSION['error'] = "Silahkan lengkapi data terlebih dahulu";
 }
 
 if(isset($_GET['n'])){
@@ -29,7 +44,7 @@ if(isset($_GET['n'])){
 }
 $dataPeriode = "";
 if(isset($_SESSION['id_periode'])){
-    $dataPeriode = mysqli_fetch_assoc($Pengajuan->getPeiode($_SESSION['id_periode']));
+    $dataPeriode = mysqli_fetch_assoc($Pengajuan->getPeriodeById($_SESSION['id_periode']));
 }
 
 if(isset($_POST['ajukan'])){
@@ -78,6 +93,36 @@ Swal.fire({
 </script>
 <?php unset($_SESSION['error']); // Menghapus session setelah ditampilkan ?>
 <?php endif; ?>
+<?php if ($dataVerifikasi  == null): ?>
+<script>
+Swal.fire({
+    title: 'Peringatan!',
+    text: "Silahkan lengkapi data terlebih dahulu!",
+    icon: 'warning',
+    confirmButtonText: 'OK'
+}).then(function(result) {
+    if (result.isConfirmed) {
+        window.location.href = './data_diri.php';
+    }
+});
+</script>
+<?php endif; ?>
+<?php if ($dataPeriode['status'] == "tutup"): ?>
+<script>
+Swal.fire({
+    title: 'Informasi!',
+    text: "Mohon maaf! Pembukaan pendaftaran beasiswa untuk <?=$dataPeriode['deskripsi']?> sudah ditutup!",
+    icon: 'warning',
+    confirmButtonText: 'OK',
+    allowOutsideClick: false,
+    allowEscapeKey: false
+}).then(function(result) {
+    if (result.isConfirmed) {
+        window.location.href = './index.php';
+    }
+});
+</script>
+<?php endif; ?>
 <div class="row d-flex justify-content-center">
     <div class="col-lg-10">
         <div class="card shadow mb-4">
@@ -85,9 +130,8 @@ Swal.fire({
                 style="font-family: 'Lato', sans-serif; padding: 60px 60px">
                 <h1 class="text-end">Menu Pengajuan Beasiswa</h1>
                 <div class="alert alert-warning" role="alert">
-
                     <!-- jika belum ada data di tabel verifikasi dan sudah ada data di tabel data pelamar -->
-                    <?php if(mysqli_num_rows($dataVerifikasi) < 1 && mysqli_num_rows($cekDataPelamar) > 0) :?>
+                    <?php if($numRowsVerifikasi < 1 && $numRowsDataPelamar > 0) :?>
                     <p class="text-end">Pembukaan pendaftaran beasiswa
                         <?=isset($dataPeriode['deskripsi']) ? $dataPeriode['deskripsi']:'-';?> telah dibuka.</p>
                     <p class="text-end">Setelah data diri anda sudah lengkap, silahkan melakukan
@@ -105,7 +149,7 @@ Swal.fire({
                         terlebih dahulu.
                     </p>
                     <?php endif;?>
-                    <?php if(mysqli_num_rows($dataVerifikasi) > 0):?>
+                    <?php if($numRowsVerifikasi > 0):?>
                     <?php foreach ($dataVerifikasi as $key => $verifikasi):?>
                     <?php if($verifikasi['status'] == 0 ):?>
                     <!-- jika sudah ada data di tabel verifikasi -->

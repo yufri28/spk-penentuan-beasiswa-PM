@@ -153,6 +153,11 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
                     <i class="fas fa-fw fa-table"></i>
                     <span>Sub Kriteria</span></a>
             </li>
+            <li class="nav-item <?= $_SESSION['menu'] == 'perhitungan' ? 'active':'';?>">
+                <a class="nav-link" href="./perhitungan.php">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Perhitungan</span></a>
+            </li>
             <li class="nav-item <?= $_SESSION['menu'] == 'users' ? 'active':'';?>">
                 <a class="nav-link" href="./user.php">
                     <i class="fas fa-user"></i>

@@ -8,6 +8,9 @@ class Setting{
         $this->db = connectDatabase();
     }
 
+    public function getPeriode($id_periode=null){
+        return $this->db->query("SELECT * FROM periode WHERE id_periode=$id_periode");
+    }
     public function getRayon(){
         return $this->db->query("SELECT * FROM rayon WHERE nama_rayon!='umum'");
     }

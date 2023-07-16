@@ -17,13 +17,12 @@ class Kriteria{
     public function addKriteria(){
         $data_kriteria = [
             ["K1","Status jemaat",0.2,"CF",3],
-            ["K2","Keaktifan kegiatan bergereja",0.1,"CF",3],
-            ["K3","Status keluarga",0.1,"CF",3],
+            ["K2","Keaktifan kegiatan bergereja",0.15,"CF",3],
+            ["K3","Status keluarga",0.15,"CF",3],
             ["K4","Pendapatan orang tua",0.2,"CF",5],
-            ["K5","Jumlah tanggungan orang tua",0.1,"CF",5],
-            ["K6","Surat keterangan aktif sekolah atau kuliah",0.2,"CF",2],
-            ["K7","Surat keterangan tidak menerima beasiswa lain",0.05,"SF",2],
-            ["K8","Raport pendidikan / Kartu Hasil Studi (KHS)",0.05,"SF",2]
+            ["K5","Jumlah tanggungan orang tua",0.2,"CF",5],
+            ["K6","Raport pendidikan / Kartu Hasil Studi (KHS)",0.05,"SF",5],
+            ["K7","Semester",0.05,"SF",3]
         ];
        
         foreach ($data_kriteria as $key => $kriteria) {
