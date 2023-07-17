@@ -41,11 +41,6 @@ class SubKriteria{
         if(empty($data)){
             return $_SESSION['error'] = 'Tidak ada data yang dikirim.';
         }else{
-
-            // echo "<pre>";
-            // print_r($data);
-            // echo "</pre>";
-            // die;
             $id_sub_kriteria = $data['id_sub_kriteria'];
             $nama_sub_kriteria = $data['nama_sub_kriteria'];
             $id_kriteria = $data['id_kriteria'];

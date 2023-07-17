@@ -26,7 +26,7 @@ class Kriteria{
         ];
        
         foreach ($data_kriteria as $key => $kriteria) {
-            $cekKriteria = $this->db->query("SELECT * FROM kriteria WHERE LOWER(nama_kriteria) = '".strtolower($kriteria[1])."'");
+            $cekKriteria = $this->db->query("SELECT * FROM kriteria WHERE LOWER(nama_kriteria) = '".strtolower($kriteria[1])."' OR id_kriteria != '$kriteria[0]'");
             if(mysqli_num_rows($cekKriteria) < 1){
                 $this->db->query(
                     "INSERT INTO kriteria(id_kriteria,nama_kriteria,bobot_kriteria,faktor,profile_target) 

@@ -12,6 +12,7 @@ require_once './functions/user.php';
 $dataKoordinator = $User->getKoordinator();
 $dataRayon = $Setting->getRayon();
 $dataPeriode = $Setting->getPeriode($_SESSION['id_periode']);
+$dataAllPeriode = $Setting->getAllPeriode();
 
 // if(isset($_POST['tambah-koordinator'])){
 //     $level = htmlspecialchars($_POST['level']);
@@ -63,18 +64,18 @@ if(isset($_POST['tambah-periode'])){
     $status = htmlspecialchars($_POST['periode'][4]);
 
     $data = [
-        'periode' => $nama_rayon,
-        'deskripsi' => $username,
-        'kuota_sma' => $password,
-        'kuota_pt' => $level,
-        'status' => $level,
+        'periode' => $periode,
+        'deskripsi' => $deskripsi,
+        'kuota_sma' => $kuota_sma,
+        'kuota_pt' => $kuota_pt,
+        'status' => $status,
     ];
     $Setting->addPeriode($data);
 }
 
 if(isset($_POST['edit-periode'])){
     $id_periode = htmlspecialchars($_POST['periode'][0]);
-    $periode = htmlspecialchars($_POST['periode'][1]);
+    $nama_periode = htmlspecialchars($_POST['periode'][1]);
     $deskripsi = htmlspecialchars($_POST['periode'][2]);
     $kuota_sma = htmlspecialchars($_POST['periode'][3]);
     $kuota_pt = htmlspecialchars($_POST['periode'][4]);
@@ -82,11 +83,11 @@ if(isset($_POST['edit-periode'])){
 
     $data = [
         'id_periode' => $id_periode,
-        'periode' => $nama_rayon,
-        'deskripsi' => $username,
-        'kuota_sma' => $password,
-        'kuota_pt' => $level,
-        'status' => $level,
+        'nama_periode' => $nama_periode,
+        'deskripsi' => $deskripsi,
+        'kuota_sma' => $kuota_sma,
+        'kuota_pt' => $kuota_pt,
+        'status' => $status,
     ];
 
     $Setting->editPeriode($data);
@@ -203,10 +204,10 @@ Swal.fire({
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($dataPeriode as $key => $periode):?>
+                                <?php foreach ($dataAllPeriode as $key => $periode):?>
                                 <tr>
                                     <th scope="row"><?=$key+1;?></th>
-                                    <th><?=$periode['periode'];?></th>
+                                    <th><?=$periode['nama_periode'];?></th>
                                     <th><?=$periode['deskripsi'];?></th>
                                     <th><?=$periode['kuota_sma'];?></th>
                                     <th><?=$periode['kuota_pt'];?></th>
@@ -344,7 +345,8 @@ Swal.fire({
                     </div>
                     <div class="form-group">
                         <label for="periode">Deskripsi <small class="text-danger">*</small></label>
-                        <textarea name="periode[]" class="form-control form-control-sm" cols="5" rows="5"></textarea>
+                        <textarea required name="periode[]" class="form-control form-control-sm" cols="5"
+                            rows="5"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="kuota_sma">Kuota SMA <small class="text-danger">*</small></label>
@@ -357,9 +359,9 @@ Swal.fire({
                             placeholder="Cth: 10">
                     </div>
                     <label hidden for="Status">Status <small class="text-danger">*</small></label>
-                    <select required class="form-control form-control-sm" name="periode[]">
+                    <select hidden required class="form-control form-control-sm" name="periode[]">
                         <option value="">-- Pilih --</option>
-                        <option value="buka">Buka</option>
+                        <option selected value="buka">Buka</option>
                         <option value="tutup">Tutup</option>
                     </select>
                 </div>
@@ -371,7 +373,7 @@ Swal.fire({
         </div>
     </div>
 </div>
-<?php foreach ($dataPeriode as $periode):?>
+<?php foreach ($dataAllPeriode as $periode):?>
 <div class="modal fade" id="editPeriode<?=$periode['id_periode'];?>" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -387,9 +389,9 @@ Swal.fire({
                     <div class="form-group">
                         <label for="periode">Periode <small class="text-danger">*</small></label>
                         <input class="form-control form-control-sm" required name="periode[]" type="hidden"
-                            value="<?=$periode['periode'];?>">
+                            value="<?=$periode['id_periode'];?>">
                         <input class="form-control form-control-sm" required name="periode[]" type="text"
-                            placeholder="Cth: 20231" value="<?=$periode['periode'];?>">
+                            placeholder="Cth: 20231" value="<?=$periode['nama_periode'];?>">
                     </div>
                     <div class="form-group">
                         <label for="periode">Deskripsi <small class="text-danger">*</small></label>
@@ -422,7 +424,7 @@ Swal.fire({
     </div>
 </div>
 <?php endforeach;?>
-<?php foreach ($dataPeriode as $periode):?>
+<?php foreach ($dataAllPeriode as $periode):?>
 <div class="modal fade" id="hapusPeriode<?=$periode['id_periode'];?>" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -437,7 +439,7 @@ Swal.fire({
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="hidden" name="id_periode" required value="<?=$periode['id_periode'];?>">
-                        <p>Anda yakin ingin menghapus periode <strong><?=$periode['periode'];?></strong> ?</p>
+                        <p>Anda yakin ingin menghapus periode <strong><?=$periode['nama_periode'];?></strong> ?</p>
                     </div>
                 </div>
                 <div class="modal-footer">
