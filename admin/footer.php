@@ -76,6 +76,15 @@ $(document).ready(function() {
         "scrollX": true,
         "scrollY": true,
     });
+    var table = $('#pengumuman').DataTable({
+        responsive: true,
+        "lengthMenu": [
+            [5, 10, 15, 20, 100, -1],
+            [5, 10, 15, 20, 100, "All"]
+        ],
+        "scrollX": true,
+        "scrollY": true,
+    });
     var table = $('#dataLemari').DataTable({
         responsive: true,
         "lengthMenu": [

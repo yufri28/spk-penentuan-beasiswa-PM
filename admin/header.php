@@ -166,7 +166,7 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
             <li class="nav-item <?= $_SESSION['menu'] == 'setting' ? 'active':'';?>">
                 <a class="nav-link" href="./setting.php">
                     <i class="fa fa-cog"></i>
-                    <span>Setting</span></a>
+                    <span>Pengaturan</span></a>
             </li>
             <?php endif;?>
             <!-- data pelamar koordinator rayon -->

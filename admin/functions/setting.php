@@ -176,6 +176,55 @@ class Setting{
             }
         }
     }
+
+    public function getPengumuman(){
+        return $this->db->query("SELECT * FROM pengumuman");
+    }
+
+    public function getPengumumanById($id=null){
+        return $this->db->query("SELECT * FROM pengumuman WHERE id_pengumuman='$id'");
+    }
+    public function simpanPengumuman($data=null){
+        if($data==null){
+            return $_SESSION['error'] = "Tidak ada data yang dikirim.";
+        }else{
+            $judul = $data['judul'];
+            $isi = $data['isi'];
+            $insetPengumuman = $this->db->query("INSERT INTO pengumuman(id_pengumuman,judul,isi_pengumuman,tanggal_posting)VALUES(0,'$judul','$isi',NOW())");
+            if($insetPengumuman && $this->db->affected_rows > 0){
+                return $_SESSION['success'] = "Data berhasil ditambahkan.";
+            }else{
+                return $_SESSION['error'] = "Data gagal ditambahkan.";
+            }
+        }
+    }
+    public function editPengumuman($data=null){
+        if($data==null){
+            return $_SESSION['error'] = "Tidak ada data yang dikirim.";
+        }else{
+            $id_pengumuman = $data['id_pengumuman'];
+            $judul = $data['judul'];
+            $isi = $data['isi'];
+            $updatePengumuman = $this->db->query("UPDATE pengumuman SET judul='$judul',isi_pengumuman='$isi' WHERE id_pengumuman=$id_pengumuman");
+            if($updatePengumuman && $this->db->affected_rows > 0){
+                return $_SESSION['success'] = "Data berhasil diedit.";
+            }else{
+                return $_SESSION['error'] = "Data gagal diedit.";
+            }
+        }
+    }
+    public function hapusPengumuman($id_pengumuman=null){
+        if($id_pengumuman==null){
+            return $_SESSION['error'] = "Tidak ada data yang dikirim.";
+        }else{
+            $deletePengumuman = $this->db->query("DELETE FROM pengumuman WHERE id_pengumuman=$id_pengumuman");
+            if($deletePengumuman && $this->db->affected_rows > 0){
+                return $_SESSION['success'] = "Data berhasil dihapus.";
+            }else{
+                return $_SESSION['error'] = "Data gagal dihapus.";
+            }
+        }
+    }
 }
 
 

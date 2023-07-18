@@ -156,7 +156,7 @@ Swal.fire({
                                 <tr>
                                     <th scope="row"><?=$key+1;?></th>
                                     <td><?=$pelamar['username'];?></td>
-                                    <td><?=$pelamar['jenjang'];?></td>
+                                    <td><?=$pelamar['jenjang'] == 'pt' ? 'Perguruan Tinggi':'SMA/SMK Sederajat';?></td>
                                     <td> <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
                                             data-target="#hapusPelamar<?=$pelamar['id_login'];?>">Hapus
                                         </button>

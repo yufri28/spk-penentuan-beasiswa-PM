@@ -1,12 +1,14 @@
 <?php 
 session_start();
-if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['role'] == 1){
-    header("Location: ./user/index.php");
-}else if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['role'] == 0) {
-    header("Location: ./admin/index.php");
-}
+// if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['role'] == 1){
+//     header("Location: ./user/index.php");
+// }else if(isset($_SESSION['login']) && $_SESSION['login'] == true && $_SESSION['role'] == 0) {
+//     header("Location: ./admin/index.php");
+// }
 require_once './config.php';
+global $koneksi;
 
+$dataPengumuman = $koneksi->query("SELECT * FROM pengumuman");
 ?>
 
 <!DOCTYPE html>
@@ -35,12 +37,15 @@ require_once './config.php';
 </head>
 
 <body>
-
     <section class="">
         <!-- Section: Design Block -->
         <nav class="navbar fixed-top navbar-transparent">
             <div class="container-fluid d-flex justify-content-end">
+                <?php if(isset($_SESSION['login']) && $_SESSION['login'] == true):?>
+                <a href="./auth/logout.php" class="btn btn-outline-secondary mt-3 me-md-5">LOGOUT</a>
+                <?php else:?>
                 <a href="./auth/login.php" class="btn btn-outline-secondary mt-3 me-md-5">LOGIN</a>
+                <?php endif;?>
             </div>
         </nav>
         <hr>
@@ -61,7 +66,7 @@ require_once './config.php';
                             TINGGI DI GMIT PAULUS KUPANG MENGGUNAKAN
                             METODE PROFILE MATCHING</i>
                         </h4>
-
+                        <a href="#pengumuman" class="btn btn-outline-secondary">Lihat Pengumuman</a>
                     </div>
                     <div class="col-lg-6 mb-5 mb-lg-0">
                         <div class="gambar text-end">
@@ -71,6 +76,36 @@ require_once './config.php';
                             <!-- </div> -->
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="pengumuman">
+        <div class="text-center text-lg-start bg-white">
+            <h2 class="text-center mt-5" style="font-family: 'Righteous', cursive; color:#526D82">Pengumuman</h2>
+            <div class="container d-flex justify-content-center">
+                <div class="row col-md-9 my-5 px-3 d-flex justify-content-center align-items-center">
+                    <?php if(mysqli_num_rows($dataPengumuman) > 0):?>
+                    <?php foreach ($dataPengumuman as  $pengumuman): ?>
+                    <div class="col-md-4 mt-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title text-secondary fw-bolder"
+                                    style="font-family: 'Public Sans', sans-serif;">
+                                    <?=$pengumuman['judul'];?></h5>
+                                <p class="card-text" style="font-family: 'Public Sans', sans-serif;">
+                                    <?=$pengumuman['isi_pengumuman'];?></p>
+                                <a href="./pengumuman.php?p=<?=base64_encode($pengumuman['id_pengumuman']);?>">Baca
+                                    Selengkapnya...</a>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach;?>
+                    <?php else:?>
+                    <h4 class="text-center text-secondary" style="font-family: 'Public Sans', sans-serif;"><i>Belum ada
+                            Pengumuman</i>
+                    </h4>
+                    <?php endif;?>
                 </div>
             </div>
         </div>

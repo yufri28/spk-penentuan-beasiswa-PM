@@ -29,6 +29,7 @@ $data_kriteria = $dataKriteria->getKriteria();
                                     <th>Bobot</th>
                                     <th>Faktor</th>
                                     <th>Profil Target</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,6 +41,10 @@ $data_kriteria = $dataKriteria->getKriteria();
                                     <td><?=$kriteria['bobot_kriteria'];?></td>
                                     <td><?=$kriteria['faktor'];?></td>
                                     <td><?=$kriteria['profile_target'];?></td>
+                                    <td>
+                                        <button type="button" data-target="#edit<?=$kriteria['id_kriteria'];?>"
+                                            data-toggle="modal" class="btn btn-sm btn-primary">Edit</button>
+                                    </td>
                                 </tr>
                                 <?php endforeach;?>
                             </tbody>
@@ -50,5 +55,50 @@ $data_kriteria = $dataKriteria->getKriteria();
         </div>
     </div>
 </div>
+
+<?php foreach ($data_kriteria as $kriteria):?>
+<div class="modal fade" id="edit<?=$kriteria['id_kriteria'];?>" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body">
+
+
+                    <div class="form-group">
+                        <label for="bobot_kriteria">Bobot Kriteria</label>
+                        <input class="form-control form-control-sm" value="<?=$kriteria['bobot_kriteria'];?>"
+                            name="bobot_kriteria" type="text" placeholder="Bobot Kriteria">
+                    </div>
+                    <div class="form-group">
+                        <label for="faktor">Faktor</label>
+                        <select class="form-control form-control-sm" name="id_kriteria" id="Kriteria">
+                            <option value="">-- Pilih Faktor --</option>
+                            <option <?=$kriteria['faktor'] == 'CF' ? 'selected':'';?> value="CF">CF</option>
+                            <option <?=$kriteria['faktor'] == 'SF' ? 'selected':'';?>value="SF">SF</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profil_target">Profil Target</label>
+                        <input class="form-control form-control-sm" value="<?=$kriteria['profile_target'];?>"
+                            name="profil_target" type="number" placeholder="Profil Target">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                    <button type="submit" name="edit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php endforeach;?>
 
 <?php require './footer.php';?>

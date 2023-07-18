@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Jul 2023 pada 16.02
+-- Waktu pembuatan: 18 Jul 2023 pada 18.40
 -- Versi server: 10.4.24-MariaDB
 -- Versi PHP: 8.1.6
 
@@ -40,7 +40,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id_admin`, `username`, `password`, `level`, `f_id_rayon`) VALUES
-(14, 'admin', '$2y$10$C5PQf4i.pS0mBB3DsYauIe8D5je7gJn8g40u7V1Gb4F9dCY9Lbzba', 0, 1);
+(14, 'admin', '$2y$10$C5PQf4i.pS0mBB3DsYauIe8D5je7gJn8g40u7V1Gb4F9dCY9Lbzba', 0, 1),
+(16, 'rosa', '$2y$10$jfAccKdRT4ksAUkWA474iOteTquzp7T5HaHdQPnnC3K1KTG61hnJK', 1, 24);
 
 -- --------------------------------------------------------
 
@@ -62,6 +63,15 @@ CREATE TABLE `data_pelamar` (
   `f_id_login` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `data_pelamar`
+--
+
+INSERT INTO `data_pelamar` (`id_pelamar`, `nama`, `foto`, `sekolah`, `jurusan`, `no_hp`, `kartu_keluarga`, `s_beasiswa_lain`, `raport_khs`, `f_id_rayon`, `f_id_login`) VALUES
+(24, 'Rosaliani Kaseh', 'DFD UJIAN.png', 'UNDANA', 'Ilkom', '12345678', 'Diagram konteksrevisi ibu adri 1.png', 'DFD UJIAN.png', 'Diagram konteksrevisi ibu adri 1_1.png', 24, 9),
+(25, 'simon', 'DFD UJIAN_1.png', 'UNDANA', 'ilkom', '12345', 'Diagram konteksrevisi ibu adri 1_2.png', 'DFD UJIAN_1.png', 'ERD UJIAN P.png', 24, 10),
+(26, 'petrus', 'DFD UJIAN_2.png', 'SMA 6 Kupang', 'IPA', '123', 'DFD UJIAN_2.png', 'DFD UJIAN_3.png', 'Diagram konteksrevisi ibu adri 1_3.png', 24, 11);
+
 -- --------------------------------------------------------
 
 --
@@ -76,17 +86,13 @@ CREATE TABLE `hasil_akhir` (
   `jenjang` enum('sma','pt') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Struktur dari tabel `info`
+-- Dumping data untuk tabel `hasil_akhir`
 --
 
-CREATE TABLE `info` (
-  `id_info` int(11) NOT NULL,
-  `f_id_periode` int(11) NOT NULL,
-  `kuota` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `hasil_akhir` (`id_hasil`, `f_id_pelamar`, `f_id_periode`, `nilai_rank`, `jenjang`) VALUES
+(16, 25, 8, '3.3571429337774', 'pt'),
+(17, 26, 8, '3.3571429337774', 'sma');
 
 -- --------------------------------------------------------
 
@@ -128,6 +134,15 @@ CREATE TABLE `login_pelamar` (
   `jenjang` enum('sma','pt') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `login_pelamar`
+--
+
+INSERT INTO `login_pelamar` (`id_login`, `username`, `password`, `jenjang`) VALUES
+(9, 'rosaliani', '$2y$10$cyQ5zE.uik.0m6Gkto/ujehwoctW8.B0VRfy05BCTAHSRnvIihNPa', 'pt'),
+(10, 'simon', '$2y$10$bvo66evfQq4uC7pwW4j00uKDh6eqoucTRHGUdrHiS0XCzcMSRi/Yq', 'pt'),
+(11, 'petrus', '$2y$10$6oYpmb3dxEPl5HurdzLmquvc0xku0pW/QfF52ORPndy9Xd3Wne.ry', 'sma');
+
 -- --------------------------------------------------------
 
 --
@@ -144,6 +159,17 @@ CREATE TABLE `notifikasi_admin` (
   `jenis_notif` enum('data-diri','pengajuan') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `notifikasi_admin`
+--
+
+INSERT INTO `notifikasi_admin` (`id_notif`, `f_id_penerima`, `f_id_pengirim`, `isi_notif`, `tanggal`, `dibuka`, `jenis_notif`) VALUES
+(75, 16, 9, 'Rosaliani Kaseh melakukan pengajuan beasiswa.', '2023-07-18 12:00:42', '1', 'pengajuan'),
+(76, 16, 10, 'simon melakukan pengajuan beasiswa.', '2023-07-18 12:06:18', '0', 'pengajuan'),
+(77, 16, 10, 'simon melakukan pengajuan beasiswa.', '2023-07-18 12:10:04', '0', 'pengajuan'),
+(78, 16, 9, 'Rosaliani Kaseh melakukan pengajuan beasiswa.', '2023-07-18 12:10:27', '0', 'pengajuan'),
+(79, 16, 11, 'petrus melakukan pengajuan beasiswa.', '2023-07-18 12:27:39', '0', 'pengajuan');
+
 -- --------------------------------------------------------
 
 --
@@ -159,6 +185,17 @@ CREATE TABLE `notifikasi_pelamar` (
   `dibuka` enum('0','1') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `notifikasi_pelamar`
+--
+
+INSERT INTO `notifikasi_pelamar` (`id_notif`, `f_id_pengirim`, `f_id_penerima`, `isi_notifikasi`, `tanggal`, `dibuka`) VALUES
+(27, 16, 9, 'Data anda telah diverifikasi.', '2023-07-18 12:03:18', '1'),
+(28, 16, 10, 'Data anda telah diverifikasi.', '2023-07-18 12:06:38', '0'),
+(29, 16, 9, 'Data anda telah diverifikasi.', '2023-07-18 12:10:48', '1'),
+(30, 16, 10, 'Data anda telah diverifikasi.', '2023-07-18 12:10:53', '0'),
+(31, 16, 11, 'Data anda telah diverifikasi.', '2023-07-18 12:30:21', '0');
+
 -- --------------------------------------------------------
 
 --
@@ -173,6 +210,33 @@ CREATE TABLE `pdt` (
   `f_id_periode` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `pdt`
+--
+
+INSERT INTO `pdt` (`id_pdt`, `f_id_kriteria`, `f_id_sub_kriteria`, `f_id_pelamar`, `f_id_periode`) VALUES
+(248, 'K1', 1, 24, 8),
+(249, 'K2', 5, 24, 8),
+(250, 'K3', 9, 24, 8),
+(251, 'K4', 11, 24, 8),
+(252, 'K5', 18, 24, 8),
+(253, 'K6', 22, 24, 8),
+(254, 'K7', 26, 24, 8),
+(255, 'K1', 1, 25, 8),
+(256, 'K2', 4, 25, 8),
+(257, 'K3', 7, 25, 8),
+(258, 'K4', 10, 25, 8),
+(259, 'K5', 15, 25, 8),
+(260, 'K6', 20, 25, 8),
+(261, 'K7', 25, 25, 8),
+(262, 'K1', 1, 26, 8),
+(263, 'K2', 4, 26, 8),
+(264, 'K3', 7, 26, 8),
+(265, 'K4', 10, 26, 8),
+(266, 'K5', 15, 26, 8),
+(267, 'K6', 20, 26, 8),
+(268, 'K7', 25, 26, 8);
+
 -- --------------------------------------------------------
 
 --
@@ -185,6 +249,53 @@ CREATE TABLE `pelamar_kriteria` (
   `f_id_sub_kriteria` int(11) NOT NULL,
   `f_id_pelamar` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `pelamar_kriteria`
+--
+
+INSERT INTO `pelamar_kriteria` (`id_pelamar_kriteria`, `f_id_kriteria`, `f_id_sub_kriteria`, `f_id_pelamar`) VALUES
+(92, 'K1', 1, 24),
+(93, 'K2', 5, 24),
+(94, 'K3', 9, 24),
+(95, 'K4', 11, 24),
+(96, 'K5', 18, 24),
+(97, 'K6', 22, 24),
+(98, 'K7', 26, 24),
+(99, 'K1', 1, 25),
+(100, 'K2', 4, 25),
+(101, 'K3', 7, 25),
+(102, 'K4', 10, 25),
+(103, 'K5', 15, 25),
+(104, 'K6', 20, 25),
+(105, 'K7', 25, 25),
+(106, 'K1', 1, 26),
+(107, 'K2', 4, 26),
+(108, 'K3', 7, 26),
+(109, 'K4', 10, 26),
+(110, 'K5', 15, 26),
+(111, 'K6', 20, 26),
+(112, 'K7', 25, 26);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `pengumuman`
+--
+
+CREATE TABLE `pengumuman` (
+  `id_pengumuman` int(11) NOT NULL,
+  `judul` varchar(255) NOT NULL,
+  `isi_pengumuman` text NOT NULL,
+  `tanggal_posting` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `pengumuman`
+--
+
+INSERT INTO `pengumuman` (`id_pengumuman`, `judul`, `isi_pengumuman`, `tanggal_posting`) VALUES
+(1, 'Daftar ulang siswa / mahasiswa yang lulus seleksi penerimaan beasiswa Tahun 2023 Periode 1', 'Bagi siswa / mahasiswa yang lulus seleksi penerimaan beasiswa Tahun 2023 Periode 1, Silahkan membawa berkas ke sekretariat gereja.', '2023-07-18 16:02:32');
 
 -- --------------------------------------------------------
 
@@ -206,7 +317,8 @@ CREATE TABLE `periode` (
 --
 
 INSERT INTO `periode` (`id_periode`, `nama_periode`, `deskripsi`, `kuota_sma`, `kuota_pt`, `status`) VALUES
-(1, '20235', 'Tahun 2023 periode 1', 50, 3, 'buka');
+(8, '20232', 'Tahun 2023 periode 2', 1, 1, 'tutup'),
+(9, '20241', 'Tahun 2024 Periode 1', 2, 1, 'buka');
 
 -- --------------------------------------------------------
 
@@ -222,6 +334,13 @@ CREATE TABLE `pesan` (
   `tanggal_kirim` timestamp NOT NULL DEFAULT current_timestamp(),
   `dibuka` enum('0','1') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `pesan`
+--
+
+INSERT INTO `pesan` (`id_pesan`, `f_id_pengirim`, `f_id_penerima`, `pesan`, `tanggal_kirim`, `dibuka`) VALUES
+(8, 16, 9, 'khs salah', '2023-07-18 12:02:02', '1');
 
 -- --------------------------------------------------------
 
@@ -240,8 +359,7 @@ CREATE TABLE `rayon` (
 
 INSERT INTO `rayon` (`id_rayon`, `nama_rayon`) VALUES
 (1, 'umum'),
-(6, 'Rayon I'),
-(22, 'Rayon II');
+(24, 'Rayon I');
 
 -- --------------------------------------------------------
 
@@ -303,6 +421,15 @@ CREATE TABLE `verifikasi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data untuk tabel `verifikasi`
+--
+
+INSERT INTO `verifikasi` (`id_verifikasi`, `f_id_pelamar`, `f_id_periode`, `status`) VALUES
+(38, 25, 8, '1'),
+(39, 24, 8, '1'),
+(40, 26, 8, '1');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -328,13 +455,6 @@ ALTER TABLE `data_pelamar`
 ALTER TABLE `hasil_akhir`
   ADD PRIMARY KEY (`id_hasil`),
   ADD KEY `f_id_pelamar` (`f_id_pelamar`),
-  ADD KEY `f_id_periode` (`f_id_periode`);
-
---
--- Indeks untuk tabel `info`
---
-ALTER TABLE `info`
-  ADD PRIMARY KEY (`id_info`),
   ADD KEY `f_id_periode` (`f_id_periode`);
 
 --
@@ -385,6 +505,12 @@ ALTER TABLE `pelamar_kriteria`
   ADD KEY `f_id_pelamar` (`f_id_pelamar`);
 
 --
+-- Indeks untuk tabel `pengumuman`
+--
+ALTER TABLE `pengumuman`
+  ADD PRIMARY KEY (`id_pengumuman`);
+
+--
 -- Indeks untuk tabel `periode`
 --
 ALTER TABLE `periode`
@@ -427,73 +553,73 @@ ALTER TABLE `verifikasi`
 -- AUTO_INCREMENT untuk tabel `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_pelamar`
 --
 ALTER TABLE `data_pelamar`
-  MODIFY `id_pelamar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_pelamar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT untuk tabel `hasil_akhir`
 --
 ALTER TABLE `hasil_akhir`
-  MODIFY `id_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- AUTO_INCREMENT untuk tabel `info`
---
-ALTER TABLE `info`
-  MODIFY `id_info` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT untuk tabel `login_pelamar`
 --
 ALTER TABLE `login_pelamar`
-  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `notifikasi_admin`
 --
 ALTER TABLE `notifikasi_admin`
-  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT untuk tabel `notifikasi_pelamar`
 --
 ALTER TABLE `notifikasi_pelamar`
-  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT untuk tabel `pdt`
 --
 ALTER TABLE `pdt`
-  MODIFY `id_pdt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=234;
+  MODIFY `id_pdt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=276;
 
 --
 -- AUTO_INCREMENT untuk tabel `pelamar_kriteria`
 --
 ALTER TABLE `pelamar_kriteria`
-  MODIFY `id_pelamar_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `id_pelamar_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+
+--
+-- AUTO_INCREMENT untuk tabel `pengumuman`
+--
+ALTER TABLE `pengumuman`
+  MODIFY `id_pengumuman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `periode`
 --
 ALTER TABLE `periode`
-  MODIFY `id_periode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_periode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `pesan`
 --
 ALTER TABLE `pesan`
-  MODIFY `id_pesan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_pesan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `rayon`
 --
 ALTER TABLE `rayon`
-  MODIFY `id_rayon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_rayon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT untuk tabel `sub_kriteria`
@@ -505,7 +631,7 @@ ALTER TABLE `sub_kriteria`
 -- AUTO_INCREMENT untuk tabel `verifikasi`
 --
 ALTER TABLE `verifikasi`
-  MODIFY `id_verifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_verifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -530,12 +656,6 @@ ALTER TABLE `data_pelamar`
 ALTER TABLE `hasil_akhir`
   ADD CONSTRAINT `hasil_akhir_ibfk_1` FOREIGN KEY (`f_id_pelamar`) REFERENCES `data_pelamar` (`id_pelamar`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `hasil_akhir_ibfk_2` FOREIGN KEY (`f_id_periode`) REFERENCES `periode` (`id_periode`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ketidakleluasaan untuk tabel `info`
---
-ALTER TABLE `info`
-  ADD CONSTRAINT `info_ibfk_1` FOREIGN KEY (`f_id_periode`) REFERENCES `periode` (`id_periode`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `notifikasi_admin`

@@ -288,7 +288,7 @@ Swal.fire({
                             class="form-control" id="exampleFormControlInput1">
                     </div>
                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Example textarea</label>
+                        <label for="exampleFormControlTextarea1">Isi Pesan</label>
                         <textarea name="isi_pesan" class="form-control" id="exampleFormControlTextarea1"
                             rows="3"></textarea>
                     </div>
