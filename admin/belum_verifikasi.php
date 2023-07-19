@@ -41,7 +41,7 @@ $data_pelamar = $Verifikasi->getPelamarBelumVerifikasi($_SESSION['id_rayon']);
                                     <td><?=$pelamar['nama'];?></td>
                                     <td><?=$pelamar['sekolah'];?></td>
                                     <td><?=$pelamar['nama_rayon'];?></td>
-                                    <td><?=$pelamar['jenjang'];?></td>
+                                    <td><?= $pelamar['jenjang'] == 'pt'?'Perguruan Tinggi':'SMA/SMK Sederajat';?></td>
                                     <td>
                                         <a href="./verifikasi_data.php?id_pel=<?=base64_encode(urlencode($pelamar['id_pelamar']));?>&id_log=<?=base64_encode(urlencode($pelamar['f_id_login']));?>"
                                             class="btn btn-sm btn-primary">

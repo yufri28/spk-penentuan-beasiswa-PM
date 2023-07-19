@@ -178,6 +178,7 @@ $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="messagesDropdown">
                                 <h6 class="dropdown-header">Pesan</h6>
+                                <?php if(mysqli_num_rows($getPesan) > 0):?>
                                 <?php foreach ($getPesan as $key => $pesan):?>
                                 <button
                                     class="dropdown-item d-flex align-items-center <?=$pesan['dibuka'] == '0' ? 'bg-light':'bg-white'?>"
@@ -197,6 +198,11 @@ $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION
                                     </div>
                                 </button>
                                 <?php endforeach;?>
+                                <?php else:?>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <p class="text-center"><i>Tidak ada pesan.</i></p>
+                                </div>
+                                <?php endif;?>
                                 <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a> -->
                             </div>
                         </li>

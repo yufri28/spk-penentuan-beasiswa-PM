@@ -60,11 +60,8 @@ $dataPengumuman = $koneksi->query("SELECT * FROM pengumuman");
                             <span style="color:#E7B10A">SELEKSI CALON
                                 PENERIMA BEASISWA</span>
                         </h1>
-                        <h4 style="color: hsl(217, 10%, 50.8%)">
-                            PADA JENJANG PENDIDIKAN
-                            SEKOLAH MENENGAH ATAS (SMA) DAN PERGURUAN
-                            TINGGI DI GMIT PAULUS KUPANG MENGGUNAKAN
-                            METODE PROFILE MATCHING</i>
+                        <h4 style="color: hsl(217, 10%, 50.8%);text-transform: uppercase;">
+                            di GMIT paulus kupang menggunakan metode profile matching</i>
                         </h4>
                         <a href="#pengumuman" class="btn btn-outline-secondary">Lihat Pengumuman</a>
                     </div>

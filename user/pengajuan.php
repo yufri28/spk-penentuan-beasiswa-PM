@@ -12,8 +12,6 @@ if(isset($_SESSION['id_periode'])){
     $dataPeriode = mysqli_fetch_assoc($Pengajuan->getPeriodeById($_SESSION['id_periode']));
 }
 
-
-
 $numRowsDataPelamar = 0;
 $cekDataPelamar = $dataDiri->cekDataPelamar($_SESSION['id_user']);
 $numRowsDataPelamar = mysqli_num_rows($cekDataPelamar);
@@ -60,6 +58,7 @@ if(isset($_POST['ajukan'])){
     ];
     $Pengajuan->ajukanBeasiswa($data);
 }
+
 ?>
 <?php if (isset($_SESSION['success'])): ?>
 <script>

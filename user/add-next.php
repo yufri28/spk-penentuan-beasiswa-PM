@@ -161,7 +161,7 @@ $dataSemester = $dataDiri->getSemester();
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="ipk">IPK <small class="text-danger">*</small></label>
+                        <label for="ipk">IPK/Nilai Rata-rata Raport <small class="text-danger">*</small></label>
                         <select required class="form-control form-control-sm" name="data_diri[]" id="ipk">
                             <option value="">-- Pilih --</option>
                             <?php foreach ($dataIPK as $key => $IPK):?>

@@ -13,6 +13,9 @@
     public function getPeriode(){
         return $this->db->query("SELECT * FROM periode ORDER BY id_periode LIMIT 1");
     }
+    public function getPeriodeAktif(){
+        return $this->db->query("SELECT * FROM periode WHERE status='buka' ORDER BY id_periode LIMIT 1");
+    }
     public function getVerifikasi($id_login=null,$id_periode=null){
         return $this->db->query("SELECT * FROM verifikasi v JOIN data_pelamar dp ON dp.id_pelamar=v.f_id_pelamar JOIN login_pelamar lp ON lp.id_login=dp.f_id_login WHERE lp.id_login=$id_login AND v.f_id_periode=$id_periode");
     }
@@ -21,7 +24,7 @@
         if(empty($data)){
             return $_SESSION['error'] = "Tidak ada data yang dikirim.";
         }else{
-            $periode = mysqli_fetch_assoc($this->getPeriode());
+            $periode = mysqli_fetch_assoc($this->getPeriodeAktif());
             $id_pelamar = $data['f_id_pelamar'];
             $id_periode = $periode['id_periode'];
             $insert = $this->db->query("INSERT INTO verifikasi(id_verifikasi,f_id_pelamar,f_id_periode,status)VALUES(0,$id_pelamar,$id_periode,'0')");
@@ -40,9 +43,16 @@
     public function getPeriodeById($id_periode=null){
         return $this->db->query("SELECT * FROM periode WHERE id_periode=$id_periode");
     }   
+    public function getPeriodeIsOpen($id_periode=null){
+        return $this->db->query("SELECT * FROM periode WHERE id_periode=$id_periode AND status='buka'");
+    }   
 
     public function getHasil($id_login=null,$id_periode){
         return $this->db->query("SELECT * FROM hasil_akhir ha JOIN data_pelamar dp ON dp.id_pelamar = ha.f_id_pelamar JOIN login_pelamar lp ON lp.id_login=dp.f_id_login JOIN periode p ON p.id_periode=ha.f_id_periode WHERE lp.id_login = $id_login AND ha.f_id_periode=$id_periode;");
+    }
+
+    public function isSelesai($id_periode=null){
+        return $this->db->query("SELECT * FROM hasil_akhir WHERE f_id_periode=$id_periode");
     }
 
  }

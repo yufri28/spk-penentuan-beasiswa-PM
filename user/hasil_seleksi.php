@@ -13,6 +13,7 @@ if(isset($_SESSION['id_periode'])){
     $dataPeriode = mysqli_fetch_assoc($Pengajuan->getPeriodeById($_SESSION['id_periode']));
 }
 
+$isSelesai = mysqli_num_rows($Pengajuan->isSelesai($_SESSION['id_periode']));
 
 $getHasil = mysqli_fetch_assoc($Pengajuan->getHasil($_SESSION['id_user'],$_SESSION['id_periode']));
 
@@ -53,10 +54,10 @@ Swal.fire({
 </script>
 <?php unset($_SESSION['error']); // Menghapus session setelah ditampilkan ?>
 <?php endif; ?>
-<?php if ($numRowsVerifikasi <= 0): ?>
+<?php if ($numRowsVerifikasi <= 0 || $isSelesai <= 0): ?>
 <script>
 var pesan =
-    'Mohon maaf! Hasil seleksi beasiswa <?=$dataPeriode['deskripsi']?> belum diumumkan. Silahkan menunggu dan selalu cek hasilnya di halaman ini!';
+    'Mohon maaf! Belum ada informasi hasil seleksi.';
 Swal.fire({
     title: 'Peringatan!',
     text: pesan,
