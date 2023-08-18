@@ -67,7 +67,7 @@ Swal.fire({
                         <td> <?= isset($fecthDataPelamar['nama']) ? $fecthDataPelamar['nama']:'-';?></td>
                     </tr>
                     <tr>
-                        <td>Sekolah/PT</td>
+                        <td><?= $_SESSION['jenjang'] == 'pt' ? 'PT ':'Sekolah ';?></td>
                         <td>: </td>
                         <td> <?= isset($fecthDataPelamar['sekolah']) ? $fecthDataPelamar['sekolah']: '-';?></td>
                     </tr>
@@ -114,9 +114,22 @@ Swal.fire({
                         <?php if(mysqli_num_rows($cekDataPelamar) > 0):?>
                         <?php foreach ($cekPelamarKriteria as $key => $pelamar_kriteria) :?>
                         <tr class="border-bottom">
+                            <?php if($pelamar_kriteria['nama_kriteria'] == "IPK/Nilai Raport"):?>
+                            <td><?= $_SESSION['jenjang'] == 'pt' ? explode("/",$pelamar_kriteria['nama_kriteria'])[0]:explode("/",$pelamar_kriteria['nama_kriteria'])[1];?>
+                            </td>
+                            <td>: </td>
+                            <td><?= $_SESSION['jenjang'] == 'pt' ? explode("/", $pelamar_kriteria['nama_sub_kriteria'])[1]:explode("/",$pelamar_kriteria['nama_sub_kriteria'])[0];?>
+                            </td>
+                            <?php elseif($pelamar_kriteria['nama_kriteria'] == "Semester"):?>
+                            <td><?= $_SESSION['jenjang'] == 'pt' ?'Semester':'Kelas';?></td>
+                            <td>: </td>
+                            <td><?= $_SESSION['jenjang'] == 'pt' ? explode("/", $pelamar_kriteria['nama_sub_kriteria'])[0]:explode("/",$pelamar_kriteria['nama_sub_kriteria'])[1];?>
+                            </td>
+                            <?php else:?>
                             <td><?= $pelamar_kriteria['nama_kriteria'];?></td>
                             <td>: </td>
                             <td><?= $pelamar_kriteria['nama_sub_kriteria'];?></td>
+                            <?php endif;?>
                         </tr>
                         <?php endforeach;?>
                         <tr class="border-bottom">
@@ -143,7 +156,8 @@ Swal.fire({
                             </td>
                         </tr>
                         <tr class="border-bottom">
-                            <td>Raport/KHS <small><i>(jpg, png, jpeg)</i></small></td>
+                            <td><?= $_SESSION['jenjang'] == 'pt' ? 'KHS ':'Raport ';?> <small><i>(jpg, png,
+                                        jpeg)</i></small></td>
                             <td>: </td>
                             <td><a href="./uploads/berkas/<?=$fecthDataPelamar['raport_khs'];?>">
                                     <img style="width:100px;height:100px;"
@@ -178,12 +192,12 @@ Swal.fire({
                             <td>-</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td>IPK/Nilai Raport</td>
+                            <td><?= $_SESSION['jenjang'] == 'pt' ? 'IPK ':'Nilai Rata-rata Raport ';?></td>
                             <td>: </td>
                             <td> - </td>
                         </tr>
                         <tr class="border-bottom">
-                            <td>Semester</td>
+                            <td><?= $_SESSION['jenjang'] == 'pt' ? 'Semester ':'Kelas ';?></td>
                             <td>: </td>
                             <td> - </td>
                         </tr>
@@ -209,7 +223,8 @@ Swal.fire({
                             </td>
                         </tr>
                         <tr class="border-bottom">
-                            <td>Raport/KHS <small><i>(jpg, png, jpeg)</i></small></td>
+                            <td><?= $_SESSION['jenjang'] == 'pt' ? 'KHS ':'Raport ';?> <small><i>(jpg, png,
+                                        jpeg)</i></small></td>
                             <td>: </td>
                             <td><a href="../assets/images/no_images.png">
                                     <img style="width:100px;height:100px;" src="../assets/images/no_images.png" alt="">

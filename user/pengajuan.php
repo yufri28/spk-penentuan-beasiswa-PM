@@ -155,7 +155,7 @@ Swal.fire({
                     <p class="text-end">Anda sudah melakukan pengajuan. Silahkan menunggu verifikasi dari koordinator
                         rayon.</p>
                     <?php else:?>
-                    <p class="text-end">Data anda sudah diverifikasi. Silahkan menunggu hasil seleksi.</p>
+                    <p class="text-end">Data anda sudah diverifikasi.</p>
                     <?php endif;?>
                     <?php endforeach;?>
                     <?php endif;?>

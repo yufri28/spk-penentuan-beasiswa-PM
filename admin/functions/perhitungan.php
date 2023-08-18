@@ -10,7 +10,7 @@ class Perhitungan{
         $this->db = connectDatabase();
     }
 
-    public function GapAlternatif($jenjang=null){
+    public function GapAlternatif($jenjang=null,$periode=null){
         return $this->db->query("SELECT
             dp.id_pelamar,
             dp.nama,
@@ -146,13 +146,15 @@ class Perhitungan{
             JOIN kriteria k ON pdt.f_id_kriteria = k.id_kriteria
             JOIN rayon r ON r.id_rayon = dp.f_id_rayon
         WHERE
-            lp.jenjang = '$jenjang'
+            lp.jenjang = '$jenjang' 
+        AND
+            pdt.f_id_periode = '$periode'
         GROUP BY
             dp.id_pelamar, dp.nama, dp.f_id_rayon, dp.f_id_login;");
     }
 
-    public function perengkingan($jenjang=null){
-        $perhitungan = $this->GapAlternatif($jenjang);
+    public function perengkingan($jenjang=null,$periode=null){
+        $perhitungan = $this->GapAlternatif($jenjang,$periode);
         $ranking = array();
         
         foreach ($perhitungan as $key => $value) {

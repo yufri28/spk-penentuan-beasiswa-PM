@@ -175,7 +175,8 @@ $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION
                                 <span class="badge badge-danger badge-counter"><?=$jumlah_pesan;?></span>
                             </a>
                             <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            <div style="overflow-y: scroll; height: 300px;"
+                                class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="messagesDropdown">
                                 <h6 class="dropdown-header">Pesan</h6>
                                 <?php if(mysqli_num_rows($getPesan) > 0):?>
@@ -216,7 +217,8 @@ $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION
                                 <span class="badge badge-danger badge-counter"><?=$countBelumDibaca?></span>
                             </a>
                             <!-- notifikasi -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            <div style="overflow-y: scroll; height: 300px;"
+                                class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">Notifikasi</h6>
                                 <?php if(mysqli_num_rows($showNotif) > 0):?>

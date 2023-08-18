@@ -47,11 +47,12 @@ function modifWaktu($tanggal=null){
 $countBelumDibaca = 0;
 
 if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
-    $countVerifikasi = $Verifikasi->countVerifikasi((int)$_SESSION['id_rayon']);
-    $countBelumVerifikasi = $Verifikasi->countBelumVerifikasi((int)$_SESSION['id_rayon']);
+    $countVerifikasi = $Verifikasi->countVerifikasi((int)$_SESSION['id_rayon'],$_SESSION['id_periode']);
+    $countBelumVerifikasi = $Verifikasi->countBelumVerifikasi((int)$_SESSION['id_rayon'],$_SESSION['id_periode']);
     
     $getNotifikasi = $Notifikasi->getNotifikasi((int)$_SESSION['id_user']); 
-    $showNotif = $Notifikasi->getNotifikasiBelumDibuka((int)$_SESSION['id_user']);  
+    // $showNotif = $Notifikasi->getNotifikasiBelumDibuka((int)$_SESSION['id_user']);  
+    $showNotif = $Notifikasi->getNotifikasiTeratas((int)$_SESSION['id_user']);  
     $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION['id_user']));
     
     $fetchGetNotifikasi = mysqli_fetch_assoc($getNotifikasi);
@@ -158,6 +159,11 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
                     <i class="fas fa-fw fa-table"></i>
                     <span>Perhitungan</span></a>
             </li>
+            <li class="nav-item <?= $_SESSION['menu'] == 'laporan' ? 'active':'';?>">
+                <a class="nav-link" href="./laporan.php">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Laporan</span></a>
+            </li>
             <li class="nav-item <?= $_SESSION['menu'] == 'users' ? 'active':'';?>">
                 <a class="nav-link" href="./user.php">
                     <i class="fas fa-user"></i>
@@ -228,7 +234,8 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
                                 <span class="badge badge-danger badge-counter"><?=$countBelumDibaca?></span>
                             </a>
                             <!-- notifikasi -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            <div style="overflow-y: scroll; height: 300px;"
+                                class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">Notifikasi</h6>
                                 <?php if(mysqli_num_rows($showNotif) > 0):?>

@@ -161,22 +161,26 @@ $dataSemester = $dataDiri->getSemester();
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="ipk">IPK/Nilai Rata-rata Raport <small class="text-danger">*</small></label>
+                        <label for="ipk"><?= $_SESSION['jenjang'] == 'pt' ? 'IPK ':'Nilai Rata-rata Raport ';?> <small
+                                class="text-danger">*</small></label>
                         <select required class="form-control form-control-sm" name="data_diri[]" id="ipk">
                             <option value="">-- Pilih --</option>
                             <?php foreach ($dataIPK as $key => $IPK):?>
                             <option value="<?=$IPK['id_sub_kriteria'];?>">
-                                <?=$IPK['nama_sub_kriteria'];?></option>
+                                <?= $_SESSION['jenjang'] == 'pt' ? explode("/",$IPK['nama_sub_kriteria'])[1]:explode("/",$IPK['nama_sub_kriteria'])[0];?>
+                            </option>
                             <?php endforeach;?>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="semester">Semester <small class="text-danger">*</small></label>
+                        <label for="semester"><?= $_SESSION['jenjang'] == 'pt' ? 'Semester ':'Kelas ';?> <small
+                                class="text-danger">*</small></label>
                         <select required class="form-control form-control-sm" name="data_diri[]" id="semester">
                             <option value="">-- Pilih --</option>
                             <?php foreach ($dataSemester as $key => $semester):?>
                             <option value="<?=$semester['id_sub_kriteria'];?>">
-                                <?=$semester['nama_sub_kriteria'];?></option>
+                                <?= $_SESSION['jenjang'] == 'pt' ? explode("/",$semester['nama_sub_kriteria'])[0]:explode("/",$semester['nama_sub_kriteria'])[1];?>
+                            </option>
                             <?php endforeach;?>
                         </select>
                     </div>
@@ -193,7 +197,8 @@ $dataSemester = $dataDiri->getSemester();
                             id="suket_beasiswa_lain" required />
                     </div>
                     <div class="form-group">
-                        <label for="raport_khs" class="form-label">Raport/KHS
+                        <label for="raport_khs"
+                            class="form-label"><?= $_SESSION['jenjang'] == 'pt' ? 'KHS ':'Raport ';?>
                             <small class="text-danger">*</small></label>
                         <input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="raport_khs"
                             id="raport_khs" required />

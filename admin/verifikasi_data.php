@@ -24,7 +24,7 @@ if(isset($_GET['id_pel']) && isset($_GET['id_log']) && isset($_GET['n'])){
         // update notif
         $Notifikasi->updateNotif($id_notif);
         // cek verifikasi 
-        $cekVerifikasiUser = $Verifikasi->cekVerifikasiUser($id_login,$_SESSION['id_rayon']);
+        $cekVerifikasiUser = $Verifikasi->cekVerifikasiUser($id_login,$_SESSION['id_rayon'],$_SESSION['id_periode']);
         if($cekVerifikasiUser['status'] == 1){
             echo '<script>window.location.href = "./verifikasi.php";</script>';
         }else if($cekVerifikasiUser['status'] == 0){
@@ -41,7 +41,7 @@ else if(isset($_GET['id_pel']) && isset($_GET['id_log'])){
     $id_pelamar = base64_decode($_GET['id_pel']);
     $id_login = base64_decode($_GET['id_log']);
     // cek verifikasi 
-    $cekVerifikasiUser = $Verifikasi->cekVerifikasiUser($id_login,$_SESSION['id_rayon']);
+    $cekVerifikasiUser = $Verifikasi->cekVerifikasiUser($id_login,$_SESSION['id_rayon'],$_SESSION['id_periode']);
     $cekDataPelamar = $dataDiri->cekDataPelamar($id_login,$_SESSION['id_rayon']);
     $fecthDataPelamar = mysqli_fetch_assoc($cekDataPelamar);
 }else{
@@ -50,7 +50,7 @@ else if(isset($_GET['id_pel']) && isset($_GET['id_log'])){
         $Notifikasi->updateNotif($id_notif);
     }
     $id_login = base64_decode($_GET['id_log']);
-    $cekVerifikasiUser = $Verifikasi->cekVerifikasiUser($id_login,$_SESSION['id_rayon']);
+    $cekVerifikasiUser = $Verifikasi->cekVerifikasiUser($id_login,$_SESSION['id_rayon'],$_SESSION['id_periode']);
     $cekDataPelamar = $dataDiri->cekDataPelamar($id_login,$_SESSION['id_rayon']);
     $fecthDataPelamar = mysqli_fetch_assoc($cekDataPelamar);
 }
@@ -155,7 +155,8 @@ Swal.fire({
                             <td> <?= isset($fecthDataPelamar['nama']) ? $fecthDataPelamar['nama']:'-';?></td>
                         </tr>
                         <tr>
-                            <td>Sekolah/PT</td>
+                            <td><?= isset($fecthDataPelamar['jenjang']) && $fecthDataPelamar['jenjang'] == 'pt'  ? 'PT': 'Sekolah';?>
+                            </td>
                             <td>: </td>
                             <td> <?= isset($fecthDataPelamar['sekolah']) ? $fecthDataPelamar['sekolah']: '-';?></td>
                         </tr>
@@ -195,11 +196,27 @@ Swal.fire({
                             <?php foreach ($cekPelamarKriteria as $key => $pelamar_kriteria) :?>
                             <tr class="border-bottom">
                                 <input type="hidden" name="kriteria[]" value="<?=$pelamar_kriteria['id_kriteria'];?>">
-                                <td><?= $pelamar_kriteria['nama_kriteria'];?></td>
+                                <?php if($pelamar_kriteria['nama_kriteria'] == 'IPK/Nilai Raport'):?>
+                                <td><?= $pelamar_kriteria['jenjang'] == 'pt' ?'IPK':'Nilai Raport';?></td>
                                 <td>: </td>
                                 <input type="hidden" name="sub_kriteria[]"
                                     value="<?=$pelamar_kriteria['id_sub_kriteria'];?>">
+                                <td><?= $pelamar_kriteria['jenjang'] == 'pt' ? explode("/",$pelamar_kriteria['nama_sub_kriteria'])[1]:explode("/",$pelamar_kriteria['nama_sub_kriteria'])[0];?>
+                                </td>
+                                <?php elseif($pelamar_kriteria['nama_kriteria'] == 'Semester') :?>
+                                <td><?= $pelamar_kriteria['jenjang'] == 'pt' ?'Semester':'Kelas';?></td>
+                                <td>: </td>
+                                <input type="hidden" name="sub_kriteria[]"
+                                    value="<?=$pelamar_kriteria['id_sub_kriteria'];?>">
+                                <td><?= $pelamar_kriteria['jenjang'] == 'pt' ? explode("/",$pelamar_kriteria['nama_sub_kriteria'])[0]:explode("/",$pelamar_kriteria['nama_sub_kriteria'])[1];?>
+                                </td>
+                                <?php else:?>
+                                <td><?= $pelamar_kriteria['nama_kriteria'];?></td>
+                                <td>: </td>
                                 <td><?= $pelamar_kriteria['nama_sub_kriteria'];?></td>
+                                <input type="hidden" name="sub_kriteria[]"
+                                    value="<?=$pelamar_kriteria['id_sub_kriteria'];?>">
+                                <?php endif;?>
                             </tr>
                             <?php endforeach;?>
                             <tr class="border-bottom">
@@ -228,7 +245,8 @@ Swal.fire({
                                 </td>
                             </tr>
                             <tr class="border-bottom">
-                                <td>Raport/KHS <small><i>(jpg, png, jpeg)</i></small></td>
+                                <td><?=$fecthDataPelamar['jenjang'] == 'pt'  ? 'KHS': 'Raport';?> <small><i>(jpg, png,
+                                            jpeg)</i></small></td>
                                 <td>: </td>
                                 <td><a href="../user/uploads/berkas/<?=$fecthDataPelamar['raport_khs'];?>">
                                         <img style="width:100px;height:100px;"

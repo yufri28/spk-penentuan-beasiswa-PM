@@ -14,7 +14,7 @@ class Notifikasi{
     }
     public function getNotifikasiBelumDibuka($id_penerima=null)
     {
-        return $this->db->query("SELECT * FROM notifikasi_pelamar np JOIN login_pelamar lp ON lp.id_login=np.f_id_penerima WHERE np.f_id_penerima=$id_penerima AND np.dibuka='0';");
+        return $this->db->query("SELECT * FROM notifikasi_pelamar np JOIN login_pelamar lp ON lp.id_login=np.f_id_penerima WHERE np.f_id_penerima=$id_penerima ORDER BY np.id_notif DESC LIMIT 20;");
     }
     public function countBelumDibaca($id_penerima=null)
     {

@@ -16,8 +16,8 @@ if($dataPeriode != null){
     $jumlahKuotaSMA = $fetchDataPeriode['kuota_sma'];
     $jumlahKuotaPT = $fetchDataPeriode['kuota_pt'];
 }
-$rankingSMA = $Perhitungan->perengkingan('sma');
-$rankingPT = $Perhitungan->perengkingan('pt');
+$rankingSMA = $Perhitungan->perengkingan('sma',$_SESSION['id_periode']);
+$rankingPT = $Perhitungan->perengkingan('pt',$_SESSION['id_periode']);
 if($rankingSMA != null){
     $numRowsSMA = count($rankingSMA);
 }
@@ -74,6 +74,9 @@ if(isset($_POST['simpan-pt'])){
 // foreach ($ranking as $key => $value) {
 //     echo ($i++) . ". " . $value['nama'] . " - Nilai Akhir: " . $value['nilaiAkhir'] . "<br>";
 // }
+$j = 1;
+$k = 1;
+
 ?>
 
 <?php if (isset($_SESSION['success'])): ?>
@@ -143,7 +146,7 @@ Swal.fire({
                                     <input type="hidden" name="id_pelamar[]" value="<?=$rank['id_pelamar']?>">
                                     <input type="hidden" name="nilai_rank[]" value="<?=$rank['nilaiAkhir']?>">
                                     <tr>
-                                        <th scope="row"><?=$i++;?>. </th>
+                                        <th scope="row"><?=$j++;?>. </th>
                                         <th><?=$rank['nama'];?></th>
                                         <th><?=$rank['nama_rayon'];?></th>
                                         <td><?=$rank['nilaiAkhir'];?></td>
@@ -190,7 +193,7 @@ Swal.fire({
                                     <input type="hidden" name="id_pelamar[]" value="<?=$rank['id_pelamar']?>">
                                     <input type="hidden" name="nilai_rank[]" value="<?=$rank['nilaiAkhir']?>">
                                     <tr>
-                                        <th scope="row"><?=$i++;?>. </th>
+                                        <th scope="row"><?=$k++;?>. </th>
                                         <th><?=$rank['nama'];?></th>
                                         <th><?=$rank['nama_rayon'];?></th>
                                         <td><?=$rank['nilaiAkhir'];?></td>

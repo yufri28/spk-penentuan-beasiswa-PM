@@ -79,7 +79,7 @@ Swal.fire({
             <div class="card-body flex-row align-items-center"
                 style="font-family: 'Lato', sans-serif; padding: 60px 60px">
                 <h1 class="text-end">Hasil Seleksi Beasiswa</h1>
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-<?=$getHasil != null ?'success':'danger';?>" role="alert">
                     <?php if($getHasil != null):?>
                     <p>Selamat! Kamu lolos seleksi beasiswa pendidikan pada jenjang Sekolah Menengah Atas (SMA) dan
                         Perguruan Tinggi di GMIT Paulus Kupang <?=$getHasil['deskripsi']?>.</p>

@@ -114,14 +114,15 @@ Swal.fire({
                             placeholder="Nama">
                     </div>
                     <div class="form-group">
-                        <label for="sekolah">Nama Sekolah/PT <small class="text-danger">*</small></label>
+                        <label for="sekolah"><?= $_SESSION['jenjang'] == 'pt' ? 'Nama PT ':'Nama Sekolah ';?> <small
+                                class="text-danger">*</small></label>
                         <input class="form-control form-control-sm" required name="data_diri[]" type="text"
-                            placeholder="Nama Sekolah/PT">
+                            placeholder="<?= $_SESSION['jenjang'] == 'pt' ? 'Nama PT ':'Nama Sekolah ';?>">
                     </div>
                     <div class="form-group">
                         <label for="jurusan">Jurusan <small class="text-danger">*</small></label>
                         <input class="form-control form-control-sm" required name="data_diri[]" type="text"
-                            placeholder="Jurusan sekolah/PT">
+                            placeholder="<?= $_SESSION['jenjang'] == 'pt' ? 'Jurusan PT ':'Jurusan Sekolah ';?>">
                     </div>
                     <div class="form-group">
                         <label for="no_hp">No HP <small class="text-danger">*</small></label>

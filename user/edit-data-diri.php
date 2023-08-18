@@ -135,7 +135,8 @@ Swal.fire({
                             name="data_diri[]" type="text" placeholder="Nama">
                     </div>
                     <div class="form-group">
-                        <label for="sekolah">Nama Sekolah/PT <small class="text-danger">*</small></label>
+                        <label for="sekolah"><?= $_SESSION['jenjang'] == 'pt' ? 'Nama PT':'Nama Sekolah';?> <small
+                                class="text-danger">*</small></label>
                         <input class="form-control form-control-sm" value="<?=$fecthDataPelamar['sekolah'];?>" required
                             name="data_diri[]" type="text" placeholder="Nama Sekolah/PT">
                     </div>

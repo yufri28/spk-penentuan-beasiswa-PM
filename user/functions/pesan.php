@@ -10,7 +10,7 @@ class Pesan{
 
     public function getPesan($id_penerima)
     {
-        return $this->db->query("SELECT * FROM pesan p JOIN admin a ON a.id_admin=p.f_id_pengirim WHERE f_id_penerima=$id_penerima AND dibuka='0'");
+        return $this->db->query("SELECT * FROM pesan p JOIN admin a ON a.id_admin=p.f_id_pengirim WHERE f_id_penerima=$id_penerima ORDER BY p.id_pesan DESC LIMIT 20");
     }
     public function countBelumDibaca($id_penerima=null)
     {

@@ -12,6 +12,10 @@ class Notifikasi{
     {
         return $this->db->query("SELECT * FROM notifikasi_admin na JOIN admin a ON a.id_admin=na.f_id_penerima WHERE na.f_id_penerima=$id_penerima;");
     }
+    public function getNotifikasiTeratas($id_penerima=null)
+    {
+        return $this->db->query("SELECT * FROM notifikasi_admin na JOIN admin a ON a.id_admin=na.f_id_penerima WHERE na.f_id_penerima=$id_penerima ORDER BY na.id_notif DESC LIMIT 20;");
+    }
     public function getNotifikasiBelumDibuka($id_penerima=null)
     {
         return $this->db->query("SELECT * FROM notifikasi_admin na JOIN admin a ON a.id_admin=na.f_id_penerima WHERE na.f_id_penerima=$id_penerima AND dibuka='0';");

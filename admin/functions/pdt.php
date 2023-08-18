@@ -31,7 +31,7 @@ class PDT{
         }
     }
     public function getPeriode(){
-        return $this->db->query("SELECT * FROM periode ORDER BY id_periode LIMIT 1");
+        return $this->db->query("SELECT * FROM periode ORDER BY id_periode DESC LIMIT 1");
     }
 }
 
