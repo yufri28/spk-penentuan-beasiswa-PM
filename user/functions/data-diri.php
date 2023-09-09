@@ -120,7 +120,7 @@ class DataDiri{
                 $status_keluarga =  $data['status_keluarga'];
                 $pendapatan =  $data['pendapatan'];
                 $jumlah_tanggungan =  $data['jumlah_tanggungan'];
-                $ipk =  $data['ipk'];
+                $ipk = $this->conversiIPK($data['ipk']);
                 $semester =  $data['semester'];
 
                 $data_kriteria = [

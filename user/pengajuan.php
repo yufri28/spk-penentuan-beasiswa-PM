@@ -2,7 +2,6 @@
 session_start();
 unset($_SESSION['menu']);
 $_SESSION['menu'] = 'pengajuan';
-require '../includes/header.php';
 require_once './functions/data-diri.php';
 require_once './functions/notifikasi.php';
 require_once './functions/pengajuan.php';
@@ -58,7 +57,7 @@ if(isset($_POST['ajukan'])){
     ];
     $Pengajuan->ajukanBeasiswa($data);
 }
-
+require '../includes/header.php';
 ?>
 <?php if (isset($_SESSION['success'])): ?>
 <script>

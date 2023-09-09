@@ -105,11 +105,13 @@ $dataPengumuman = $Setting->getPengumuman();
 if(isset($_POST['tambah-pengumuman'])){
 
     $judul = $_POST['pengumuman'][0];
-    $isi = $_POST['pengumuman'][1];
+    $tanggal_berakhir = $_POST['pengumuman'][1];
+    $isi = $_POST['pengumuman'][2];
 
     $data = [
         'judul' => $judul,
-        'isi' => $isi
+        'isi' => $isi,
+        'tanggal_berakhir' => $tanggal_berakhir,
     ];
     
     $Setting->simpanPengumuman($data);
@@ -117,12 +119,14 @@ if(isset($_POST['tambah-pengumuman'])){
 if(isset($_POST['edit-pengumuman'])){
     $id_pengumuman = $_POST['pengumuman'][0];
     $judul = $_POST['pengumuman'][1];
-    $isi = $_POST['pengumuman'][2];
+    $tanggal_berakhir = $_POST['pengumuman'][2];
+    $isi = $_POST['pengumuman'][3];
 
     $data = [
         'id_pengumuman' => $id_pengumuman,
         'judul' => $judul,
-        'isi' => $isi
+        'isi' => $isi,
+        'tanggal_berakhir' => $tanggal_berakhir,
     ];
     
     $Setting->editPengumuman($data);
@@ -186,7 +190,8 @@ Swal.fire({
                                     <th>No</th>
                                     <th>Judul</th>
                                     <th>Isi</th>
-                                    <th>Tanggal</th>
+                                    <th>Tanggal Diposting</th>
+                                    <th>Tanggal Berakhir</th>
                                     <th cclass="text-nowrap">Aksi</th>
                                 </tr>
                             </thead>
@@ -197,6 +202,7 @@ Swal.fire({
                                     <td><?=$pengumuman['judul'];?></td>
                                     <td><?=$pengumuman['isi_pengumuman'];?></td>
                                     <td><?=date("d-m-Y : H:i:s", strtotime($pengumuman['tanggal_posting']));?></td>
+                                    <td><?=date("d-m-Y : H:i:s", strtotime($pengumuman['tanggal_berakhir']));?></td>
                                     <td class="text-nowrap">
                                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
                                             data-target="#editPengumuman<?=$pengumuman['id_pengumuman'];?>">Edit
@@ -332,6 +338,11 @@ Swal.fire({
                             placeholder="Judul pengumuman">
                     </div>
                     <div class="form-group">
+                        <label for="tanggal_berakhir">Tanggal Berakhir <small class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" required name="pengumuman[]" type="datetime-local">
+                        <small><i>Batas tanggal pengumuman akan ditampilkan pada pengguna.</i></small>
+                    </div>
+                    <div class="form-group">
                         <label for="isi_pengumuman">Isi Pengumuman <small class="text-danger">*</small></label>
                         <textarea required name="pengumuman[]" class="form-control form-control-sm" cols="5"
                             rows="5"></textarea>
@@ -363,6 +374,12 @@ Swal.fire({
                         <label for="judul">Judul <small class="text-danger">*</small></label>
                         <input class="form-control form-control-sm" value="<?=$pengumuman['judul'];?>" required
                             name="pengumuman[]" type="text" placeholder="Judul pengumuman">
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggal_berakhir">Tanggal Berakhir <small class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" value="<?=$pengumuman['tanggal_berakhir'];?>"
+                            required name="pengumuman[]" type="datetime-local">
+                        <small><i>Batas tanggal pengumuman akan ditampilkan pada pengguna.</i></small>
                     </div>
                     <div class="form-group">
                         <label for="isi_pengumuman">Isi Pengumuman <small class="text-danger">*</small></label>

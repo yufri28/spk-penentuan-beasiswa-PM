@@ -11,6 +11,77 @@ $fetch_id_pelamar = mysqli_fetch_assoc($cekDataPelamar);
 $id_pelamar = $fetch_id_pelamar['id_pelamar'];
 $cekPelamarKriteria = $dataDiri->cekPelamarKriteria($id_pelamar);
 
+$dataIpk = $dataDiri->getIPK();
+
+
+
+function selectId($params=null, $dataIpk=null){
+    $kategori1 = '';
+    $kategori2 = '';
+    $kategori3 = '';
+    $kategori4 = '';
+    $kategori5 = '';
+    $id_sub = 0;
+    foreach ($dataIpk as $key => $value) {
+        if($value['bobot_sub_kriteria'] == 5){
+            $kategori1 = $value['id_sub_kriteria'];
+        }else if($value['bobot_sub_kriteria'] == 4){
+            $kategori2 = $value['id_sub_kriteria'];
+        }
+        else if($value['bobot_sub_kriteria'] == 3){
+            $kategori3 = $value['id_sub_kriteria'];
+        }
+        else if($value['bobot_sub_kriteria'] == 2){
+            $kategori4 = $value['id_sub_kriteria'];
+        }
+        else if($value['bobot_sub_kriteria'] == 1){
+            $kategori5 = $value['id_sub_kriteria'];
+        }
+    }
+    if($_SESSION['jenjang'] == 'pt'){
+        $ipk = $params;
+        switch ($ipk) {
+            case $ipk >= 3.76 && $ipk <= 4.00:
+                $id_sub = $kategori1;
+                break;
+            case $ipk >= 3.51 && $ipk <= 3.75:
+                $id_sub = $kategori2;
+                break;
+            case $ipk >= 3.01 && $ipk <= 3.50:
+                $id_sub = $kategori3;
+                break;
+            case $ipk >= 2.51 && $ipk <= 3.00:
+                $id_sub = $kategori4;
+                break;
+            case $ipk <= 2.50:
+                $id_sub = $kategori5;
+                break;
+        } 
+    
+    }else if($_SESSION['jenjang'] == 'sma'){
+        $rata2 = $params;
+        switch ($rata2) {
+            case $rata2 >= 90 && $rata2 <= 100:
+                $id_sub = $kategori1;
+                break;
+            case $rata2 >= 81 && $rata2 <= 89.99:
+                $id_sub = $kategori2;
+                break;
+            case $rata2 >= 76 && $rata2 <= 80.99:
+                $id_sub = $kategori3;
+                break;
+            case $rata2 >= 65.01 && $rata2 <= 75.99:
+                $id_sub = $kategori4;
+                break;
+            case $rata2 <= 65:
+                $id_sub = $kategori5;
+                break;
+            } 
+    }
+    return $id_sub;
+} 
+
+
 if(mysqli_num_rows($cekDataPelamar) != 1){
     echo '<script>window.location.href = "./add-data-diri.php";</script>';
 }else if(mysqli_num_rows($cekDataPelamar) == 1 && mysqli_num_rows($cekPelamarKriteria) == 5){
@@ -67,7 +138,10 @@ if (isset($_POST["simpan"])) {
         $status_keluarga = $_POST['data_diri'][2];
         $pendapatan = $_POST['data_diri'][3];
         $jumlah_tanggungan = $_POST['data_diri'][4];
-        $ipk = $_POST['data_diri'][5];
+        // $ipk = $_POST['data_diri'][5];
+        $ipks = $_POST['data_diri'][5];
+        $ipk = str_replace(",",".",$ipks);
+        $id_sub_ipk = selectId($ipk, $dataIpk);
         $semester = $_POST['data_diri'][6];
     
         $data_diri = [
@@ -76,7 +150,7 @@ if (isset($_POST["simpan"])) {
             'status_keluarga' => $status_keluarga,
             'pendapatan' => $pendapatan,
             'jumlah_tanggungan' => $jumlah_tanggungan,
-            'ipk' => $ipk,
+            'ipk' => $id_sub_ipk,
             'semester' => $semester,
             'kartu_keluarga' => $uploadedFiles[0],
             'suket_beasiswa_lain' => $uploadedFiles[1],
@@ -160,7 +234,7 @@ $dataSemester = $dataDiri->getSemester();
                             <?php endforeach;?>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="ipk"><?= $_SESSION['jenjang'] == 'pt' ? 'IPK ':'Nilai Rata-rata Raport ';?> <small
                                 class="text-danger">*</small></label>
                         <select required class="form-control form-control-sm" name="data_diri[]" id="ipk">
@@ -171,7 +245,22 @@ $dataSemester = $dataDiri->getSemester();
                             </option>
                             <?php endforeach;?>
                         </select>
+                    </div> -->
+                    <?php if($_SESSION['jenjang'] == 'pt'):?>
+                    <div class="form-group">
+                        <label for="ipk">IPK <small class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" required name="data_diri[]" type="text"
+                            id="ipkInput" placeholder="Cth: 3.87">
+                        <small id="ipkValidationMessage" class="text-danger"></small>
                     </div>
+                    <?php else:?>
+                    <div class="form-group">
+                        <label for="rata2">Rata-rata nilai raport <small class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" required name="data_diri[]" type="text"
+                            id="rata2Input" placeholder="Cth: 89.00">
+                        <small id="rata2ValidationMessage" class="text-danger"></small>
+                    </div>
+                    <?php endif;?>
                     <div class="form-group">
                         <label for="semester"><?= $_SESSION['jenjang'] == 'pt' ? 'Semester ':'Kelas ';?> <small
                                 class="text-danger">*</small></label>
@@ -212,4 +301,40 @@ $dataSemester = $dataDiri->getSemester();
         </div>
     </div>
 </div>
+<script>
+const ipkInput = document.getElementById('ipkInput');
+const ipkValidationMessage = document.getElementById('ipkValidationMessage');
+
+ipkInput.addEventListener('input', function() {
+    const inputValue = ipkInput.value;
+    const ipkPattern =
+        /^([0-3](\.\d{1,2})?|4(\.0{1,2})?)$/; // Pattern untuk IPK antara 0.00 dan 4.00
+
+    if (!ipkPattern.test(inputValue)) {
+        ipkValidationMessage.textContent =
+            'Format IPK tidak valid. Harap masukkan angka antara 0.00 dan 4.00';
+        ipkInput.setCustomValidity('Format IPK tidak valid');
+    } else {
+        ipkValidationMessage.textContent = '';
+        ipkInput.setCustomValidity('');
+    }
+});
+
+const rata2Input = document.getElementById('rata2Input');
+const rata2ValidationMessage = document.getElementById('rata2ValidationMessage');
+
+rata2Input.addEventListener('input', function() {
+    const inputValue = rata2Input.value;
+    const rata2Pattern = /^(100(\.00?)?|[0-9]{1,2}(\.\d{1,2})?)$/; // Pattern untuk nilai antara 0.00 dan 100.00
+
+    if (!rata2Pattern.test(inputValue)) {
+        rata2ValidationMessage.textContent =
+            'Format nilai tidak valid. Harap masukkan angka antara 0.00 dan 100.00';
+        rata2Input.setCustomValidity('Format nilai tidak valid');
+    } else {
+        rata2ValidationMessage.textContent = '';
+        rata2Input.setCustomValidity('');
+    }
+});
+</script>
 <?php require '../includes/footer.php';?>

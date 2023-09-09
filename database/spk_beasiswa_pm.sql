@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 18 Jul 2023 pada 18.40
+-- Waktu pembuatan: 09 Sep 2023 pada 05.58
 -- Versi server: 10.4.24-MariaDB
 -- Versi PHP: 8.1.6
 
@@ -41,7 +41,16 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`id_admin`, `username`, `password`, `level`, `f_id_rayon`) VALUES
 (14, 'admin', '$2y$10$C5PQf4i.pS0mBB3DsYauIe8D5je7gJn8g40u7V1Gb4F9dCY9Lbzba', 0, 1),
-(16, 'rosa', '$2y$10$jfAccKdRT4ksAUkWA474iOteTquzp7T5HaHdQPnnC3K1KTG61hnJK', 1, 24);
+(17, 'user', '$2y$10$qOnv5laAF6QgDfqvh.eI7OxbyJUN0jF42pJSDj/UQFubFvYWKVc36', 1, 25),
+(19, 'koor_rayon_2', '$2y$10$4vNaWf6eOo3Djix.hPa9.ernaksdBJGcA6HT7EpJTsgsDV/JBglbO', 1, 27),
+(20, 'koor_rayon_3', '$2y$10$cBO.2Nd7SampvBk6xK6DQeYP/K8wbKiPANsoFbienugCnshKrP64.', 1, 28),
+(21, 'koor_rayon_4', '$2y$10$qoQAs.hH/whzULafLeu0UOAsMsKf7/.ui/OEuDz6IQyJQP6ez6hFW', 1, 29),
+(22, 'koor_rayon_5', '$2y$10$fwhc0686BUg3iVttJ62eEuM3zA8T9AVYn99f77Zr6JArP98yf7HHK', 1, 30),
+(23, 'koor_rayon_6', '$2y$10$n3KNttHK8DjdL4gIaJ6K8umWejqXFksJiYXcoiEys2hidqtnL.iY.', 1, 31),
+(24, 'koor_rayon_7', '$2y$10$srWKJ9ReQXMSXciPojsUi.m/RYF4/carAOLP/9IL5C0bhfpw.H1Dm', 1, 32),
+(25, 'koor_rayon_8', '$2y$10$.KOX8U6JOncVeNOUYR.0r..NT15g/gGU8VpvZ4Yf0DhGddZvEMJ7G', 1, 33),
+(26, 'koor_rayon_9', '$2y$10$zdS/I49JRuI9gMxNJPF6.OmsPt6qxSbIndmG/1XwsbvjkkmQd8oui', 1, 34),
+(27, 'koor_rayon_10', '$2y$10$pVnDUK4MjO8htq72AedCp.e/vMbsSf5STkg/nbK8tRylqu5ijlb1q', 1, 35);
 
 -- --------------------------------------------------------
 
@@ -68,9 +77,13 @@ CREATE TABLE `data_pelamar` (
 --
 
 INSERT INTO `data_pelamar` (`id_pelamar`, `nama`, `foto`, `sekolah`, `jurusan`, `no_hp`, `kartu_keluarga`, `s_beasiswa_lain`, `raport_khs`, `f_id_rayon`, `f_id_login`) VALUES
-(24, 'Rosaliani Kaseh', 'DFD UJIAN.png', 'UNDANA', 'Ilkom', '12345678', 'Diagram konteksrevisi ibu adri 1.png', 'DFD UJIAN.png', 'Diagram konteksrevisi ibu adri 1_1.png', 24, 9),
-(25, 'simon', 'DFD UJIAN_1.png', 'UNDANA', 'ilkom', '12345', 'Diagram konteksrevisi ibu adri 1_2.png', 'DFD UJIAN_1.png', 'ERD UJIAN P.png', 24, 10),
-(26, 'petrus', 'DFD UJIAN_2.png', 'SMA 6 Kupang', 'IPA', '123', 'DFD UJIAN_2.png', 'DFD UJIAN_3.png', 'Diagram konteksrevisi ibu adri 1_3.png', 24, 11);
+(32, 'Yufridon C. Luttu', 'Screenshot (6).png', 'UNDANA', 'Ilkom', '424234234234', 'Screenshot (6).png', 'Screenshot (8)_1.png', 'Screenshot (2).png', 25, 15),
+(33, 'Yufridon C. Luttu32', 'Screenshot (2)_1.png', 'UNDANA', 'ILKOM', '43342323232', 'Screenshot (1)_4.png', 'Screenshot (3)_2.png', 'Screenshot (2)_1.png', 25, 16),
+(34, 'Yufridon C. Luttu3', 'Screenshot (1).png', 'SMA 1', 'IPA', '343434433434', 'Screenshot (2)_2.png', 'Screenshot (7)_1.png', 'Screenshot (9)_1.png', 25, 17),
+(35, 'Yufridon C. Luttu2', 'Screenshot (1)_1.png', 'Yufridon C. Luttu', 'Yufridon C. Luttu2', '55656565', 'Screenshot (7)_2.png', 'Screenshot (8)_2.png', 'Screenshot (6)_1.png', 25, 18),
+(36, 'dadsadas', 'Screenshot (6)_1.png', 'dadsadas', 'UNDANA', '232323232323', 'Screenshot (6)_2.png', 'Screenshot (7)_3.png', 'Screenshot (3)_3.png', 28, 19),
+(37, 'Yufridon C. Luttu', 'Screenshot (6)_2.png', 'Yufridon C. Luttu', 'Yufridon C. Luttu', '433433333333', 'Screenshot (7)_4.png', 'Screenshot (4).png', 'Screenshot (1)_5.png', 31, 20),
+(38, 'Yufridon C. Luttu2', 'Screenshot (6)_3.png', 'Yufridon C. Luttu', 'Yufridon C. Luttu', '432535443554', 'Screenshot (8)_4.png', 'Screenshot (9)_3.png', 'Screenshot (6)_4.png', 32, 21);
 
 -- --------------------------------------------------------
 
@@ -91,8 +104,10 @@ CREATE TABLE `hasil_akhir` (
 --
 
 INSERT INTO `hasil_akhir` (`id_hasil`, `f_id_pelamar`, `f_id_periode`, `nilai_rank`, `jenjang`) VALUES
-(16, 25, 8, '3.3571429337774', 'pt'),
-(17, 26, 8, '3.3571429337774', 'sma');
+(18, 34, 9, '2.3642857681428', 'sma'),
+(19, 33, 9, '2.5571429154703', 'pt'),
+(20, 33, 11, '2.5571429154703', 'pt'),
+(21, 34, 11, '2.4285714839186', 'sma');
 
 -- --------------------------------------------------------
 
@@ -139,9 +154,13 @@ CREATE TABLE `login_pelamar` (
 --
 
 INSERT INTO `login_pelamar` (`id_login`, `username`, `password`, `jenjang`) VALUES
-(9, 'rosaliani', '$2y$10$cyQ5zE.uik.0m6Gkto/ujehwoctW8.B0VRfy05BCTAHSRnvIihNPa', 'pt'),
-(10, 'simon', '$2y$10$bvo66evfQq4uC7pwW4j00uKDh6eqoucTRHGUdrHiS0XCzcMSRi/Yq', 'pt'),
-(11, 'petrus', '$2y$10$6oYpmb3dxEPl5HurdzLmquvc0xku0pW/QfF52ORPndy9Xd3Wne.ry', 'sma');
+(15, 'yupi', '$2y$10$/IJ.V0GJGcU3dEUTZkvywe5quPOhhKl.thEP18XsSgC/OlkCRpjba', 'pt'),
+(16, 'pengguna', '$2y$10$8FQp278deY.P4bF1QNIpF.F3yaYSoJl2Inr7jFhKqbaTMdUuvwksa', 'pt'),
+(17, 'pengguna2', '$2y$10$gkhj1oUeZ88h0qwRv1jY0.PF2UO9VVBXB3XmgPDimhhPh3earsYU2', 'sma'),
+(18, 'yufrid', '$2y$10$iUczbxYJ.5y86YgNYlCIo.Q/HnXfEopkN2b/rIL6nntI.hf0aNMwu', 'sma'),
+(19, 'pengguna21', '$2y$10$Mxk9TAYYanI9VbVaykt4Qup115pEpp0lmsSKybrZP9k4k.o3osWtC', 'pt'),
+(20, 'pengguna5', '$2y$10$1lrfkHV7WZrnSpS0CnKf/uGy3gh7bGr8yEcvmIvnVqPZfAX8MQtSG', 'pt'),
+(21, 'pengguna0', '$2y$10$6UKG85y7.jCZuC.vjHA5TOk6N3rH9gcuhEyo38GxcZ5WYIriQAs1y', 'sma');
 
 -- --------------------------------------------------------
 
@@ -164,11 +183,15 @@ CREATE TABLE `notifikasi_admin` (
 --
 
 INSERT INTO `notifikasi_admin` (`id_notif`, `f_id_penerima`, `f_id_pengirim`, `isi_notif`, `tanggal`, `dibuka`, `jenis_notif`) VALUES
-(75, 16, 9, 'Rosaliani Kaseh melakukan pengajuan beasiswa.', '2023-07-18 12:00:42', '1', 'pengajuan'),
-(76, 16, 10, 'simon melakukan pengajuan beasiswa.', '2023-07-18 12:06:18', '0', 'pengajuan'),
-(77, 16, 10, 'simon melakukan pengajuan beasiswa.', '2023-07-18 12:10:04', '0', 'pengajuan'),
-(78, 16, 9, 'Rosaliani Kaseh melakukan pengajuan beasiswa.', '2023-07-18 12:10:27', '0', 'pengajuan'),
-(79, 16, 11, 'petrus melakukan pengajuan beasiswa.', '2023-07-18 12:27:39', '0', 'pengajuan');
+(87, 17, 15, 'Yufridon C. Luttu melakukan pengajuan beasiswa.', '2023-08-17 07:59:02', '0', 'pengajuan'),
+(88, 17, 16, 'Yufridon C. Luttu32 melakukan pengajuan beasiswa.', '2023-08-17 08:06:29', '0', 'pengajuan'),
+(89, 17, 17, 'Yufridon C. Luttu3 telah memperbaharui data dirinya.', '2023-08-18 14:17:38', '0', 'data-diri'),
+(90, 17, 15, 'Yufridon C. Luttu telah memperbaharui data dirinya.', '2023-08-18 14:18:56', '0', 'data-diri'),
+(91, 17, 17, 'Yufridon C. Luttu3 melakukan pengajuan beasiswa.', '2023-08-18 14:42:27', '0', 'pengajuan'),
+(92, 17, 15, 'Yufridon C. Luttu melakukan pengajuan beasiswa.', '2023-08-18 15:02:44', '0', 'pengajuan'),
+(93, 17, 15, 'Yufridon C. Luttu melakukan pengajuan beasiswa.', '2023-08-18 15:13:49', '0', 'pengajuan'),
+(94, 17, 16, 'Yufridon C. Luttu32 melakukan pengajuan beasiswa.', '2023-08-18 15:14:14', '0', 'pengajuan'),
+(95, 17, 17, 'Yufridon C. Luttu3 melakukan pengajuan beasiswa.', '2023-08-18 15:14:34', '0', 'pengajuan');
 
 -- --------------------------------------------------------
 
@@ -190,11 +213,15 @@ CREATE TABLE `notifikasi_pelamar` (
 --
 
 INSERT INTO `notifikasi_pelamar` (`id_notif`, `f_id_pengirim`, `f_id_penerima`, `isi_notifikasi`, `tanggal`, `dibuka`) VALUES
-(27, 16, 9, 'Data anda telah diverifikasi.', '2023-07-18 12:03:18', '1'),
-(28, 16, 10, 'Data anda telah diverifikasi.', '2023-07-18 12:06:38', '0'),
-(29, 16, 9, 'Data anda telah diverifikasi.', '2023-07-18 12:10:48', '1'),
-(30, 16, 10, 'Data anda telah diverifikasi.', '2023-07-18 12:10:53', '0'),
-(31, 16, 11, 'Data anda telah diverifikasi.', '2023-07-18 12:30:21', '0');
+(33, 17, 17, 'Data anda telah diverifikasi.', '2023-08-18 14:44:53', '0'),
+(34, 17, 15, 'Data anda telah diverifikasi.', '2023-08-18 14:45:03', '1'),
+(35, 17, 16, 'Data anda telah diverifikasi.', '2023-08-18 14:45:13', '0'),
+(36, 17, 15, 'Data anda telah diverifikasi.', '2023-08-18 15:23:09', '1'),
+(37, 17, 16, 'Data anda telah diverifikasi.', '2023-08-18 15:23:14', '0'),
+(38, 17, 17, 'Data anda telah diverifikasi.', '2023-08-18 15:23:19', '0'),
+(39, 17, 15, 'Data anda telah diverifikasi.', '2023-08-18 15:34:29', '1'),
+(40, 17, 17, 'Data anda telah diverifikasi.', '2023-08-18 15:34:44', '0'),
+(41, 17, 16, 'Data anda telah diverifikasi.', '2023-08-18 15:34:49', '0');
 
 -- --------------------------------------------------------
 
@@ -215,27 +242,71 @@ CREATE TABLE `pdt` (
 --
 
 INSERT INTO `pdt` (`id_pdt`, `f_id_kriteria`, `f_id_sub_kriteria`, `f_id_pelamar`, `f_id_periode`) VALUES
-(248, 'K1', 1, 24, 8),
-(249, 'K2', 5, 24, 8),
-(250, 'K3', 9, 24, 8),
-(251, 'K4', 11, 24, 8),
-(252, 'K5', 18, 24, 8),
-(253, 'K6', 22, 24, 8),
-(254, 'K7', 26, 24, 8),
-(255, 'K1', 1, 25, 8),
-(256, 'K2', 4, 25, 8),
-(257, 'K3', 7, 25, 8),
-(258, 'K4', 10, 25, 8),
-(259, 'K5', 15, 25, 8),
-(260, 'K6', 20, 25, 8),
-(261, 'K7', 25, 25, 8),
-(262, 'K1', 1, 26, 8),
-(263, 'K2', 4, 26, 8),
-(264, 'K3', 7, 26, 8),
-(265, 'K4', 10, 26, 8),
-(266, 'K5', 15, 26, 8),
-(267, 'K6', 20, 26, 8),
-(268, 'K7', 25, 26, 8);
+(276, 'K1', 21, 34, 8),
+(277, 'K2', 26, 34, 8),
+(278, 'K1', 1, 34, 8),
+(279, 'K2', 5, 34, 8),
+(280, 'K3', 8, 34, 8),
+(281, 'K4', 12, 34, 8),
+(282, 'K5', 18, 34, 8),
+(283, 'K6', 21, 34, 8),
+(284, 'K7', 26, 34, 8),
+(285, 'K1', 3, 32, 8),
+(286, 'K2', 5, 32, 8),
+(287, 'K3', 7, 32, 8),
+(288, 'K4', 11, 32, 8),
+(289, 'K5', 17, 32, 8),
+(290, 'K6', 22, 32, 8),
+(291, 'K7', 26, 32, 8),
+(292, 'K1', 3, 33, 8),
+(293, 'K2', 5, 33, 8),
+(294, 'K3', 8, 33, 8),
+(295, 'K4', 11, 33, 8),
+(296, 'K5', 16, 33, 8),
+(297, 'K6', 21, 33, 8),
+(298, 'K7', 26, 33, 8),
+(299, 'K1', 3, 32, 8),
+(300, 'K2', 5, 32, 8),
+(301, 'K3', 7, 32, 8),
+(302, 'K4', 11, 32, 8),
+(303, 'K5', 17, 32, 8),
+(304, 'K6', 22, 32, 8),
+(305, 'K7', 26, 32, 8),
+(306, 'K1', 3, 33, 8),
+(307, 'K2', 5, 33, 8),
+(308, 'K3', 8, 33, 8),
+(309, 'K4', 11, 33, 8),
+(310, 'K5', 16, 33, 8),
+(311, 'K6', 21, 33, 8),
+(312, 'K7', 26, 33, 8),
+(313, 'K1', 1, 34, 8),
+(314, 'K2', 5, 34, 8),
+(315, 'K3', 8, 34, 8),
+(316, 'K4', 12, 34, 8),
+(317, 'K5', 18, 34, 8),
+(318, 'K6', 21, 34, 8),
+(319, 'K7', 26, 34, 8),
+(320, 'K1', 3, 32, 11),
+(321, 'K2', 5, 32, 11),
+(322, 'K3', 7, 32, 11),
+(323, 'K4', 11, 32, 11),
+(324, 'K5', 17, 32, 11),
+(325, 'K6', 22, 32, 11),
+(326, 'K7', 26, 32, 11),
+(327, 'K1', 1, 34, 11),
+(328, 'K2', 5, 34, 11),
+(329, 'K3', 8, 34, 11),
+(330, 'K4', 12, 34, 11),
+(331, 'K5', 18, 34, 11),
+(332, 'K6', 21, 34, 11),
+(333, 'K7', 26, 34, 11),
+(334, 'K1', 3, 33, 11),
+(335, 'K2', 5, 33, 11),
+(336, 'K3', 8, 33, 11),
+(337, 'K4', 11, 33, 11),
+(338, 'K5', 16, 33, 11),
+(339, 'K6', 21, 33, 11),
+(340, 'K7', 26, 33, 11);
 
 -- --------------------------------------------------------
 
@@ -255,27 +326,60 @@ CREATE TABLE `pelamar_kriteria` (
 --
 
 INSERT INTO `pelamar_kriteria` (`id_pelamar_kriteria`, `f_id_kriteria`, `f_id_sub_kriteria`, `f_id_pelamar`) VALUES
-(92, 'K1', 1, 24),
-(93, 'K2', 5, 24),
-(94, 'K3', 9, 24),
-(95, 'K4', 11, 24),
-(96, 'K5', 18, 24),
-(97, 'K6', 22, 24),
-(98, 'K7', 26, 24),
-(99, 'K1', 1, 25),
-(100, 'K2', 4, 25),
-(101, 'K3', 7, 25),
-(102, 'K4', 10, 25),
-(103, 'K5', 15, 25),
-(104, 'K6', 20, 25),
-(105, 'K7', 25, 25),
-(106, 'K1', 1, 26),
-(107, 'K2', 4, 26),
-(108, 'K3', 7, 26),
-(109, 'K4', 10, 26),
-(110, 'K5', 15, 26),
-(111, 'K6', 20, 26),
-(112, 'K7', 25, 26);
+(148, 'K1', 3, 32),
+(149, 'K2', 5, 32),
+(150, 'K3', 7, 32),
+(151, 'K4', 11, 32),
+(152, 'K5', 17, 32),
+(153, 'K6', 22, 32),
+(154, 'K7', 26, 32),
+(155, 'K1', 3, 33),
+(156, 'K2', 5, 33),
+(157, 'K3', 8, 33),
+(158, 'K4', 11, 33),
+(159, 'K5', 16, 33),
+(160, 'K6', 21, 33),
+(161, 'K7', 26, 33),
+(162, 'K1', 1, 34),
+(163, 'K2', 5, 34),
+(164, 'K3', 8, 34),
+(165, 'K4', 12, 34),
+(166, 'K5', 18, 34),
+(167, 'K6', 21, 34),
+(168, 'K7', 26, 34),
+(169, 'K1', 3, 35),
+(170, 'K2', 6, 35),
+(171, 'K3', 8, 35),
+(172, 'K4', 11, 35),
+(173, 'K5', 17, 35),
+(174, 'K6', 22, 35),
+(175, 'K7', 26, 35),
+(176, 'K1', 1, 36),
+(177, 'K2', 5, 36),
+(178, 'K3', 8, 36),
+(179, 'K4', 11, 36),
+(180, 'K5', 16, 36),
+(181, 'K6', 21, 36),
+(182, 'K7', 27, 36),
+(183, 'K1', 2, 37),
+(184, 'K2', 6, 37),
+(185, 'K3', 8, 37),
+(186, 'K4', 11, 37),
+(187, 'K5', 17, 37),
+(188, 'K6', 20, 37),
+(189, 'K7', 26, 37),
+(190, 'K1', 1, 38),
+(191, 'K2', 5, 38),
+(192, 'K3', 9, 38),
+(193, 'K4', 10, 38),
+(194, 'K5', 16, 38),
+(196, 'K1', 1, 38),
+(197, 'K2', 5, 38),
+(198, 'K3', 9, 38),
+(199, 'K4', 10, 38),
+(200, 'K5', 16, 38),
+(201, 'K6', 22, 38),
+(202, 'K7', 26, 38);
 
 -- --------------------------------------------------------
 
@@ -287,15 +391,17 @@ CREATE TABLE `pengumuman` (
   `id_pengumuman` int(11) NOT NULL,
   `judul` varchar(255) NOT NULL,
   `isi_pengumuman` text NOT NULL,
-  `tanggal_posting` timestamp NOT NULL DEFAULT current_timestamp()
+  `tanggal_posting` timestamp NOT NULL DEFAULT current_timestamp(),
+  `tanggal_berakhir` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `pengumuman`
 --
 
-INSERT INTO `pengumuman` (`id_pengumuman`, `judul`, `isi_pengumuman`, `tanggal_posting`) VALUES
-(1, 'Daftar ulang siswa / mahasiswa yang lulus seleksi penerimaan beasiswa Tahun 2023 Periode 1', 'Bagi siswa / mahasiswa yang lulus seleksi penerimaan beasiswa Tahun 2023 Periode 1, Silahkan membawa berkas ke sekretariat gereja.', '2023-07-18 16:02:32');
+INSERT INTO `pengumuman` (`id_pengumuman`, `judul`, `isi_pengumuman`, `tanggal_posting`, `tanggal_berakhir`) VALUES
+(3, 'Daftar ulang mahasiswa/siswa yang lulus seleksi penerimaan beasiswa Tahun 2023 Periode 1', 'adsasasdasd', '2023-09-09 01:57:16', '2023-09-09 03:57:16'),
+(4, 'Daftar ulang mahasiswa/siswa yang lulus seleksi penerimaan beasiswa Tahun 2023 Periode 1', 'dasdasdasdsadee212131212', '2023-09-09 02:01:25', '2023-09-09 02:25:00');
 
 -- --------------------------------------------------------
 
@@ -318,7 +424,8 @@ CREATE TABLE `periode` (
 
 INSERT INTO `periode` (`id_periode`, `nama_periode`, `deskripsi`, `kuota_sma`, `kuota_pt`, `status`) VALUES
 (8, '20232', 'Tahun 2023 periode 2', 1, 1, 'tutup'),
-(9, '20241', 'Tahun 2024 Periode 1', 2, 1, 'buka');
+(9, '20241', 'Tahun 2024 Periode 1', 1, 1, 'tutup'),
+(11, '20242', 'Tahun 2024 Periode 2', 1, 1, 'buka');
 
 -- --------------------------------------------------------
 
@@ -334,13 +441,6 @@ CREATE TABLE `pesan` (
   `tanggal_kirim` timestamp NOT NULL DEFAULT current_timestamp(),
   `dibuka` enum('0','1') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data untuk tabel `pesan`
---
-
-INSERT INTO `pesan` (`id_pesan`, `f_id_pengirim`, `f_id_penerima`, `pesan`, `tanggal_kirim`, `dibuka`) VALUES
-(8, 16, 9, 'khs salah', '2023-07-18 12:02:02', '1');
 
 -- --------------------------------------------------------
 
@@ -359,7 +459,16 @@ CREATE TABLE `rayon` (
 
 INSERT INTO `rayon` (`id_rayon`, `nama_rayon`) VALUES
 (1, 'umum'),
-(24, 'Rayon I');
+(25, 'Rayon I'),
+(27, 'Rayon II'),
+(28, 'Rayon III'),
+(29, 'Rayon IV'),
+(30, 'Rayon V'),
+(31, 'Rayon VI'),
+(32, 'Rayon VII'),
+(33, 'Rayon VIII'),
+(34, 'Rayon IX'),
+(35, 'Rayon X');
 
 -- --------------------------------------------------------
 
@@ -385,8 +494,8 @@ INSERT INTO `sub_kriteria` (`id_sub_kriteria`, `nama_sub_kriteria`, `f_id_kriter
 (4, 'Aktif sebagai badan pengurus', 'K2', 3),
 (5, 'Aktif sebagai anggota', 'K2', 2),
 (6, 'Tidak aktif', 'K2', 1),
-(7, 'Yatim-Piatu', 'K3', 3),
-(8, 'Yatim/Piatu', 'K3', 2),
+(7, 'Yatim Piatu', 'K3', 3),
+(8, 'Yatim atau Piatu', 'K3', 2),
 (9, 'Lengkap', 'K3', 1),
 (10, '< Rp1.000.000', 'K4', 5),
 (11, 'Rp1.000.000 - < Rp1.500.000', 'K4', 4),
@@ -403,9 +512,9 @@ INSERT INTO `sub_kriteria` (`id_sub_kriteria`, `nama_sub_kriteria`, `f_id_kriter
 (22, '76,00 - 80,99 / 3,01 - 3,50', 'K6', 3),
 (23, '65,01 - 75,99 / 2,51 - 3,00', 'K6', 2),
 (24, '<= 65,00 / <= 2,50', 'K6', 1),
-(25, '3,4,5 / 1 & 2', 'K7', 3),
-(26, '6,7,8 / 3 & 4', 'K7', 2),
-(27, '9 - 14 / 5 & 6', 'K7', 1);
+(25, '3,4,5 / 1', 'K7', 3),
+(26, '6,7,8 / 2', 'K7', 2),
+(27, '9 - 14 / 3', 'K7', 1);
 
 -- --------------------------------------------------------
 
@@ -425,9 +534,12 @@ CREATE TABLE `verifikasi` (
 --
 
 INSERT INTO `verifikasi` (`id_verifikasi`, `f_id_pelamar`, `f_id_periode`, `status`) VALUES
-(38, 25, 8, '1'),
-(39, 24, 8, '1'),
-(40, 26, 8, '1');
+(49, 32, 9, '1'),
+(50, 33, 9, '1'),
+(51, 34, 9, '1'),
+(53, 32, 11, '1'),
+(54, 33, 11, '1'),
+(55, 34, 11, '1');
 
 --
 -- Indexes for dumped tables
@@ -553,73 +665,73 @@ ALTER TABLE `verifikasi`
 -- AUTO_INCREMENT untuk tabel `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT untuk tabel `data_pelamar`
 --
 ALTER TABLE `data_pelamar`
-  MODIFY `id_pelamar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_pelamar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT untuk tabel `hasil_akhir`
 --
 ALTER TABLE `hasil_akhir`
-  MODIFY `id_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT untuk tabel `login_pelamar`
 --
 ALTER TABLE `login_pelamar`
-  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT untuk tabel `notifikasi_admin`
 --
 ALTER TABLE `notifikasi_admin`
-  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT untuk tabel `notifikasi_pelamar`
 --
 ALTER TABLE `notifikasi_pelamar`
-  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id_notif` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT untuk tabel `pdt`
 --
 ALTER TABLE `pdt`
-  MODIFY `id_pdt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=276;
+  MODIFY `id_pdt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=341;
 
 --
 -- AUTO_INCREMENT untuk tabel `pelamar_kriteria`
 --
 ALTER TABLE `pelamar_kriteria`
-  MODIFY `id_pelamar_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id_pelamar_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengumuman`
 --
 ALTER TABLE `pengumuman`
-  MODIFY `id_pengumuman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_pengumuman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `periode`
 --
 ALTER TABLE `periode`
-  MODIFY `id_periode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_periode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `pesan`
 --
 ALTER TABLE `pesan`
-  MODIFY `id_pesan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_pesan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `rayon`
 --
 ALTER TABLE `rayon`
-  MODIFY `id_rayon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_rayon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT untuk tabel `sub_kriteria`
@@ -631,7 +743,7 @@ ALTER TABLE `sub_kriteria`
 -- AUTO_INCREMENT untuk tabel `verifikasi`
 --
 ALTER TABLE `verifikasi`
-  MODIFY `id_verifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id_verifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

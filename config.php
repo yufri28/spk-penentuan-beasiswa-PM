@@ -35,4 +35,6 @@ function connectDatabase()
 
 $koneksi = connectDatabase();
 
+date_default_timezone_set('Asia/Taipei');
+
 ?>

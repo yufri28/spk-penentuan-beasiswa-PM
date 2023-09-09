@@ -108,7 +108,7 @@ if(isset($_GET['p'])){
                                         <p style="text-align: justify; margin-top:20px; margin-bottom:40px;">
                                             <?= $fetchPengumuman['isi_pengumuman'];?></p>
                                         <div class="d-flex justify-content-end">
-                                            <a href="./home.php" class="btn btn-outline-primary"><svg
+                                            <a href="./home.php#pengumuman" class="btn btn-outline-primary"><svg
                                                     xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                                                     <path fill-rule="evenodd"

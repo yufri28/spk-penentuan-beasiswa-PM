@@ -39,7 +39,7 @@ function modifWaktu($tanggal=null){
     return $message;
 }
 
-$dataPengumuman = $koneksi->query("SELECT * FROM pengumuman");
+$dataPengumuman = $koneksi->query("SELECT * FROM pengumuman WHERE tanggal_berakhir > NOW();");
 
 
 ?>

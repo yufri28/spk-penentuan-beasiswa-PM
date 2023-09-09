@@ -190,7 +190,8 @@ class Setting{
         }else{
             $judul = $data['judul'];
             $isi = $data['isi'];
-            $insetPengumuman = $this->db->query("INSERT INTO pengumuman(id_pengumuman,judul,isi_pengumuman,tanggal_posting)VALUES(0,'$judul','$isi',NOW())");
+            $tanggal_berakhir = $data['tanggal_berakhir'];
+            $insetPengumuman = $this->db->query("INSERT INTO pengumuman(id_pengumuman,judul,isi_pengumuman,tanggal_posting,tanggal_berakhir)VALUES(0,'$judul','$isi',NOW(),'$tanggal_berakhir')");
             if($insetPengumuman && $this->db->affected_rows > 0){
                 return $_SESSION['success'] = "Data berhasil ditambahkan.";
             }else{
@@ -205,7 +206,8 @@ class Setting{
             $id_pengumuman = $data['id_pengumuman'];
             $judul = $data['judul'];
             $isi = $data['isi'];
-            $updatePengumuman = $this->db->query("UPDATE pengumuman SET judul='$judul',isi_pengumuman='$isi' WHERE id_pengumuman=$id_pengumuman");
+            $tanggal_berakhir = $data['tanggal_berakhir'];
+            $updatePengumuman = $this->db->query("UPDATE pengumuman SET judul='$judul',isi_pengumuman='$isi',tanggal_berakhir='$tanggal_berakhir' WHERE id_pengumuman=$id_pengumuman");
             if($updatePengumuman && $this->db->affected_rows > 0){
                 return $_SESSION['success'] = "Data berhasil diedit.";
             }else{

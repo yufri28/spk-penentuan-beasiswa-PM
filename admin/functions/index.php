@@ -20,6 +20,16 @@
         {
             return $this->db->query("SELECT * FROM data_pelamar");
         }
+          public function countDataPelamarByRayon()
+        {
+            return $this->db->query(
+                "SELECT data_pelamar.f_id_rayon, 
+                rayon.nama_rayon, COUNT(*) 
+                AS jumlah_pelamar FROM data_pelamar 
+                JOIN rayon ON data_pelamar.f_id_rayon=rayon.id_rayon 
+                GROUP BY rayon.id_rayon;"
+                );
+        }
         public function countKriteria()
         {
             return $this->db->query("SELECT * FROM kriteria");

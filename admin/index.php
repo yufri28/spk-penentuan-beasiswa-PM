@@ -6,16 +6,29 @@ require './header.php';
 require_once './functions/index.php';
 
 $countPengguna = mysqli_num_rows($Index->countKoordinator()) + mysqli_num_rows($Index->countPelamar());
-$countPelamar = mysqli_num_rows($Index->countDataPelamar());
+// $countPelamar = mysqli_num_rows($Index->countDataPelamar());
+$countPelamar = $Index->countDataPelamarByRayon();
 $countKriteria = mysqli_num_rows($Index->countKriteria());
 $countSubKriteria = mysqli_num_rows($Index->countSubKriteria());
-
 ?>
 
 <!-- Area Chart -->
 <?php if($_SESSION['level'] == 0): ?>
 <div class="row">
-    <div class="col-lg-4">
+    <?php foreach ($countPelamar as $key => $value) :?>
+    <div class="col-lg-3">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header">
+                <h5>Pelamar <?=$value['nama_rayon'];?></h5>
+            </div>
+            <div class="card-body py-4 d-flex flex-row align-items-center justify-content-between">
+                <h1 class="text-center col-12"><?=$value['jumlah_pelamar']; ?></h1>
+            </div>
+        </div>
+    </div>
+    <?php endforeach;?>
+    <div class="col-lg-3">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header">
@@ -26,18 +39,7 @@ $countSubKriteria = mysqli_num_rows($Index->countSubKriteria());
             </div>
         </div>
     </div>
-    <div class="col-lg-4">
-        <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header">
-                <h5>Pelamar</h5>
-            </div>
-            <div class="card-body py-4 d-flex flex-row align-items-center justify-content-between">
-                <h1 class="text-center col-12"><?=isset($countPelamar)?$countPelamar:'-'; ?></h1>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header">
@@ -48,7 +50,7 @@ $countSubKriteria = mysqli_num_rows($Index->countSubKriteria());
             </div>
         </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header">
@@ -62,7 +64,7 @@ $countSubKriteria = mysqli_num_rows($Index->countSubKriteria());
 </div>
 <?php else:?>
 <div class="row d-flex justify-content-center">
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header">
@@ -73,7 +75,7 @@ $countSubKriteria = mysqli_num_rows($Index->countSubKriteria());
             </div>
         </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-3">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header">
