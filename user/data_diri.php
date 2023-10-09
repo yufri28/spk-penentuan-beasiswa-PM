@@ -125,6 +125,11 @@ Swal.fire({
                             <td>: </td>
                             <td><?= $_SESSION['jenjang'] == 'pt' ? explode("/", $pelamar_kriteria['nama_sub_kriteria'])[0]:explode("/",$pelamar_kriteria['nama_sub_kriteria'])[1];?>
                             </td>
+                            <?php elseif($pelamar_kriteria['nama_kriteria'] == "Pendapatan orang tua/wali"):?>
+                            <td><?= $pelamar_kriteria['nama_kriteria'];?></td>
+                            <td>: </td>
+                            <td><?= $fecthDataPelamar['pendapatan_ortu'];?>
+                            </td>
                             <?php else:?>
                             <td><?= $pelamar_kriteria['nama_kriteria'];?></td>
                             <td>: </td>
@@ -143,15 +148,6 @@ Swal.fire({
                             <td><a href="./uploads/berkas/<?=$fecthDataPelamar['kartu_keluarga'];?>">
                                     <img style="width:100px;height:100px;"
                                         src="./uploads/berkas/<?=$fecthDataPelamar['kartu_keluarga'];?>" alt="">
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td>Suket Beasiswa Lain <small><i>(jpg, png, jpeg)</i></small></td>
-                            <td>: </td>
-                            <td><a href="./uploads/berkas/<?=$fecthDataPelamar['s_beasiswa_lain'];?>">
-                                    <img style="width:100px;height:100px;"
-                                        src="./uploads/berkas/<?=$fecthDataPelamar['s_beasiswa_lain'];?>" alt="">
                                 </a>
                             </td>
                         </tr>
@@ -182,12 +178,12 @@ Swal.fire({
                             <td>-</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td>Pendapatan orang tua</td>
+                            <td>Pendapatan orang tua/wali</td>
                             <td>: </td>
                             <td>-</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td>Jumlah tanggungan orang tua</td>
+                            <td>Jumlah tanggungan orang tua/wali</td>
                             <td>: </td>
                             <td>-</td>
                         </tr>
@@ -208,14 +204,6 @@ Swal.fire({
                         </tr>
                         <tr class="border-bottom">
                             <td>Kartu Keluarga <small><i>(jpg, png, jpeg)</i></small></td>
-                            <td>: </td>
-                            <td><a href="../assets/images/no_images.png">
-                                    <img style="width:100px;height:100px;" src="../assets/images/no_images.png" alt="">
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border-bottom">
-                            <td>Suket Beasiswa Lain <small><i>(jpg, png, jpeg)</i></small></td>
                             <td>: </td>
                             <td><a href="../assets/images/no_images.png">
                                     <img style="width:100px;height:100px;" src="../assets/images/no_images.png" alt="">

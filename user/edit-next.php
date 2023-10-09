@@ -21,10 +21,34 @@ $fetch_pelamar_kriteria = mysqli_fetch_assoc($cekPelamarKriteria);
 $getAdmin = $dataDiri->getAdmin($fetch_data_pelamar['id_rayon']);
 $id_penerima = mysqli_fetch_assoc($getAdmin);
 
+
+
+function filterPendapatan($pendapatan, $kriteriaPendapatan){
+    $id_pendapatan = 0;
+    foreach ($kriteriaPendapatan as $key => $value) {
+        if($pendapatan <= 1000000 && $value['bobot_sub_kriteria'] == 5){
+            $id_pendapatan = $value['id_sub_kriteria'];
+        }
+        elseif(($pendapatan > 1000000 && $pendapatan <= 1500000) && $value['bobot_sub_kriteria'] == 4){
+            $id_pendapatan = $value['id_sub_kriteria'];
+        }
+        elseif(($pendapatan > 1500000 && $pendapatan <= 2000000) && $value['bobot_sub_kriteria'] == 3){
+            $id_pendapatan = $value['id_sub_kriteria'];
+        }
+        elseif(($pendapatan > 2000000 && $pendapatan < 3000000) && $value['bobot_sub_kriteria'] == 2){
+            $id_pendapatan = $value['id_sub_kriteria'];
+        }
+        elseif($pendapatan >= 3000000 && $value['bobot_sub_kriteria'] == 1){
+            $id_pendapatan = $value['id_sub_kriteria'];
+        }
+    }
+    return $id_pendapatan;
+}
+
+
 if (isset($_POST["simpan"])) {
     // Pastikan ada file gambar yang diunggah
     if ((isset($_FILES['kartu_keluarga']) && $_FILES['kartu_keluarga']['error'] === UPLOAD_ERR_OK) ||
-        (isset($_FILES['suket_beasiswa_lain']) && $_FILES['suket_beasiswa_lain']['error'] === UPLOAD_ERR_OK) ||
         (isset($_FILES['raport_khs']) && $_FILES['raport_khs']['error'] === UPLOAD_ERR_OK)) {
         // Array informasi file yang diunggah
         $files = [];
@@ -32,9 +56,9 @@ if (isset($_POST["simpan"])) {
             $files['kartu_keluarga'] = $_FILES['kartu_keluarga'];
         }
 
-        if (isset($_FILES['suket_beasiswa_lain']) && $_FILES['suket_beasiswa_lain']['error'] === UPLOAD_ERR_OK) {
-            $files['suket_beasiswa_lain'] = $_FILES['suket_beasiswa_lain'];
-        }
+        // if (isset($_FILES['suket_beasiswa_lain']) && $_FILES['suket_beasiswa_lain']['error'] === UPLOAD_ERR_OK) {
+        //     $files['suket_beasiswa_lain'] = $_FILES['suket_beasiswa_lain'];
+        // }
 
         if (isset($_FILES['raport_khs']) && $_FILES['raport_khs']['error'] === UPLOAD_ERR_OK) {
             $files['raport_khs'] = $_FILES['raport_khs'];
@@ -82,7 +106,8 @@ if (isset($_POST["simpan"])) {
         $status_jemaat = $_POST['data_diri'][0];
         $aktif_kegiatan = $_POST['data_diri'][1];
         $status_keluarga = $_POST['data_diri'][2];
-        $pendapatan = $_POST['data_diri'][3];
+        // $pendapatan = $_POST['data_diri'][3];
+        $pendapatan = filterPendapatan(str_replace('.', '', $_POST['data_diri'][3]),$dataDiri->getPendapatanOrtu());
         $jumlah_tanggungan = $_POST['data_diri'][4];
         $ipk = $_POST['data_diri'][5];
         $semester = $_POST['data_diri'][6];
@@ -97,12 +122,13 @@ if (isset($_POST["simpan"])) {
             'status_jemaat' => $status_jemaat,
             'aktif_kegiatan' => $aktif_kegiatan,
             'status_keluarga' => $status_keluarga,
-            'pendapatan' => $pendapatan,
+            'range_pendapatan' => $range_pendapatan,
+            'pendapatan' => str_replace('.', '', $_POST['data_diri'][3]),
             'jumlah_tanggungan' => $jumlah_tanggungan,
             'ipk' => $ipk,
             'semester' => $semester,
             'kartu_keluarga' => isset($uploadedFiles['kartu_keluarga']) ? $uploadedFiles['kartu_keluarga'] : $_POST["kartu_keluarga_lama"],
-            'suket_beasiswa_lain' => isset($uploadedFiles['suket_beasiswa_lain']) ? $uploadedFiles['suket_beasiswa_lain'] : $_POST["suket_beasiswa_lain_lama"],
+            // 'suket_beasiswa_lain' => isset($uploadedFiles['suket_beasiswa_lain']) ? $uploadedFiles['suket_beasiswa_lain'] : $_POST["suket_beasiswa_lain_lama"],
             'raport_khs' => isset($uploadedFiles['raport_khs']) ? $uploadedFiles['raport_khs'] : $_POST["raport_khs_lama"],
             'id_pelamar' => $id_pelamar,
             'f_id_pengirim' => $_SESSION['id_user'],
@@ -115,7 +141,8 @@ if (isset($_POST["simpan"])) {
         $status_jemaat = $_POST['data_diri'][0];
         $aktif_kegiatan = $_POST['data_diri'][1];
         $status_keluarga = $_POST['data_diri'][2];
-        $pendapatan = $_POST['data_diri'][3];
+        // $pendapatan = $_POST['data_diri'][3];
+        $range_pendapatan = filterPendapatan(str_replace('.', '', $_POST['data_diri'][3]),$dataDiri->getPendapatanOrtu());
         $jumlah_tanggungan = $_POST['data_diri'][4];
         $ipk = $_POST['data_diri'][5];
         $semester = $_POST['data_diri'][6];
@@ -130,12 +157,13 @@ if (isset($_POST["simpan"])) {
             'status_jemaat' => $status_jemaat,
             'aktif_kegiatan' => $aktif_kegiatan,
             'status_keluarga' => $status_keluarga,
-            'pendapatan' => $pendapatan,
+            'range_pendapatan' => $range_pendapatan,
+            'pendapatan' => str_replace('.', '', $_POST['data_diri'][3]),
             'jumlah_tanggungan' => $jumlah_tanggungan,
             'ipk' => $ipk,
             'semester' => $semester,
             'kartu_keluarga' => $_POST["kartu_keluarga_lama"],
-            'suket_beasiswa_lain' => $_POST["suket_beasiswa_lain_lama"],
+            // 'suket_beasiswa_lain' => $_POST["suket_beasiswa_lain_lama"],
             'raport_khs' => $_POST["raport_khs_lama"],
             'id_pelamar' => $id_pelamar,
             'f_id_pengirim' => $_SESSION['id_user'],
@@ -206,20 +234,32 @@ $dataSemester = $dataDiri->getSemester();
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="hidden" name="k4" value="<?= $getK4['id_pelamar_kriteria'];?>">
-                        <label for="pendapatan">Pendapatan Ortu <small class="text-danger">*</small></label>
-                        <select required class="form-control form-control-sm" name="data_diri[]" id="pendapatan">
+                        <?php
+                                $pendapatan_ortu = $fetch_data_pelamar['pendapatan_ortu'];
+                                $pendapatan_formatted = number_format($pendapatan_ortu, 0, ',', '.');
+                                foreach ($dataPendapatanOrtu as $key => $pendapatan){
+                                    if($getK4['id_sub_kriteria'] == $pendapatan['id_sub_kriteria']){
+                                        $id_pel = $getK4['id_pelamar_kriteria'];
+                                    } 
+                                }
+                                // Kemudian, gunakan $pendapatan_formatted dalam HTML
+                            ?>
+                        <input type="hidden" name="k4" value="<?=$id_pel;?>">
+                        <label for="pendapatan">Pendapatan Ortu/wali <small class="text-danger">*</small></label>
+                        <input required class="form-control form-control-sm" placeholder="Contoh: 1.000.000" type="text"
+                            name="data_diri[]" value="<?=$pendapatan_formatted;?>" id="pendapatan">
+                        <!-- <select required class="form-control form-control-sm" name="data_diri[]" id="pendapatan">
                             <option value="">-- Pilih --</option>
                             <?php foreach ($dataPendapatanOrtu as $key => $pendapatan):?>
                             <option <?= $getK4['id_sub_kriteria'] == $pendapatan['id_sub_kriteria'] ?'selected':'' ?>
                                 value="<?=$pendapatan['id_sub_kriteria'];?>">
                                 <?=$pendapatan['nama_sub_kriteria'];?></option>
                             <?php endforeach;?>
-                        </select>
+                        </select> -->
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="k5" value="<?= $getK5['id_pelamar_kriteria'];?>">
-                        <label for="jumlah_tanggungan">Jumlah Tanggungan Ortu <small
+                        <label for="jumlah_tanggungan">Jumlah Tanggungan Ortu/wali <small
                                 class="text-danger">*</small></label>
                         <select required class="form-control form-control-sm" name="data_diri[]" id="jumlah_tanggungan">
                             <option value="">-- Pilih --</option>
@@ -266,16 +306,6 @@ $dataSemester = $dataDiri->getSemester();
                         </label>
                         <input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="kartu_keluarga"
                             id="kartu_keluarga" />
-                        <small class="text-secondary"><i>Jika tidak ingin mengubah gambar, maka tidak perlu
-                                menguploadnya lagi.</i></small>
-                    </div>
-                    <div class="form-group">
-                        <input type="hidden" name="suket_beasiswa_lain_lama"
-                            value="<?=$fetch_data_pelamar['s_beasiswa_lain'];?>">
-                        <label for="suket_beasiswa_lain" class="form-label">Suket Beasiswa Lain
-                        </label>
-                        <input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="suket_beasiswa_lain"
-                            id="suket_beasiswa_lain" />
                         <small class="text-secondary"><i>Jika tidak ingin mengubah gambar, maka tidak perlu
                                 menguploadnya lagi.</i></small>
                     </div>

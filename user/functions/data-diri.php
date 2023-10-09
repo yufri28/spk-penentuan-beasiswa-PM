@@ -26,11 +26,11 @@ class DataDiri{
                 $insert = $this->db->query(
                     "INSERT INTO data_pelamar
                     (id_pelamar,nama,foto,sekolah,
-                    jurusan,no_hp,kartu_keluarga,s_beasiswa_lain,
+                    jurusan,no_hp,kartu_keluarga,
                     raport_khs,f_id_rayon,
                     f_id_login)
                     VALUES(null,'$nama','$foto',
-                    '$sekolah','$jurusan','$no_hp',null,null,
+                    '$sekolah','$jurusan','$no_hp',null,
                     null,$f_id_rayon,$f_id_login)");
 
                 if($this->db->affected_rows > 0 && $insert){
@@ -48,28 +48,29 @@ class DataDiri{
                 $status_jemaat = $data['status_jemaat'];
                 $aktif_kegiatan =  $data['aktif_kegiatan'];
                 $status_keluarga =  $data['status_keluarga'];
+                $range_pendapatan =  $data['range_pendapatan'];
                 $pendapatan =  $data['pendapatan'];
                 $jumlah_tanggungan =  $data['jumlah_tanggungan'];
                 $ipk =  $data['ipk'];
                 $semester =  $data['semester'];
+                
 
                 $kriteria_pelamar = [
                     'K1' => $status_jemaat,
                     'K2' => $aktif_kegiatan,
                     'K3' => $status_keluarga,
-                    'K4' => $pendapatan,
+                    'K4' => $range_pendapatan,
                     'K5' => $jumlah_tanggungan,
                     'K6' => $ipk,
                     'K7' => $semester
                 ];
                 $kartu_keluarga =  $data['kartu_keluarga'];
-                $suket_beasiswa_lain =  $data['suket_beasiswa_lain'];
                 $raport_khs =  $data['raport_khs'];
                 $id_pelamar = $data['id_pelamar'];
                 
                 $update = $this->db->query(
                     "UPDATE data_pelamar
-                    SET kartu_keluarga='$kartu_keluarga',s_beasiswa_lain='$suket_beasiswa_lain',raport_khs='$raport_khs' WHERE id_pelamar=$id_pelamar");
+                    SET pendapatan_ortu='$pendapatan', kartu_keluarga='$kartu_keluarga',raport_khs='$raport_khs' WHERE id_pelamar=$id_pelamar");
                 foreach ($kriteria_pelamar as $key => $kriteria) {
                     $insert = $this->db->query("INSERT INTO pelamar_kriteria(id_pelamar_kriteria,f_id_kriteria,f_id_sub_kriteria,f_id_pelamar) VALUES (0,'$key',$kriteria,$id_pelamar)");
                 }
@@ -114,13 +115,13 @@ class DataDiri{
         if(empty($data)){
             return $_SESSION['error'] = "Tidak ada data yang dikirim.";
         }else{
-            
                 $status_jemaat = $data['status_jemaat'];
                 $aktif_kegiatan =  $data['aktif_kegiatan'];
                 $status_keluarga =  $data['status_keluarga'];
+                $range_pendapatan =  $data['range_pendapatan'];
                 $pendapatan =  $data['pendapatan'];
                 $jumlah_tanggungan =  $data['jumlah_tanggungan'];
-                $ipk = $this->conversiIPK($data['ipk']);
+                $ipk = $data['ipk'];
                 $semester =  $data['semester'];
 
                 $data_kriteria = [
@@ -136,14 +137,13 @@ class DataDiri{
                     'K1' => $status_jemaat,
                     'K2' => $aktif_kegiatan,
                     'K3' => $status_keluarga,
-                    'K4' => $pendapatan,
+                    'K4' => $range_pendapatan,
                     'K5' => $jumlah_tanggungan,
                     'K6' => $ipk,
                     'K7' => $semester
                 ];
 
                 $kartu_keluarga =  $data['kartu_keluarga'];
-                $suket_beasiswa_lain =  $data['suket_beasiswa_lain'];
                 $raport_khs =  $data['raport_khs'];
                 $id_pelamar = $data['id_pelamar'];
                 $f_id_penerima = $data['f_id_penerima'];
@@ -152,7 +152,7 @@ class DataDiri{
                 
                 $update = $this->db->query(
                     "UPDATE data_pelamar
-                    SET kartu_keluarga='$kartu_keluarga',s_beasiswa_lain='$suket_beasiswa_lain',raport_khs='$raport_khs' WHERE id_pelamar=$id_pelamar");
+                    SET pendapatan_ortu='$pendapatan', kartu_keluarga='$kartu_keluarga',raport_khs='$raport_khs' WHERE id_pelamar=$id_pelamar");
                 foreach ($kriteria_pelamar as $key => $kriteria) {
                     $update = $this->db->query("UPDATE pelamar_kriteria SET f_id_kriteria='$key',f_id_sub_kriteria=$kriteria,f_id_pelamar=$id_pelamar WHERE id_pelamar_kriteria=$data_kriteria[$key]");
                 }

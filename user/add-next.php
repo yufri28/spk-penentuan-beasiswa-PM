@@ -11,8 +11,8 @@ $fetch_id_pelamar = mysqli_fetch_assoc($cekDataPelamar);
 $id_pelamar = $fetch_id_pelamar['id_pelamar'];
 $cekPelamarKriteria = $dataDiri->cekPelamarKriteria($id_pelamar);
 
-$dataIpk = $dataDiri->getIPK();
 
+$dataIpk = $dataDiri->getIPK();
 
 
 function selectId($params=null, $dataIpk=null){
@@ -81,6 +81,27 @@ function selectId($params=null, $dataIpk=null){
     return $id_sub;
 } 
 
+function filterPendapatan($pendapatan, $kriteriaPendapatan){
+    $id_pendapatan = 0;
+    foreach ($kriteriaPendapatan as $key => $value) {
+        if($pendapatan <= 1000000 && $value['bobot_sub_kriteria'] == 5){
+            $id_pendapatan = $value['id_sub_kriteria'];
+        }
+        elseif(($pendapatan > 1000000 && $pendapatan <= 1500000) && $value['bobot_sub_kriteria'] == 4){
+            $id_pendapatan = $value['id_sub_kriteria'];
+        }
+        elseif(($pendapatan > 1500000 && $pendapatan <= 2000000) && $value['bobot_sub_kriteria'] == 3){
+            $id_pendapatan = $value['id_sub_kriteria'];
+        }
+        elseif(($pendapatan > 2000000 && $pendapatan < 3000000) && $value['bobot_sub_kriteria'] == 2){
+            $id_pendapatan = $value['id_sub_kriteria'];
+        }
+        elseif($pendapatan >= 3000000 && $value['bobot_sub_kriteria'] == 1){
+            $id_pendapatan = $value['id_sub_kriteria'];
+        }
+    }
+    return $id_pendapatan;
+}
 
 if(mysqli_num_rows($cekDataPelamar) != 1){
     echo '<script>window.location.href = "./add-data-diri.php";</script>';
@@ -90,13 +111,11 @@ if(mysqli_num_rows($cekDataPelamar) != 1){
 
 if (isset($_POST["simpan"])) {
     // Pastikan ada file gambar yang diunggah
-    if ((isset($_FILES['kartu_keluarga']) && $_FILES['kartu_keluarga']['error'] === UPLOAD_ERR_OK) 
-    && (isset($_FILES['suket_beasiswa_lain']) && $_FILES['suket_beasiswa_lain']['error'] === UPLOAD_ERR_OK)
+    if ((isset($_FILES['kartu_keluarga']) && $_FILES['kartu_keluarga']['error'] === UPLOAD_ERR_OK)
     && isset($_FILES['raport_khs']) && $_FILES['raport_khs']['error'] === UPLOAD_ERR_OK) {
         // Array informasi file yang diunggah
         $files = [
             $_FILES['kartu_keluarga'],
-            $_FILES['suket_beasiswa_lain'],
             $_FILES['raport_khs']
         ];
 
@@ -136,7 +155,8 @@ if (isset($_POST["simpan"])) {
         $status_jemaat = $_POST['data_diri'][0];
         $aktif_kegiatan = $_POST['data_diri'][1];
         $status_keluarga = $_POST['data_diri'][2];
-        $pendapatan = $_POST['data_diri'][3];
+        // $pendapatan = $_POST['data_diri'][3];
+        $range_pendapatan = filterPendapatan(str_replace('.', '', $_POST['data_diri'][3]),$dataDiri->getPendapatanOrtu());
         $jumlah_tanggungan = $_POST['data_diri'][4];
         // $ipk = $_POST['data_diri'][5];
         $ipks = $_POST['data_diri'][5];
@@ -148,13 +168,13 @@ if (isset($_POST["simpan"])) {
             'status_jemaat' => $status_jemaat,
             'aktif_kegiatan' => $aktif_kegiatan,
             'status_keluarga' => $status_keluarga,
-            'pendapatan' => $pendapatan,
+            'range_pendapatan' => $range_pendapatan,
+            'pendapatan' => str_replace('.', '', $_POST['data_diri'][3]),
             'jumlah_tanggungan' => $jumlah_tanggungan,
             'ipk' => $id_sub_ipk,
             'semester' => $semester,
             'kartu_keluarga' => $uploadedFiles[0],
-            'suket_beasiswa_lain' => $uploadedFiles[1],
-            'raport_khs' => $uploadedFiles[2],
+            'raport_khs' => $uploadedFiles[1],
             'id_pelamar' =>$id_pelamar
         ];
         $dataDiri->addDataDiriNext($data_diri);
@@ -214,17 +234,19 @@ $dataSemester = $dataDiri->getSemester();
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="pendapatan">Pendapatan Ortu <small class="text-danger">*</small></label>
-                        <select required class="form-control form-control-sm" name="data_diri[]" id="pendapatan">
+                        <label for="pendapatan">Pendapatan Ortu/wali <small class="text-danger">*</small></label>
+                        <input required class="form-control form-control-sm" placeholder="Contoh: 1.000.000" type="text"
+                            name="data_diri[]" id="pendapatan">
+                        <!-- <select required class="form-control form-control-sm" name="data_diri[]" id="pendapatan">
                             <option value="">-- Pilih --</option>
                             <?php foreach ($dataPendapatanOrtu as $key => $pendapatan):?>
                             <option value="<?=$pendapatan['id_sub_kriteria'];?>">
                                 <?=$pendapatan['nama_sub_kriteria'];?></option>
                             <?php endforeach;?>
-                        </select>
+                        </select> -->
                     </div>
                     <div class="form-group">
-                        <label for="jumlah_tanggungan">Jumlah Tanggungan Ortu <small
+                        <label for="jumlah_tanggungan">Jumlah Tanggungan Ortu/wali <small
                                 class="text-danger">*</small></label>
                         <select required class="form-control form-control-sm" name="data_diri[]" id="jumlah_tanggungan">
                             <option value="">-- Pilih --</option>
@@ -279,12 +301,12 @@ $dataSemester = $dataDiri->getSemester();
                         <input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="kartu_keluarga"
                             id="kartu_keluarga" required />
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="suket_beasiswa_lain" class="form-label">Suket Beasiswa Lain
                             <small class="text-danger">*</small></label>
                         <input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="suket_beasiswa_lain"
-                            id="suket_beasiswa_lain" required />
-                    </div>
+                            id="suket_beasiswa_lain" />
+                    </div> -->
                     <div class="form-group">
                         <label for="raport_khs"
                             class="form-label"><?= $_SESSION['jenjang'] == 'pt' ? 'KHS ':'Raport ';?>
