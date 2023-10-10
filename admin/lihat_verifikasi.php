@@ -191,15 +191,6 @@ Swal.fire({
                             </td>
                         </tr>
                         <tr class="border-bottom">
-                            <td>Suket Beasiswa Lain <small><i>(jpg, png, jpeg)</i></small></td>
-                            <td>: </td>
-                            <td><a href="../user/uploads/berkas/<?=$fecthDataPelamar['s_beasiswa_lain'];?>">
-                                    <img style="width:100px;height:100px;"
-                                        src="../user/uploads/berkas/<?=$fecthDataPelamar['s_beasiswa_lain'];?>" alt="">
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="border-bottom">
                             <td><?=$fecthDataPelamar['jenjang'] == 'pt'  ? 'KHS': 'Raport';?> <small><i>(jpg, png,
                                         jpeg)</i></small></td>
                             <td>: </td>
@@ -249,14 +240,7 @@ Swal.fire({
                                 </a>
                             </td>
                         </tr>
-                        <tr class="border-bottom">
-                            <td>Suket Beasiswa Lain <small><i>(jpg, png, jpeg)</i></small></td>
-                            <td>: </td>
-                            <td><a href="../assets/images/no_images.png">
-                                    <img style="width:100px;height:100px;" src="../assets/images/no_images.png" alt="">
-                                </a>
-                            </td>
-                        </tr>
+                        
                         <tr class="border-bottom">
                             <td>Raport/KHS <small><i>(jpg, png, jpeg)</i></small></td>
                             <td>: </td>

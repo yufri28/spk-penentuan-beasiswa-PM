@@ -301,12 +301,6 @@ $dataSemester = $dataDiri->getSemester();
                         <input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="kartu_keluarga"
                             id="kartu_keluarga" required />
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="suket_beasiswa_lain" class="form-label">Suket Beasiswa Lain
-                            <small class="text-danger">*</small></label>
-                        <input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="suket_beasiswa_lain"
-                            id="suket_beasiswa_lain" />
-                    </div> -->
                     <div class="form-group">
                         <label for="raport_khs"
                             class="form-label"><?= $_SESSION['jenjang'] == 'pt' ? 'KHS ':'Raport ';?>

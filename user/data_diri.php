@@ -103,7 +103,7 @@ Swal.fire({
             <div class="card-body">
                 <div class="alert alert-info" role="alert">
                     <small>
-                        <strong>Untuk surat aktif sekolah, surat keterangan tidak sedang menerima beasiswa lain dan
+                        <strong>Untuk surat aktif sekolah dan
                             Raport/KHS,
                             discan dan diupload berupa file gambar (jpg/jpeg/png).</strong>
                     </small>
