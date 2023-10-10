@@ -336,7 +336,6 @@ $dataSemester = $dataDiri->getSemester();
         </div>
     </div>
 </div>
-<<<<<<< HEAD
 <script>
 const ipkInput = document.getElementById('ipkInput');
 const ipkValidationMessage = document.getElementById('ipkValidationMessage');
@@ -374,6 +373,3 @@ rata2Input.addEventListener('input', function() {
 });
 </script>
 <?php require '../includes/footer.php';?>
-=======
-<?php require '../includes/footer.php';?>
->>>>>>> 2a14c912366ac913d54d377406eaf478f2ae41d9
