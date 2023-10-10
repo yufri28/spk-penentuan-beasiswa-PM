@@ -107,7 +107,7 @@ if (isset($_POST["simpan"])) {
         $aktif_kegiatan = $_POST['data_diri'][1];
         $status_keluarga = $_POST['data_diri'][2];
         // $pendapatan = $_POST['data_diri'][3];
-        $pendapatan = filterPendapatan(str_replace('.', '', $_POST['data_diri'][3]),$dataDiri->getPendapatanOrtu());
+        $range_pendapatan = filterPendapatan(str_replace('.', '', $_POST['data_diri'][3]),$dataDiri->getPendapatanOrtu());
         $jumlah_tanggungan = $_POST['data_diri'][4];
         $ipks = $_POST['data_diri'][5];
         $ipk = str_replace(",",".",$ipks);
@@ -336,6 +336,7 @@ $dataSemester = $dataDiri->getSemester();
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 <script>
 const ipkInput = document.getElementById('ipkInput');
 const ipkValidationMessage = document.getElementById('ipkValidationMessage');
@@ -373,3 +374,6 @@ rata2Input.addEventListener('input', function() {
 });
 </script>
 <?php require '../includes/footer.php';?>
+=======
+<?php require '../includes/footer.php';?>
+>>>>>>> 2a14c912366ac913d54d377406eaf478f2ae41d9
