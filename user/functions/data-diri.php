@@ -51,6 +51,7 @@ class DataDiri{
                 $range_pendapatan =  $data['range_pendapatan'];
                 $pendapatan =  $data['pendapatan'];
                 $jumlah_tanggungan =  $data['jumlah_tanggungan'];
+                $ipks =  $data['ipks'];
                 $ipk =  $data['ipk'];
                 $semester =  $data['semester'];
                 
@@ -70,7 +71,7 @@ class DataDiri{
                 
                 $update = $this->db->query(
                     "UPDATE data_pelamar
-                    SET pendapatan_ortu='$pendapatan', kartu_keluarga='$kartu_keluarga',raport_khs='$raport_khs' WHERE id_pelamar=$id_pelamar");
+                    SET pendapatan_ortu='$pendapatan', ipk='$ipks', kartu_keluarga='$kartu_keluarga',raport_khs='$raport_khs' WHERE id_pelamar=$id_pelamar");
                 foreach ($kriteria_pelamar as $key => $kriteria) {
                     $insert = $this->db->query("INSERT INTO pelamar_kriteria(id_pelamar_kriteria,f_id_kriteria,f_id_sub_kriteria,f_id_pelamar) VALUES (0,'$key',$kriteria,$id_pelamar)");
                 }
@@ -121,6 +122,7 @@ class DataDiri{
                 $range_pendapatan =  $data['range_pendapatan'];
                 $pendapatan =  $data['pendapatan'];
                 $jumlah_tanggungan =  $data['jumlah_tanggungan'];
+                $ipks = $data['ipks'];
                 $ipk = $data['ipk'];
                 $semester =  $data['semester'];
 
@@ -152,7 +154,7 @@ class DataDiri{
                 
                 $update = $this->db->query(
                     "UPDATE data_pelamar
-                    SET pendapatan_ortu='$pendapatan', kartu_keluarga='$kartu_keluarga',raport_khs='$raport_khs' WHERE id_pelamar=$id_pelamar");
+                    SET pendapatan_ortu='$pendapatan', ipk='$ipks', kartu_keluarga='$kartu_keluarga',raport_khs='$raport_khs' WHERE id_pelamar=$id_pelamar");
                 foreach ($kriteria_pelamar as $key => $kriteria) {
                     $update = $this->db->query("UPDATE pelamar_kriteria SET f_id_kriteria='$key',f_id_sub_kriteria=$kriteria,f_id_pelamar=$id_pelamar WHERE id_pelamar_kriteria=$data_kriteria[$key]");
                 }

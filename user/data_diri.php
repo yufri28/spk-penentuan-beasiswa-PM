@@ -118,7 +118,7 @@ Swal.fire({
                             <td><?= $_SESSION['jenjang'] == 'pt' ? explode("/",$pelamar_kriteria['nama_kriteria'])[0]:explode("/",$pelamar_kriteria['nama_kriteria'])[1];?>
                             </td>
                             <td>: </td>
-                            <td><?= $_SESSION['jenjang'] == 'pt' ? explode("/", $pelamar_kriteria['nama_sub_kriteria'])[1]:explode("/",$pelamar_kriteria['nama_sub_kriteria'])[0];?>
+                            <td><?= $fecthDataPelamar['ipk'];?>
                             </td>
                             <?php elseif($pelamar_kriteria['nama_kriteria'] == "Semester"):?>
                             <td><?= $_SESSION['jenjang'] == 'pt' ?'Semester':'Kelas';?></td>
@@ -128,7 +128,7 @@ Swal.fire({
                             <?php elseif($pelamar_kriteria['nama_kriteria'] == "Pendapatan orang tua/wali"):?>
                             <td><?= $pelamar_kriteria['nama_kriteria'];?></td>
                             <td>: </td>
-                            <td><?= $fecthDataPelamar['pendapatan_ortu'];?>
+                            <td><?= number_format($fecthDataPelamar['pendapatan_ortu'],0,',','.');?>
                             </td>
                             <?php else:?>
                             <td><?= $pelamar_kriteria['nama_kriteria'];?></td>

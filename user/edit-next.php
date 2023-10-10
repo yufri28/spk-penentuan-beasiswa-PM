@@ -109,7 +109,8 @@ if (isset($_POST["simpan"])) {
         // $pendapatan = $_POST['data_diri'][3];
         $pendapatan = filterPendapatan(str_replace('.', '', $_POST['data_diri'][3]),$dataDiri->getPendapatanOrtu());
         $jumlah_tanggungan = $_POST['data_diri'][4];
-        $ipk = $_POST['data_diri'][5];
+        $ipks = $_POST['data_diri'][5];
+        $ipk = str_replace(",",".",$ipks);
         $semester = $_POST['data_diri'][6];
         $data_diri = [
             'k1' => $_POST['k1'],
@@ -125,6 +126,7 @@ if (isset($_POST["simpan"])) {
             'range_pendapatan' => $range_pendapatan,
             'pendapatan' => str_replace('.', '', $_POST['data_diri'][3]),
             'jumlah_tanggungan' => $jumlah_tanggungan,
+            'ipks' => $ipks,
             'ipk' => $ipk,
             'semester' => $semester,
             'kartu_keluarga' => isset($uploadedFiles['kartu_keluarga']) ? $uploadedFiles['kartu_keluarga'] : $_POST["kartu_keluarga_lama"],
@@ -144,7 +146,8 @@ if (isset($_POST["simpan"])) {
         // $pendapatan = $_POST['data_diri'][3];
         $range_pendapatan = filterPendapatan(str_replace('.', '', $_POST['data_diri'][3]),$dataDiri->getPendapatanOrtu());
         $jumlah_tanggungan = $_POST['data_diri'][4];
-        $ipk = $_POST['data_diri'][5];
+        $ipks = $_POST['data_diri'][5];
+        $ipk = str_replace(",",".",$ipks);
         $semester = $_POST['data_diri'][6];
         $data_diri = [
             'k1' => $_POST['k1'],
@@ -160,6 +163,7 @@ if (isset($_POST["simpan"])) {
             'range_pendapatan' => $range_pendapatan,
             'pendapatan' => str_replace('.', '', $_POST['data_diri'][3]),
             'jumlah_tanggungan' => $jumlah_tanggungan,
+            'ipks' => $ipks,
             'ipk' => $ipk,
             'semester' => $semester,
             'kartu_keluarga' => $_POST["kartu_keluarga_lama"],
@@ -275,15 +279,20 @@ $dataSemester = $dataDiri->getSemester();
                         <input type="hidden" name="k6" value="<?= $getK6['id_pelamar_kriteria'];?>">
                         <label for="ipk"><?= $_SESSION['jenjang'] == 'pt' ? 'IPK ':'Nilai Rata-rata Raport ';?><small
                                 class="text-danger">*</small></label>
-                        <select required class="form-control form-control-sm" name="data_diri[]" id="ipk">
-                            <option value="">-- Pilih --</option>
-                            <?php foreach ($dataIPK as $key => $IPK):?>
-                            <option <?= $getK6['id_sub_kriteria'] == $IPK['id_sub_kriteria'] ?'selected':'' ?>
-                                value="<?=$IPK['id_sub_kriteria'];?>">
-                                <?= $_SESSION['jenjang'] == 'pt' ? explode("/",$IPK['nama_sub_kriteria'])[1]:explode("/",$IPK['nama_sub_kriteria'])[0];?>
-                            </option>
-                            <?php endforeach;?>
-                        </select>
+                        <?php if($_SESSION['jenjang'] == 'pt'):?>
+                        <div class="form-group">
+                            <input class="form-control form-control-sm" value="<?=$fetch_data_pelamar['ipk'];?>"
+                                required name="data_diri[]" type="text" id="ipkInput" placeholder="Cth: 3.87">
+                            <small id="ipkValidationMessage" class="text-danger"></small>
+                        </div>
+                        <?php else:?>
+                        <div class="form-group">
+                            <label for="rata2">Rata-rata nilai raport <small class="text-danger">*</small></label>
+                            <input class="form-control form-control-sm" value="<?=$fetch_data_pelamar['ipk'];?>"
+                                required name="data_diri[]" type="text" id="rata2Input" placeholder="Cth: 89.00">
+                            <small id="rata2ValidationMessage" class="text-danger"></small>
+                        </div>
+                        <?php endif;?>
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="k7" value="<?= $getK7['id_pelamar_kriteria'];?>">
@@ -327,4 +336,40 @@ $dataSemester = $dataDiri->getSemester();
         </div>
     </div>
 </div>
+<script>
+const ipkInput = document.getElementById('ipkInput');
+const ipkValidationMessage = document.getElementById('ipkValidationMessage');
+
+ipkInput.addEventListener('input', function() {
+    const inputValue = ipkInput.value;
+    const ipkPattern =
+        /^([0-3](\.\d{1,2})?|4(\.0{1,2})?)$/; // Pattern untuk IPK antara 0.00 dan 4.00
+
+    if (!ipkPattern.test(inputValue)) {
+        ipkValidationMessage.textContent =
+            'Format IPK tidak valid. Harap masukkan angka antara 0.00 dan 4.00';
+        ipkInput.setCustomValidity('Format IPK tidak valid');
+    } else {
+        ipkValidationMessage.textContent = '';
+        ipkInput.setCustomValidity('');
+    }
+});
+
+const rata2Input = document.getElementById('rata2Input');
+const rata2ValidationMessage = document.getElementById('rata2ValidationMessage');
+
+rata2Input.addEventListener('input', function() {
+    const inputValue = rata2Input.value;
+    const rata2Pattern = /^(100(\.00?)?|[0-9]{1,2}(\.\d{1,2})?)$/; // Pattern untuk nilai antara 0.00 dan 100.00
+
+    if (!rata2Pattern.test(inputValue)) {
+        rata2ValidationMessage.textContent =
+            'Format nilai tidak valid. Harap masukkan angka antara 0.00 dan 100.00';
+        rata2Input.setCustomValidity('Format nilai tidak valid');
+    } else {
+        rata2ValidationMessage.textContent = '';
+        rata2Input.setCustomValidity('');
+    }
+});
+</script>
 <?php require '../includes/footer.php';?>

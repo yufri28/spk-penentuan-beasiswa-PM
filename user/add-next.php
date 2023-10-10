@@ -171,6 +171,7 @@ if (isset($_POST["simpan"])) {
             'range_pendapatan' => $range_pendapatan,
             'pendapatan' => str_replace('.', '', $_POST['data_diri'][3]),
             'jumlah_tanggungan' => $jumlah_tanggungan,
+            'ipks' => $ipks,
             'ipk' => $id_sub_ipk,
             'semester' => $semester,
             'kartu_keluarga' => $uploadedFiles[0],
