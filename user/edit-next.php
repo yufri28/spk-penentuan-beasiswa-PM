@@ -107,7 +107,7 @@ if (isset($_POST["simpan"])) {
         $aktif_kegiatan = $_POST['data_diri'][1];
         $status_keluarga = $_POST['data_diri'][2];
         // $pendapatan = $_POST['data_diri'][3];
-        $pendapatan = filterPendapatan(str_replace('.', '', $_POST['data_diri'][3]),$dataDiri->getPendapatanOrtu());
+        $range_pendapatan = filterPendapatan(str_replace('.', '', $_POST['data_diri'][3]),$dataDiri->getPendapatanOrtu());
         $jumlah_tanggungan = $_POST['data_diri'][4];
         $ipk = $_POST['data_diri'][5];
         $semester = $_POST['data_diri'][6];
