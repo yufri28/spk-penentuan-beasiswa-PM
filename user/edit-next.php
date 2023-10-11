@@ -21,6 +21,74 @@ $fetch_pelamar_kriteria = mysqli_fetch_assoc($cekPelamarKriteria);
 $getAdmin = $dataDiri->getAdmin($fetch_data_pelamar['id_rayon']);
 $id_penerima = mysqli_fetch_assoc($getAdmin);
 
+$dataIpk = $dataDiri->getIPK();
+
+
+function selectId($params=null, $dataIpk=null){
+    $kategori1 = '';
+    $kategori2 = '';
+    $kategori3 = '';
+    $kategori4 = '';
+    $kategori5 = '';
+    $id_sub = 0;
+    foreach ($dataIpk as $key => $value) {
+        if($value['bobot_sub_kriteria'] == 5){
+            $kategori1 = $value['id_sub_kriteria'];
+        }else if($value['bobot_sub_kriteria'] == 4){
+            $kategori2 = $value['id_sub_kriteria'];
+        }
+        else if($value['bobot_sub_kriteria'] == 3){
+            $kategori3 = $value['id_sub_kriteria'];
+        }
+        else if($value['bobot_sub_kriteria'] == 2){
+            $kategori4 = $value['id_sub_kriteria'];
+        }
+        else if($value['bobot_sub_kriteria'] == 1){
+            $kategori5 = $value['id_sub_kriteria'];
+        }
+    }
+    if($_SESSION['jenjang'] == 'pt'){
+        $ipk = $params;
+        switch ($ipk) {
+            case $ipk >= 3.76 && $ipk <= 4.00:
+                $id_sub = $kategori1;
+                break;
+            case $ipk >= 3.51 && $ipk <= 3.75:
+                $id_sub = $kategori2;
+                break;
+            case $ipk >= 3.01 && $ipk <= 3.50:
+                $id_sub = $kategori3;
+                break;
+            case $ipk >= 2.51 && $ipk <= 3.00:
+                $id_sub = $kategori4;
+                break;
+            case $ipk <= 2.50:
+                $id_sub = $kategori5;
+                break;
+        } 
+    
+    }else if($_SESSION['jenjang'] == 'sma'){
+        $rata2 = $params;
+        switch ($rata2) {
+            case $rata2 >= 90 && $rata2 <= 100:
+                $id_sub = $kategori1;
+                break;
+            case $rata2 >= 81 && $rata2 <= 89.99:
+                $id_sub = $kategori2;
+                break;
+            case $rata2 >= 76 && $rata2 <= 80.99:
+                $id_sub = $kategori3;
+                break;
+            case $rata2 >= 65.01 && $rata2 <= 75.99:
+                $id_sub = $kategori4;
+                break;
+            case $rata2 <= 65:
+                $id_sub = $kategori5;
+                break;
+            } 
+    }
+    return $id_sub;
+} 
 
 
 function filterPendapatan($pendapatan, $kriteriaPendapatan){
@@ -111,6 +179,7 @@ if (isset($_POST["simpan"])) {
         $jumlah_tanggungan = $_POST['data_diri'][4];
         $ipks = $_POST['data_diri'][5];
         $ipk = str_replace(",",".",$ipks);
+        $id_sub_ipk = selectId($ipk, $dataIpk);
         $semester = $_POST['data_diri'][6];
         $data_diri = [
             'k1' => $_POST['k1'],
@@ -127,7 +196,7 @@ if (isset($_POST["simpan"])) {
             'pendapatan' => str_replace('.', '', $_POST['data_diri'][3]),
             'jumlah_tanggungan' => $jumlah_tanggungan,
             'ipks' => $ipks,
-            'ipk' => $ipk,
+            'ipk' => $id_sub_ipk,
             'semester' => $semester,
             'kartu_keluarga' => isset($uploadedFiles['kartu_keluarga']) ? $uploadedFiles['kartu_keluarga'] : $_POST["kartu_keluarga_lama"],
             // 'suket_beasiswa_lain' => isset($uploadedFiles['suket_beasiswa_lain']) ? $uploadedFiles['suket_beasiswa_lain'] : $_POST["suket_beasiswa_lain_lama"],
@@ -148,6 +217,7 @@ if (isset($_POST["simpan"])) {
         $jumlah_tanggungan = $_POST['data_diri'][4];
         $ipks = $_POST['data_diri'][5];
         $ipk = str_replace(",",".",$ipks);
+        $id_sub_ipk = selectId($ipk, $dataIpk);
         $semester = $_POST['data_diri'][6];
         $data_diri = [
             'k1' => $_POST['k1'],
@@ -164,7 +234,7 @@ if (isset($_POST["simpan"])) {
             'pendapatan' => str_replace('.', '', $_POST['data_diri'][3]),
             'jumlah_tanggungan' => $jumlah_tanggungan,
             'ipks' => $ipks,
-            'ipk' => $ipk,
+            'ipk' => $id_sub_ipk,
             'semester' => $semester,
             'kartu_keluarga' => $_POST["kartu_keluarga_lama"],
             // 'suket_beasiswa_lain' => $_POST["suket_beasiswa_lain_lama"],
@@ -287,7 +357,6 @@ $dataSemester = $dataDiri->getSemester();
                         </div>
                         <?php else:?>
                         <div class="form-group">
-                            <label for="rata2">Rata-rata nilai raport <small class="text-danger">*</small></label>
                             <input class="form-control form-control-sm" value="<?=$fetch_data_pelamar['ipk'];?>"
                                 required name="data_diri[]" type="text" id="rata2Input" placeholder="Cth: 89.00">
                             <small id="rata2ValidationMessage" class="text-danger"></small>
