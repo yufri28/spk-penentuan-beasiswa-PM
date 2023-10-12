@@ -62,6 +62,7 @@ if(isset($_POST['tambah-periode'])){
     $kuota_sma = htmlspecialchars($_POST['periode'][2]);
     $kuota_pt = htmlspecialchars($_POST['periode'][3]);
     $status = htmlspecialchars($_POST['periode'][4]);
+    $batas_buka = htmlspecialchars($_POST['periode'][5]);
 
     $data = [
         'periode' => $periode,
@@ -69,6 +70,7 @@ if(isset($_POST['tambah-periode'])){
         'kuota_sma' => $kuota_sma,
         'kuota_pt' => $kuota_pt,
         'status' => $status,
+        'batas_buka' => $batas_buka,
     ];
     $Setting->addPeriode($data);
 }
@@ -80,6 +82,7 @@ if(isset($_POST['edit-periode'])){
     $kuota_sma = htmlspecialchars($_POST['periode'][3]);
     $kuota_pt = htmlspecialchars($_POST['periode'][4]);
     $status = htmlspecialchars($_POST['periode'][5]);
+    $batas_buka = htmlspecialchars($_POST['periode'][6]);
 
     $data = [
         'id_periode' => $id_periode,
@@ -88,6 +91,7 @@ if(isset($_POST['edit-periode'])){
         'kuota_sma' => $kuota_sma,
         'kuota_pt' => $kuota_pt,
         'status' => $status,
+        'batas_buka' => $batas_buka,
     ];
 
     $Setting->editPeriode($data);
@@ -289,6 +293,7 @@ Swal.fire({
                                     <th>Kuota SMA</th>
                                     <th>Kuota PT</th>
                                     <th>Status</th>
+                                    <th>Batas Buka</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -301,6 +306,7 @@ Swal.fire({
                                     <td><?=$periode['kuota_sma'];?></td>
                                     <td><?=$periode['kuota_pt'];?></td>
                                     <td><?=$periode['status'];?></td>
+                                    <td><?=$periode['batas_buka'];?></td>
                                     <td>
                                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
                                             data-target="#editPeriode<?=$periode['id_periode'];?>">Edit
@@ -559,6 +565,11 @@ Swal.fire({
                         <option selected value="buka">Buka</option>
                         <option value="tutup">Tutup</option>
                     </select>
+                    <div class="form-group">
+                        <label for="batas_buka">Batas Buka <small class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" required name="periode[]" type="datetime-local"
+                            placeholder="Cth: 10">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
@@ -609,6 +620,11 @@ Swal.fire({
                         <option <?=$periode['status'] == 'buka' ?'selected':'';?> value="buka">Buka</option>
                         <option value="tutup" <?=$periode['status'] == 'tutup' ?'selected':'';?>>Tutup</option>
                     </select>
+                    <div class="form-group">
+                        <label for="batas_buka">Batas Buka <small class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" value="<?=$periode['batas_buka'];?>" required
+                            name="periode[]" type="datetime-local" placeholder="Cth: 10">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>

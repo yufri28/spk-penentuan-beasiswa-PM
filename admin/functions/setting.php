@@ -6,13 +6,36 @@ class Setting{
     public function __construct()
     {
         $this->db = connectDatabase();
+
+        $this->tutupPeriode();
+
     }
+
+    public function tutupPeriode() {
+        // Ambil waktu sekarang
+        $waktu_sekarang = time(); // Gunakan fungsi time() atau sumber waktu lain yang sesuai dengan kebutuhan Anda
+            // Ambil periode yang sedang dibuka
+        $getPeriodeAktif = $this->db->query("SELECT * FROM periode WHERE status='buka'")->fetch_assoc();
+        if ($getPeriodeAktif) {
+            // Konversi batas buka dari string ke timestamp
+            $batas_buka_timestamp = strtotime($getPeriodeAktif['batas_buka']);
+            // Periksa apakah batas buka telah berlalu
+            if ($batas_buka_timestamp < $waktu_sekarang) {
+                // Jika batas buka telah berlalu, ubah status periode menjadi 'tutup'
+                $this->db->query("UPDATE periode SET status='tutup' WHERE id_periode='" . $getPeriodeAktif['id_periode'] . "'");
+            }
+        }
+    }
+    
 
     public function getPeriode($id_periode=null){
         return $this->db->query("SELECT * FROM periode WHERE id_periode=$id_periode");
     }
     public function getAllPeriode(){
         return $this->db->query("SELECT * FROM periode");
+    }
+    public function getPeriodeActive($id_periode=null){
+        return $this->db->query("SELECT * FROM periode WHERE id_periode='$id_periode'")->fetch_assoc();
     }
     public function getRayon(){
         return $this->db->query("SELECT * FROM rayon WHERE nama_rayon!='umum'");
@@ -92,6 +115,7 @@ class Setting{
                 $kuota_sma = $data['kuota_sma'];
                 $kuota_pt =$data['kuota_pt'];
                 $status = $data['status'];
+                $batas_buka = $data['batas_buka'];
 
                 // Close all existing periods
                 $selectIdPeriode = $this->db->query("SELECT id_periode FROM periode WHERE status='buka'");
@@ -103,7 +127,7 @@ class Setting{
                         return $_SESSION['error'] = "Gagal menutup periode sebelumnya.";
                     }
 
-                    $insertPeriode = $this->db->query("INSERT INTO periode(id_periode,nama_periode,deskripsi,kuota_sma,kuota_pt,status)VALUES(0,'$periode','$deskripsi',$kuota_sma,$kuota_pt,'buka')");
+                    $insertPeriode = $this->db->query("INSERT INTO periode(id_periode,nama_periode,deskripsi,kuota_sma,kuota_pt,status,batas_buka)VALUES(0,'$periode','$deskripsi',$kuota_sma,$kuota_pt,'buka','$batas_buka')");
                     if($insertPeriode && $this->db->affected_rows > 0){
                     return $_SESSION['success'] = "Data periode berhasil disimpan.";
                     } else {
@@ -132,6 +156,7 @@ class Setting{
             $kuota_sma = $data['kuota_sma'];
             $kuota_pt =$data['kuota_pt'];
             $status = $data['status'];
+            $batas_buka = $data['batas_buka'];
 
             // Close all existing periods
             $selectIdPeriode = $this->db->query("SELECT id_periode FROM periode WHERE status='buka'");
@@ -139,7 +164,7 @@ class Setting{
                 $idPeriode = mysqli_fetch_assoc($selectIdPeriode);
                 $closePeriode = $this->db->query("UPDATE periode SET status='tutup' WHERE id_periode='".$idPeriode['id_periode']."'");
                 if ($closePeriode || $this->db->affected_rows > 0) {
-                    $editPeriode = $this->db->query("UPDATE `periode` SET nama_periode='$nama_periode',deskripsi='$deskripsi',kuota_sma=$kuota_sma,kuota_pt=$kuota_pt,status='$status' WHERE id_periode=$id_periode");
+                    $editPeriode = $this->db->query("UPDATE `periode` SET nama_periode='$nama_periode',deskripsi='$deskripsi',kuota_sma=$kuota_sma,kuota_pt=$kuota_pt,status='$status',batas_buka='$batas_buka' WHERE id_periode=$id_periode");
                     if($editPeriode){
                         return $_SESSION['success'] = "Data periode berhasil diedit.";
                     } else {
@@ -150,7 +175,7 @@ class Setting{
                 }
 
             }else{
-                $editPeriode = $this->db->query("UPDATE `periode` SET nama_periode='$nama_periode',deskripsi='$deskripsi',kuota_sma=$kuota_sma,kuota_pt=$kuota_pt,status='$status' WHERE id_periode=$id_periode");
+                $editPeriode = $this->db->query("UPDATE `periode` SET nama_periode='$nama_periode',deskripsi='$deskripsi',kuota_sma=$kuota_sma,kuota_pt=$kuota_pt,status='$status',batas_buka='$batas_buka' WHERE id_periode=$id_periode");
                 if($editPeriode){
                 return $_SESSION['success'] = "Data periode berhasil diedit.";
                 } else {
