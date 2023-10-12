@@ -5,6 +5,9 @@ $_SESSION['menu'] = 'pengajuan';
 require_once './functions/data-diri.php';
 require_once './functions/notifikasi.php';
 require_once './functions/pengajuan.php';
+require_once '../admin/functions/setting.php';
+
+$periodeActive = $Setting->getPeriodeActive($_SESSION['id_periode']);
 
 $dataPeriode = "";
 if(isset($_SESSION['id_periode'])){
@@ -126,6 +129,21 @@ Swal.fire({
         <div class="card shadow mb-4">
             <div class="card-body flex-row align-items-center"
                 style="font-family: 'Lato', sans-serif; padding: 60px 60px">
+                <?php
+                    // Tanggal dalam format asli
+                    $originalDate = $periodeActive['batas_pelamar'];
+
+                    // Mengonversi tanggal ke format yang diinginkan
+                    $newDate = date('d F Y H:i:s', strtotime($originalDate));
+
+                    if($periodeActive['status'] == 'buka'){
+                        // Menampilkan tanggal dalam <marquee>
+                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Penting: Batas pengajuan beasiswa untuk periode ".$periodeActive['nama_periode']." akan berakhir pada $newDate WITA</marquee>";
+                    }else{
+                        // Menampilkan tanggal dalam <marquee>
+                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Penting: Batas pengajuan beasiswa untuk periode ".$periodeActive['nama_periode']." telah berakhir pada $newDate WITA</marquee>";
+                    }
+                ?>
                 <h1 class="text-end">Menu Pengajuan Beasiswa</h1>
                 <div class="alert alert-warning" role="alert">
                     <!-- jika belum ada data di tabel verifikasi dan sudah ada data di tabel data pelamar -->

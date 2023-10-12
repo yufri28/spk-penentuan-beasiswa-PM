@@ -62,7 +62,8 @@ if(isset($_POST['tambah-periode'])){
     $kuota_sma = htmlspecialchars($_POST['periode'][2]);
     $kuota_pt = htmlspecialchars($_POST['periode'][3]);
     $status = htmlspecialchars($_POST['periode'][4]);
-    $batas_buka = htmlspecialchars($_POST['periode'][5]);
+    $batas_pelamar = htmlspecialchars($_POST['periode'][5]);
+    $batas_koor = htmlspecialchars($_POST['periode'][6]);
 
     $data = [
         'periode' => $periode,
@@ -70,7 +71,8 @@ if(isset($_POST['tambah-periode'])){
         'kuota_sma' => $kuota_sma,
         'kuota_pt' => $kuota_pt,
         'status' => $status,
-        'batas_buka' => $batas_buka,
+        'batas_koor' => $batas_koor,
+        'batas_pelamar' => $batas_pelamar,
     ];
     $Setting->addPeriode($data);
 }
@@ -82,7 +84,8 @@ if(isset($_POST['edit-periode'])){
     $kuota_sma = htmlspecialchars($_POST['periode'][3]);
     $kuota_pt = htmlspecialchars($_POST['periode'][4]);
     $status = htmlspecialchars($_POST['periode'][5]);
-    $batas_buka = htmlspecialchars($_POST['periode'][6]);
+    $batas_pelamar = htmlspecialchars($_POST['periode'][6]);
+    $batas_koor = htmlspecialchars($_POST['periode'][7]);
 
     $data = [
         'id_periode' => $id_periode,
@@ -91,7 +94,8 @@ if(isset($_POST['edit-periode'])){
         'kuota_sma' => $kuota_sma,
         'kuota_pt' => $kuota_pt,
         'status' => $status,
-        'batas_buka' => $batas_buka,
+        'batas_koor' => $batas_koor,
+        'batas_pelamar' => $batas_pelamar
     ];
 
     $Setting->editPeriode($data);
@@ -284,7 +288,7 @@ Swal.fire({
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="table" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="periode" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -293,7 +297,8 @@ Swal.fire({
                                     <th>Kuota SMA</th>
                                     <th>Kuota PT</th>
                                     <th>Status</th>
-                                    <th>Batas Buka</th>
+                                    <th>Batas Buka (Pelamar)</th>
+                                    <th>Batas Buka (Koordinator)</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -306,8 +311,9 @@ Swal.fire({
                                     <td><?=$periode['kuota_sma'];?></td>
                                     <td><?=$periode['kuota_pt'];?></td>
                                     <td><?=$periode['status'];?></td>
-                                    <td><?=$periode['batas_buka'];?></td>
-                                    <td>
+                                    <td class="text-nowrap"><?=$periode['batas_pelamar'];?></td>
+                                    <td class="text-nowrap"><?=$periode['batas_koor'];?></td>
+                                    <td class="text-nowrap">
                                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
                                             data-target="#editPeriode<?=$periode['id_periode'];?>">Edit
                                         </button>
@@ -566,9 +572,14 @@ Swal.fire({
                         <option value="tutup">Tutup</option>
                     </select>
                     <div class="form-group">
-                        <label for="batas_buka">Batas Buka <small class="text-danger">*</small></label>
-                        <input class="form-control form-control-sm" required name="periode[]" type="datetime-local"
-                            placeholder="Cth: 10">
+                        <label for="batas_pelamar">Batas Buka (<small>Pelamar</small>)<small
+                                class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" required name="periode[]" type="datetime-local">
+                    </div>
+                    <div class="form-group">
+                        <label for="batas_koor">Batas Buka (<small>Koordinator</small>) <small
+                                class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" required name="periode[]" type="datetime-local">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -614,17 +625,27 @@ Swal.fire({
                         <input class="form-control form-control-sm" value="<?=$periode['kuota_pt'];?>" required
                             name="periode[]" type="num" placeholder="Cth: 10">
                     </div>
-                    <label hidden for="Status">Status <small class="text-danger">*</small></label>
-                    <select required class="form-control form-control-sm" name="periode[]">
-                        <option value="">-- Pilih --</option>
-                        <option <?=$periode['status'] == 'buka' ?'selected':'';?> value="buka">Buka</option>
-                        <option value="tutup" <?=$periode['status'] == 'tutup' ?'selected':'';?>>Tutup</option>
-                    </select>
                     <div class="form-group">
-                        <label for="batas_buka">Batas Buka <small class="text-danger">*</small></label>
-                        <input class="form-control form-control-sm" value="<?=$periode['batas_buka'];?>" required
-                            name="periode[]" type="datetime-local" placeholder="Cth: 10">
+                        <label hidden for="Status">Status <small class="text-danger">*</small></label>
+                        <select required class="form-control form-control-sm" name="periode[]">
+                            <option value="">-- Pilih --</option>
+                            <option <?=$periode['status'] == 'buka' ?'selected':'';?> value="buka">Buka</option>
+                            <option value="tutup" <?=$periode['status'] == 'tutup' ?'selected':'';?>>Tutup</option>
+                        </select>
                     </div>
+                    <div class="form-group">
+                        <label for="batas_pelamar">Batas Buka (<small>Pelamar</small>) <small
+                                class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" value="<?=$periode['batas_pelamar'];?>" required
+                            name="periode[]" type="datetime-local">
+                    </div>
+                    <div class="form-group">
+                        <label for="batas_koor">Batas Buka (<small>Koordinator</small>) <small
+                                class="text-danger">*</small></label>
+                        <input class="form-control form-control-sm" value="<?=$periode['batas_koor'];?>" required
+                            name="periode[]" type="datetime-local">
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>

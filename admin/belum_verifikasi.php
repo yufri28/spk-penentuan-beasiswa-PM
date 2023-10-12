@@ -23,17 +23,17 @@ $periodeActive = $Setting->getPeriodeActive($_SESSION['id_periode']);
             <div class="justify-content-center p-5">
                 <?php
                     // Tanggal dalam format asli
-                    $originalDate = $periodeActive['batas_buka'];
+                    $originalDate = $periodeActive['batas_koor'];
 
                     // Mengonversi tanggal ke format yang diinginkan
                     $newDate = date('d F Y H:i:s', strtotime($originalDate));
 
                     if($periodeActive['status'] == 'buka'){
                         // Menampilkan tanggal dalam <marquee>
-                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Waktu verifikasi untuk periode ".$periodeActive['nama_periode']." akan berakhir pada $newDate</marquee>";
+                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Penting: Waktu verifikasi untuk periode ".$periodeActive['nama_periode']." akan berakhir pada $newDate WITA</marquee>";
                     }else{
                         // Menampilkan tanggal dalam <marquee>
-                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Waktu verifikasi untuk periode ".$periodeActive['nama_periode']." telah berakhir pada $newDate</marquee>";
+                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Penting: Waktu verifikasi untuk periode ".$periodeActive['nama_periode']." telah berakhir pada $newDate WITA</marquee>";
                     }
                 ?>
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 12 Okt 2023 pada 12.49
+-- Waktu pembuatan: 12 Okt 2023 pada 18.39
 -- Versi server: 10.4.24-MariaDB
 -- Versi PHP: 8.1.6
 
@@ -88,7 +88,8 @@ INSERT INTO `data_pelamar` (`id_pelamar`, `nama`, `foto`, `sekolah`, `jurusan`, 
 (40, 'das', 'Screenshot (9)_2.png', 'dasdsa', 'dasdas', '342432', 1500000, 0, 'Screenshot (7)_5.png', 'Screenshot (10)_3.png', 32, 23),
 (41, 'dwe', 'Screenshot (27).png', '1', '2', '543534', 1700000, 3.67, 'Screenshot (9)_4.png', 'Screenshot (25).png', 25, 24),
 (42, '2', 'Screenshot (8)_2.png', '2', '2', '32423242424', 2500000, 90.81, 'Screenshot (9)_5.png', 'Screenshot (10)_4.png', 25, 25),
-(43, '3', 'hero-img.png', '3', '3', '42344223422', 1500000, 3.78, 'stats-bg.jpg', 'tes2.jpeg', 25, 26);
+(43, '3', 'hero-img.png', '3', '3', '42344223422', 1500000, 3.78, 'stats-bg.jpg', 'tes2.jpeg', 25, 26),
+(44, '3', 'hero-img_1.png', '4', '4', '435434', 1500000, 3.67, 'ocd.jpg', 'tes2_1.jpeg', 25, 27);
 
 -- --------------------------------------------------------
 
@@ -169,7 +170,8 @@ INSERT INTO `login_pelamar` (`id_login`, `username`, `password`, `jenjang`) VALU
 (23, 'test', '$2y$10$2SAz/n0inUUEWTZt5N2yD.acYBL2tJkE9.clI9116HGlyIArmCYIW', 'pt'),
 (24, '1', '$2y$10$.k4VY.pziDkNcqjes2dNH.mIGbzS0WE9J/MU4E4w20KuJnhKjUn9y', 'pt'),
 (25, '2', '$2y$10$4Z1QtyHuPZ.JVvNktxJPBOvOEnQcUuwOFC4ZfqaxDHwNwH7E7M7zm', 'sma'),
-(26, '3', '$2y$10$Xqo4EoJFebtrR6D/EaDuZemblCXST6L/HdJrdTpcAbXan9PBqN0hW', 'pt');
+(26, '3', '$2y$10$Xqo4EoJFebtrR6D/EaDuZemblCXST6L/HdJrdTpcAbXan9PBqN0hW', 'pt'),
+(27, '4', '$2y$10$LI2CxZlt7yqotNLVJ/g2NeWVIp2sQTzcQ.w9mOfaquZBGJM0SBJ0G', 'pt');
 
 -- --------------------------------------------------------
 
@@ -432,7 +434,14 @@ INSERT INTO `pelamar_kriteria` (`id_pelamar_kriteria`, `f_id_kriteria`, `f_id_su
 (258, 'K4', 11, 43),
 (259, 'K5', 16, 43),
 (260, 'K6', 20, 43),
-(261, 'K7', 26, 43);
+(261, 'K7', 26, 43),
+(262, 'K1', 2, 44),
+(263, 'K2', 5, 44),
+(264, 'K3', 8, 44),
+(265, 'K4', 11, 44),
+(266, 'K5', 16, 44),
+(267, 'K6', 21, 44),
+(268, 'K7', 25, 44);
 
 -- --------------------------------------------------------
 
@@ -469,17 +478,18 @@ CREATE TABLE `periode` (
   `kuota_sma` int(11) NOT NULL,
   `kuota_pt` int(11) NOT NULL,
   `status` enum('buka','tutup') NOT NULL,
-  `batas_buka` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `batas_koor` timestamp NOT NULL DEFAULT current_timestamp(),
+  `batas_pelamar` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `periode`
 --
 
-INSERT INTO `periode` (`id_periode`, `nama_periode`, `deskripsi`, `kuota_sma`, `kuota_pt`, `status`, `batas_buka`) VALUES
-(8, '20232', 'Tahun 2023 periode 2', 1, 1, 'tutup', '2023-10-12 10:15:02'),
-(9, '20241', 'Tahun 2024 Periode 1', 1, 1, 'tutup', '2023-10-12 10:15:02'),
-(11, '20242', 'Tahun 2024 Periode 2', 1, 1, 'tutup', '2023-10-12 10:44:32');
+INSERT INTO `periode` (`id_periode`, `nama_periode`, `deskripsi`, `kuota_sma`, `kuota_pt`, `status`, `batas_koor`, `batas_pelamar`) VALUES
+(8, '20232', 'Tahun 2023 periode 2', 1, 1, 'tutup', '2023-10-12 10:15:02', '2023-10-12 15:49:45'),
+(9, '20241', 'Tahun 2024 Periode 1', 1, 1, 'tutup', '2023-10-12 10:15:02', '2023-10-12 15:49:45'),
+(11, '20242', 'Tahun 2024 Periode 2', 1, 1, 'tutup', '2023-10-12 16:36:32', '2023-10-12 16:30:45');
 
 -- --------------------------------------------------------
 
@@ -727,7 +737,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT untuk tabel `data_pelamar`
 --
 ALTER TABLE `data_pelamar`
-  MODIFY `id_pelamar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id_pelamar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT untuk tabel `hasil_akhir`
@@ -739,7 +749,7 @@ ALTER TABLE `hasil_akhir`
 -- AUTO_INCREMENT untuk tabel `login_pelamar`
 --
 ALTER TABLE `login_pelamar`
-  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT untuk tabel `notifikasi_admin`
@@ -763,7 +773,7 @@ ALTER TABLE `pdt`
 -- AUTO_INCREMENT untuk tabel `pelamar_kriteria`
 --
 ALTER TABLE `pelamar_kriteria`
-  MODIFY `id_pelamar_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=262;
+  MODIFY `id_pelamar_kriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=269;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengumuman`
@@ -775,7 +785,7 @@ ALTER TABLE `pengumuman`
 -- AUTO_INCREMENT untuk tabel `periode`
 --
 ALTER TABLE `periode`
-  MODIFY `id_periode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_periode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `pesan`

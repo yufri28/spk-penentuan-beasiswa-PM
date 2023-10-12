@@ -4,6 +4,9 @@ unset($_SESSION['menu']);
 $_SESSION['menu'] = 'index';
 require './header.php';
 require_once './functions/index.php';
+require_once './functions/setting.php';
+
+$periodeActive = $Setting->getPeriodeActive($_SESSION['id_periode']);
 
 $countPengguna = mysqli_num_rows($Index->countKoordinator()) + mysqli_num_rows($Index->countPelamar());
 // $countPelamar = mysqli_num_rows($Index->countDataPelamar());
@@ -64,6 +67,21 @@ $countSubKriteria = mysqli_num_rows($Index->countSubKriteria());
 </div>
 <?php else:?>
 <div class="row d-flex justify-content-center">
+    <?php
+                    // Tanggal dalam format asli
+                    $originalDate = $periodeActive['batas_koor'];
+
+                    // Mengonversi tanggal ke format yang diinginkan
+                    $newDate = date('d F Y H:i:s', strtotime($originalDate));
+
+                    if($periodeActive['status'] == 'buka'){
+                        // Menampilkan tanggal dalam <marquee>
+                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Penting: Waktu verifikasi untuk periode ".$periodeActive['nama_periode']." akan berakhir pada $newDate WITA</marquee>";
+                    }else{
+                        // Menampilkan tanggal dalam <marquee>
+                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Penting: Waktu verifikasi untuk periode ".$periodeActive['nama_periode']." telah berakhir pada $newDate WITA</marquee>";
+                    }
+                ?>
     <div class="col-lg-3">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->

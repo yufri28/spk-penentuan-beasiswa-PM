@@ -4,6 +4,9 @@ unset($_SESSION['menu']);
 $_SESSION['menu'] = 'index';
 require '../includes/header.php';
 require_once './functions/data-diri.php';
+require_once '../admin/functions/setting.php';
+
+$periodeActive = $Setting->getPeriodeActive($_SESSION['id_periode']);
 
 $cekDataPelamar = $dataDiri->cekDataPelamar($_SESSION['id_user']);
 $fecthDataPelamar = mysqli_fetch_assoc($cekDataPelamar);
@@ -22,6 +25,21 @@ if(mysqli_num_rows($cekDataPelamar) > 0){
         <div class="card shadow mb-4">
             <div class="card-body flex-row align-items-center"
                 style="font-family: 'Lato', sans-serif; padding: 60px 60px">
+                <?php
+                    // Tanggal dalam format asli
+                    $originalDate = $periodeActive['batas_pelamar'];
+
+                    // Mengonversi tanggal ke format yang diinginkan
+                    $newDate = date('d F Y H:i:s', strtotime($originalDate));
+
+                    if($periodeActive['status'] == 'buka'){
+                        // Menampilkan tanggal dalam <marquee>
+                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Penting: Batas pengajuan beasiswa untuk periode ".$periodeActive['nama_periode']." akan berakhir pada $newDate WITA</marquee>";
+                    }else{
+                        // Menampilkan tanggal dalam <marquee>
+                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Penting: Batas pengajuan beasiswa untuk periode ".$periodeActive['nama_periode']." telah berakhir pada $newDate WITA</marquee>";
+                    }
+                ?>
                 <h1 class="text-end">SPK Seleksi Beasiswa GMIT Paulus Kupang</h1>
                 <p class="text-end text-justify mt-4">Shalom, selamat datang di website "Sistem pendukung keputusan
                     seleksi calon
