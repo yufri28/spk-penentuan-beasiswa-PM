@@ -148,7 +148,7 @@ Swal.fire({
                             <td><?= $_SESSION['jenjang'] == 'pt' ? explode("/", $pelamar_kriteria['nama_sub_kriteria'])[0]:explode("/",$pelamar_kriteria['nama_sub_kriteria'])[1];?>
                             </td>
                             <?php elseif($pelamar_kriteria['nama_kriteria'] == "Pendapatan orang tua/wali"):?>
-                            <td><?= $pelamar_kriteria['nama_kriteria'].'(per bulan)';?></td>
+                            <td><?= $pelamar_kriteria['nama_kriteria'].' (per bulan)';?></td>
                             <td>: </td>
                             <td><?= number_format($fecthDataPelamar['pendapatan_ortu'],0,',','.');?>
                             </td>

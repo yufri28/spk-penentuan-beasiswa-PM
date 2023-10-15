@@ -116,8 +116,8 @@ Swal.fire({
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>Nomor HP</th>
-                                    <th>Asal Sekolah</th>
-                                    <th>Pendapatan Ortu/Wali</th>
+                                    <th>Asal Sekolah/PT</th>
+                                    <th>Pendapatan Ortu/Wali (per bulan)</th>
                                     <th>IPK/Rata-rata Raport</th>
                                     <th>Status Jemaat</th>
                                     <th>Keaktifan kegiatan bergereja</th>
@@ -174,8 +174,8 @@ Swal.fire({
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>Nomor HP</th>
-                                    <th>Asal Sekolah</th>
-                                    <th>Pendapatan Ortu/Wali</th>
+                                    <th>Asal Sekolah/PT</th>
+                                    <th>Pendapatan Ortu/Wali (per bulan)</th>
                                     <th>IPK/Rata-rata Raport</th>
                                     <th>Status Jemaat</th>
                                     <th>Keaktifan kegiatan bergereja</th>

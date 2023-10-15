@@ -29,7 +29,7 @@ $table = '<table align="center" style="width: 100%; border-collapse: collapse; t
                 <th style="padding: 5px; border: 1px solid #ddd;">Status Jemaat</th>
                 <th style="padding: 5px; border: 1px solid #ddd;">Keaktifan kegiatan bergereja</th>
                 <th style="padding: 5px; border: 1px solid #ddd;">Status keluarga</th>
-                <th style="padding: 5px;  border: 1px solid #ddd;">Pendapatan orang tua/wali</th>
+                <th style="padding: 5px;  border: 1px solid #ddd;">Pendapatan orang tua/wali (per bulan)</th>
                 <th style="padding: 5px; border: 1px solid #ddd;">Jumlah tanggungan orang tua/wali
                 </th>
                 <th style="padding: 5px; border: 1px solid #ddd;">IPK/Nilai Raport</th>

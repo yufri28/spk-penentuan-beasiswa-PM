@@ -217,7 +217,7 @@ Swal.fire({
                             <td>-</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td>Pendapatan orang tua</td>
+                            <td>Pendapatan orang tua/wali (per bulan)</td>
                             <td>: </td>
                             <td>-</td>
                         </tr>
@@ -240,7 +240,7 @@ Swal.fire({
                                 </a>
                             </td>
                         </tr>
-                        
+
                         <tr class="border-bottom">
                             <td>Raport/KHS <small><i>(jpg, png, jpeg)</i></small></td>
                             <td>: </td>

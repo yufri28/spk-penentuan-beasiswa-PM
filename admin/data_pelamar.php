@@ -68,7 +68,7 @@ Swal.fire({
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
-                                    <th>Asal Sekolah</th>
+                                    <th>Asal Sekolah/PT</th>
                                     <th>Rayon</th>
                                     <th>Jenjang</th>
                                     <th>Aksi</th>

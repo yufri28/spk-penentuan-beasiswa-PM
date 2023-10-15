@@ -236,7 +236,8 @@ $dataSemester = $dataDiri->getSemester();
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="pendapatan">Pendapatan Ortu/wali <small class="text-danger">*</small></label>
+                        <label for="pendapatan">Pendapatan Ortu/wali (per bulan) <small
+                                class="text-danger">*</small></label>
                         <input required class="form-control form-control-sm" placeholder="Contoh: 1.000.000" type="text"
                             name="data_diri[]" id="pendapatan">
                         <div id="error-message" class="text-danger"></div>
@@ -249,7 +250,7 @@ $dataSemester = $dataDiri->getSemester();
                         </select> -->
                     </div>
                     <div class="form-group">
-                        <label for="jumlah_tanggungan">Jumlah Tanggungan Ortu/wali (per bulan)<small
+                        <label for="jumlah_tanggungan">Jumlah Tanggungan Ortu/wali <small
                                 class="text-danger">*</small></label>
                         <select required class="form-control form-control-sm" name="data_diri[]" id="jumlah_tanggungan">
                             <option value="">-- Pilih --</option>
