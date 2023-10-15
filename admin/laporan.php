@@ -115,6 +115,17 @@ Swal.fire({
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
+                                    <th>Nomor HP</th>
+                                    <th>Asal Sekolah</th>
+                                    <th>Pendapatan Ortu/Wali</th>
+                                    <th>IPK/Rata-rata Raport</th>
+                                    <th>Status Jemaat</th>
+                                    <th>Keaktifan kegiatan bergereja</th>
+                                    <th>Status keluarga</th>
+                                    <th>Jumlah tanggungan orang tua/wali
+                                    </th>
+                                    <th>Semester
+                                    </th>
                                     <th>Rayon</th>
                                     <th>Nilai Akhir</th>
                                     <th>Periode</th>
@@ -125,6 +136,16 @@ Swal.fire({
                                 <tr>
                                     <th scope="row"><?=$j++;?>. </th>
                                     <td><?=$penerimaBeasiswa['nama'];?></td>
+                                    <td><?=$penerimaBeasiswa['no_hp'];?></td>
+                                    <td><?=$penerimaBeasiswa['sekolah'];?></td>
+                                    <td><?=$penerimaBeasiswa['pendapatan_ortu'];?></td>
+                                    <td><?=$penerimaBeasiswa['ipk'];?></td>
+                                    <td><?=$penerimaBeasiswa['C1'];?></td>
+                                    <td><?=$penerimaBeasiswa['C2'];?></td>
+                                    <td><?=$penerimaBeasiswa['C3'];?></td>
+                                    <td><?=$penerimaBeasiswa['C5'];?></td>
+                                    <td><?=$penerimaBeasiswa['C7'];?></td>
+
                                     <td><?=$penerimaBeasiswa['nama_rayon'];?></td>
                                     <td><?=$penerimaBeasiswa['nilai_rank'];?></td>
                                     <td><?=$penerimaBeasiswa['nama_periode'];?></td>
@@ -152,6 +173,17 @@ Swal.fire({
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
+                                    <th>Nomor HP</th>
+                                    <th>Asal Sekolah</th>
+                                    <th>Pendapatan Ortu/Wali</th>
+                                    <th>IPK/Rata-rata Raport</th>
+                                    <th>Status Jemaat</th>
+                                    <th>Keaktifan kegiatan bergereja</th>
+                                    <th>Status keluarga</th>
+                                    <th>Jumlah tanggungan orang tua/wali
+                                    </th>
+                                    <th>Semester
+                                    </th>
                                     <th>Rayon</th>
                                     <th>Nilai Akhir</th>
                                     <th>Periode</th>
@@ -162,6 +194,16 @@ Swal.fire({
                                 <tr>
                                     <th scope="row"><?=$k++;?>. </th>
                                     <td><?=$penerimaBeasiswa['nama'];?></td>
+                                    <td><?=$penerimaBeasiswa['no_hp'];?></td>
+                                    <td><?=$penerimaBeasiswa['sekolah'];?></td>
+                                    <td><?=$penerimaBeasiswa['pendapatan_ortu'];?></td>
+                                    <td><?=$penerimaBeasiswa['ipk'];?></td>
+                                    <td><?=$penerimaBeasiswa['C1'];?></td>
+                                    <td><?=$penerimaBeasiswa['C2'];?></td>
+                                    <td><?=$penerimaBeasiswa['C3'];?></td>
+                                    <td><?=$penerimaBeasiswa['C5'];?></td>
+                                    <td><?=$penerimaBeasiswa['C7'];?></td>
+
                                     <td><?=$penerimaBeasiswa['nama_rayon'];?></td>
                                     <td><?=$penerimaBeasiswa['nilai_rank'];?></td>
                                     <td><?=$penerimaBeasiswa['nama_periode'];?></td>

@@ -178,6 +178,7 @@ if (isset($_POST["simpan"])) {
             'raport_khs' => $uploadedFiles[1],
             'id_pelamar' =>$id_pelamar
         ];
+
         $dataDiri->addDataDiriNext($data_diri);
     } else {
         return $_SESSION['error'] = 'Tidak ada file gambar yang diunggah!';
@@ -238,6 +239,7 @@ $dataSemester = $dataDiri->getSemester();
                         <label for="pendapatan">Pendapatan Ortu/wali <small class="text-danger">*</small></label>
                         <input required class="form-control form-control-sm" placeholder="Contoh: 1.000.000" type="text"
                             name="data_diri[]" id="pendapatan">
+                        <div id="error-message" class="text-danger"></div>
                         <!-- <select required class="form-control form-control-sm" name="data_diri[]" id="pendapatan">
                             <option value="">-- Pilih --</option>
                             <?php foreach ($dataPendapatanOrtu as $key => $pendapatan):?>
@@ -247,7 +249,7 @@ $dataSemester = $dataDiri->getSemester();
                         </select> -->
                     </div>
                     <div class="form-group">
-                        <label for="jumlah_tanggungan">Jumlah Tanggungan Ortu/wali <small
+                        <label for="jumlah_tanggungan">Jumlah Tanggungan Ortu/wali (per bulan)<small
                                 class="text-danger">*</small></label>
                         <select required class="form-control form-control-sm" name="data_diri[]" id="jumlah_tanggungan">
                             <option value="">-- Pilih --</option>
@@ -274,14 +276,16 @@ $dataSemester = $dataDiri->getSemester();
                         <label for="ipk">IPK <small class="text-danger">*</small></label>
                         <input class="form-control form-control-sm" required name="data_diri[]" type="text"
                             id="ipkInput" placeholder="Cth: 3.87">
-                        <small id="ipkValidationMessage" class="text-danger"></small>
+                        <div id="ipkValidationMessage" class="text-danger"></div>
+                        <!-- <small id="ipkValidationMessage" class="text-danger"></small> -->
                     </div>
                     <?php else:?>
                     <div class="form-group">
                         <label for="rata2">Rata-rata nilai raport <small class="text-danger">*</small></label>
                         <input class="form-control form-control-sm" required name="data_diri[]" type="text"
                             id="rata2Input" placeholder="Cth: 89.00">
-                        <small id="rata2ValidationMessage" class="text-danger"></small>
+                        <div id="rata2ValidationMessage" class="text-danger"></div>
+                        <!-- <small id="rata2ValidationMessage" class="text-danger"></small> -->
                     </div>
                     <?php endif;?>
                     <div class="form-group">
@@ -312,46 +316,119 @@ $dataSemester = $dataDiri->getSemester();
                 </div>
                 <div class="modal-footer">
                     <a href="./data_diri.php" class="btn btn-secondary" data-dismiss="modal">Kembali</a>
-                    <button type="submit" name="simpan" class="btn btn-primary">Simpan</button>
+                    <button id="submitBtn" type="submit" name="simpan" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-const ipkInput = document.getElementById('ipkInput');
-const ipkValidationMessage = document.getElementById('ipkValidationMessage');
+$(document).ready(function() {
+    const pendapatanInput = $("#pendapatan");
+    const errorMessage = $("#error-message");
 
-ipkInput.addEventListener('input', function() {
-    const inputValue = ipkInput.value;
-    const ipkPattern =
-        /^([0-3](\.\d{1,2})?|4(\.0{1,2})?)$/; // Pattern untuk IPK antara 0.00 dan 4.00
+    pendapatanInput.on("input", function() {
+        console.log('masulk');
+        const inputValue = $(this).val();
+        const validPattern = /^\d+(\.\d{1,3})*$/;
 
-    if (!ipkPattern.test(inputValue)) {
-        ipkValidationMessage.textContent =
-            'Format IPK tidak valid. Harap masukkan angka antara 0.00 dan 4.00';
-        ipkInput.setCustomValidity('Format IPK tidak valid');
-    } else {
-        ipkValidationMessage.textContent = '';
-        ipkInput.setCustomValidity('');
-    }
+        if (validPattern.test(inputValue)) {
+            pendapatanInput.removeClass("is-invalid");
+            pendapatanInput.addClass("is-valid");
+            errorMessage.text(""); // Hapus pesan kesalahan
+        } else {
+            pendapatanInput.removeClass("is-valid");
+            pendapatanInput.addClass("is-invalid");
+            errorMessage.text("Hanya masukkan angka dan titik.");
+        }
+    });
 });
 
-const rata2Input = document.getElementById('rata2Input');
-const rata2ValidationMessage = document.getElementById('rata2ValidationMessage');
 
-rata2Input.addEventListener('input', function() {
-    const inputValue = rata2Input.value;
-    const rata2Pattern = /^(100(\.00?)?|[0-9]{1,2}(\.\d{1,2})?)$/; // Pattern untuk nilai antara 0.00 dan 100.00
+$(document).ready(function() {
+    const ipkInput = $('#ipkInput');
+    const ipkValidationMessage = $('#ipkValidationMessage');
+    const submitBtn = $("#submitBtn");
 
-    if (!rata2Pattern.test(inputValue)) {
-        rata2ValidationMessage.textContent =
-            'Format nilai tidak valid. Harap masukkan angka antara 0.00 dan 100.00';
-        rata2Input.setCustomValidity('Format nilai tidak valid');
-    } else {
-        rata2ValidationMessage.textContent = '';
-        rata2Input.setCustomValidity('');
-    }
+    ipkInput.on('input', function() {
+        const inputValue = ipkInput.val();
+        const ipkPattern = /^([0-3](\.\d{1,2})?|4(\.0{1,2})?)$/;
+
+        if (!ipkPattern.test(inputValue)) {
+            ipkValidationMessage.text(
+                'Format IPK tidak valid. Harap masukkan angka antara 0.00 dan 4.00');
+            ipkInput.removeClass("is-valid");
+            ipkInput.addClass("is-invalid");
+            submitBtn.prop("disabled", true); // Nonaktifkan tombol "Submit"
+            ipkInput[0].setCustomValidity('Format IPK tidak valid');
+        } else {
+            ipkInput.removeClass("is-invalid");
+            ipkInput.addClass("is-valid");
+            ipkValidationMessage.text('');
+            submitBtn.prop("disabled", false); // Aktifkan tombol "Submit"
+            ipkInput[0].setCustomValidity('');
+        }
+    });
+
+    const rata2Input = $('#rata2Input');
+    const rata2ValidationMessage = $('#rata2ValidationMessage');
+
+    rata2Input.on('input', function() {
+        const inputValue = rata2Input.val();
+        const rata2Pattern = /^(100(\.00?)?|[0-9]{1,2}(\.\d{1,2})?)$/;
+
+        if (!rata2Pattern.test(inputValue)) {
+            rata2ValidationMessage.text(
+                'Format nilai tidak valid. Harap masukkan angka antara 0.00 dan 100.00');
+            rata2Input.removeClass("is-valid");
+            rata2Input.addClass("is-invalid");
+            submitBtn.prop("disabled", true); // Nonaktifkan tombol "Submit"
+            rata2Input[0].setCustomValidity('Format nilai tidak valid');
+        } else {
+            submitBtn.prop("disabled", false); // Aktifkan tombol "Submit"
+            rata2Input.removeClass("is-invalid");
+            rata2Input.addClass("is-valid");
+            rata2ValidationMessage.text('');
+            rata2Input[0].setCustomValidity('');
+        }
+    });
 });
+
+// const ipkInput = document.getElementById('ipkInput');
+// const ipkValidationMessage = document.getElementById('ipkValidationMessage');
+
+// ipkInput.addEventListener('input', function() {
+//     const inputValue = ipkInput.value;
+//     // const ipkPattern = /^([0-9]\.[0-9]{1,2}|[1-3]\.[0-9]{1,2}|4\.00)$/;
+//     const ipkPattern = /^([0-3](\.\d{1,2})?|4(\.0{1,2})?)$/; // Pattern untuk IPK antara 0.00 dan 4.00
+
+//     if (!ipkPattern.test(inputValue)) {
+//         ipkValidationMessage.textContent =
+//             'Format IPK tidak valid. Harap masukkan angka antara 0.00 dan 4.00';
+//         ipkInput.setCustomValidity('Format IPK tidak valid');
+//     } else {
+//         ipkValidationMessage.textContent = '';
+//         ipkInput.setCustomValidity('');
+//     }
+// });
+
+// const rata2Input = document.getElementById('rata2Input');
+// const rata2ValidationMessage = document.getElementById('rata2ValidationMessage');
+
+// rata2Input.addEventListener('input', function() {
+//     const inputValue = rata2Input.value;
+//     // const rata2Pattern = /^(100|0|[1-9][0-9]?)$/; // Pattern untuk nilai antara 0 dan 100
+//     const rata2Pattern = /^(100(\.00?)?|[0-9]{1,2}(\.\d{1,2})?)$/; // Pattern untuk nilai antara 0.00 dan 100.00
+
+//     if (!rata2Pattern.test(inputValue)) {
+//         rata2ValidationMessage.textContent =
+//             'Format nilai tidak valid. Harap masukkan angka antara 0.00 dan 100.00';
+//         rata2Input.setCustomValidity('Format nilai tidak valid');
+//     } else {
+//         rata2ValidationMessage.textContent = '';
+//         rata2Input.setCustomValidity('');
+//     }
+// });
 </script>
 <?php require '../includes/footer.php';?>

@@ -5,6 +5,7 @@ $_SESSION['menu'] = 'data-diri';
 require_once '../includes/header.php';
 require_once './functions/rayon.php';
 require_once './functions/data-diri.php';
+require_once './functions/pengajuan.php';
 
 $dataRayon = $Rayon->getRayon();
 $cekDataPelamar = $dataDiri->cekDataPelamar($_SESSION['id_user']);
@@ -16,6 +17,17 @@ if(mysqli_num_rows($cekDataPelamar) > 0){
     $cekPelamarKriteria = $dataDiri->cekPelamarKriteria($id_pelamar);
     $fetchPelamarKriteria = mysqli_fetch_assoc($cekPelamarKriteria);
     $num_rows = mysqli_num_rows($cekPelamarKriteria);
+}
+
+$numRowsVerifikasi = 0;
+$dataVerifikasi = 0;
+if(mysqli_num_rows($cekDataPelamar) > 0){
+    $id_pelamar = $fecthDataPelamar['id_pelamar'];
+    $cekPelamarKriteria = $dataDiri->cekPelamarKriteria($id_pelamar);
+    $fetchPelamarKriteria = mysqli_fetch_assoc($cekPelamarKriteria);
+    $num_rows = mysqli_num_rows($cekPelamarKriteria);
+    $dataVerifikasi = $Pengajuan->getVerifikasi($_SESSION['id_user'],$_SESSION['id_periode']);
+    $numRowsVerifikasi = mysqli_num_rows($dataVerifikasi);
 }
 ?>
 <?php if (isset($_SESSION['success'])): ?>
@@ -91,9 +103,19 @@ Swal.fire({
                     Tambah Data
                 </a>
                 <?php else:?>
+                <?php if($numRowsVerifikasi > 0):?>
+                <?php foreach ($dataVerifikasi as $key => $verifikasi):?>
+                <?php if($verifikasi['status'] == 0 ):?>
                 <a href="./edit-data-diri.php" class="btn btn-secondary ml-2">
                     Edit Data
                 </a>
+                <?php endif;?>
+                <?php endforeach;?>
+                <?php elseif(($numRowsVerifikasi == 0)):?>
+                <a href="./edit-data-diri.php" class="btn btn-secondary ml-2">
+                    Edit Data
+                </a>
+                <?php endif;?>
                 <?php endif;?>
             </div>
         </div>
@@ -126,7 +148,7 @@ Swal.fire({
                             <td><?= $_SESSION['jenjang'] == 'pt' ? explode("/", $pelamar_kriteria['nama_sub_kriteria'])[0]:explode("/",$pelamar_kriteria['nama_sub_kriteria'])[1];?>
                             </td>
                             <?php elseif($pelamar_kriteria['nama_kriteria'] == "Pendapatan orang tua/wali"):?>
-                            <td><?= $pelamar_kriteria['nama_kriteria'];?></td>
+                            <td><?= $pelamar_kriteria['nama_kriteria'].'(per bulan)';?></td>
                             <td>: </td>
                             <td><?= number_format($fecthDataPelamar['pendapatan_ortu'],0,',','.');?>
                             </td>
@@ -178,7 +200,7 @@ Swal.fire({
                             <td>-</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td>Pendapatan orang tua/wali</td>
+                            <td>Pendapatan orang tua/wali (per bulan)</td>
                             <td>: </td>
                             <td>-</td>
                         </tr>
