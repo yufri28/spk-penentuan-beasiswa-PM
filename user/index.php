@@ -30,14 +30,14 @@ if(mysqli_num_rows($cekDataPelamar) > 0){
                     $originalDate = $periodeActive['batas_pelamar'];
 
                     // Mengonversi tanggal ke format yang diinginkan
-                    $newDate = date('d F Y H:i:s', strtotime($originalDate));
+                    $newDate = date('d F Y \p\u\k\u\l H:i:s', strtotime($originalDate));
 
                     if($periodeActive['status'] == 'buka'){
                         // Menampilkan tanggal dalam <marquee>
-                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Penting: Batas pengajuan beasiswa untuk periode ".$periodeActive['nama_periode']." akan berakhir pada $newDate WITA</marquee>";
+                        echo "<marquee class='text-danger' scrolldelay='150' behavior=\"\" direction=\"\"><h5>Penting: Batas pengajuan beasiswa untuk periode ".$periodeActive['nama_periode']." akan berakhir pada $newDate WITA</h5></marquee>";
                     }else{
                         // Menampilkan tanggal dalam <marquee>
-                        echo "<marquee class='text-danger' behavior=\"\" direction=\"\">Penting: Batas pengajuan beasiswa untuk periode ".$periodeActive['nama_periode']." telah berakhir pada $newDate WITA</marquee>";
+                        echo "<marquee class='text-danger' scrolldelay='150' behavior=\"\" direction=\"\"><h5>Penting: Batas pengajuan beasiswa untuk periode ".$periodeActive['nama_periode']." telah berakhir pada $newDate WITA</h5></marquee>";
                     }
                 ?>
                 <h1 class="text-end">SPK Seleksi Beasiswa GMIT Paulus Kupang</h1>
