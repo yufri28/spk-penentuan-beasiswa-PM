@@ -33,13 +33,17 @@ $table = '<table align="center" style="width: 100%; border-collapse: collapse; t
                 <th style="padding: 5px; border: 1px solid #ddd;">Jumlah tanggungan orang tua/wali
                 </th>
                 <th style="padding: 5px; border: 1px solid #ddd;">IPK/Nilai Raport</th>
-                <th style="padding: 5px; border: 1px solid #ddd;">Semester</th>
+                <th style="padding: 5px; border: 1px solid #ddd;">Semester/Kelas</th>
                 <th style="padding: 5px; border: 1px solid #ddd;">Rayon</th>
                 <th style="padding: 5px; border: 1px solid #ddd;">Nilai</th>
                 <th style="padding: 5px; border: 1px solid #ddd;">Periode</th>
             </tr>';
 
-foreach ($data as $row) {
+ $semester_kls = "";
+ $semester = "";
+ foreach ($data as $row) {
+    $semester_kls = explode("/",$row['C7']);
+    $semester = $row['jenjang'] == 'sma' ? $semester_kls[1]:$semester_kls[0];
     $table .= '<tr>
                 <td style="padding: 8px; border: 1px solid #ddd;">' . $row['nama'] . '</td>
                 <td style="padding: 8px; border: 1px solid #ddd;">' . $row['no_hp'] . '</td>
@@ -51,7 +55,7 @@ foreach ($data as $row) {
                 <td style="padding: 8px; border: 1px solid #ddd;">' . $row['pendapatan_ortu'] . '</td>
                 <td style="padding: 8px; border: 1px solid #ddd;">' . $row['C5'] . '</td>
                 <td style="padding: 8px; border: 1px solid #ddd;">' . $row['ipk'] . '</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">' . $row['C7'] . '</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">' . $semester . '</td>
                 <td style="padding: 8px; border: 1px solid #ddd;">' . $row['nama_rayon'] . '</td>
                 <td style="padding: 8px; border: 1px solid #ddd;">' . number_format($row['nilai_rank'], 2, '.', ''). '</td>
                 <td style="padding: 8px; border: 1px solid #ddd;">' . $row['nama_periode'] . '</td>
