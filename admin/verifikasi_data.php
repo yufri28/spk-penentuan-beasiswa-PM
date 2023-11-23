@@ -203,7 +203,7 @@ Swal.fire({
                                     value="<?=$pelamar_kriteria['id_sub_kriteria'];?>">
                                 <td><?= $pelamar_kriteria['jenjang'] == 'pt' ? explode("/",$pelamar_kriteria['nama_sub_kriteria'])[1]:explode("/",$pelamar_kriteria['nama_sub_kriteria'])[0];?>
                                 </td>
-                                <?php elseif($pelamar_kriteria['nama_kriteria'] == 'Semester') :?>
+                                <?php elseif($pelamar_kriteria['nama_kriteria'] == 'Semester/Kelas') :?>
                                 <td><?= $pelamar_kriteria['jenjang'] == 'pt' ?'Semester':'Kelas';?></td>
                                 <td>: </td>
                                 <input type="hidden" name="sub_kriteria[]"
@@ -277,7 +277,7 @@ Swal.fire({
                                 <td> - </td>
                             </tr>
                             <tr class="border-bottom">
-                                <td>Semester</td>
+                                <td>Semester/Kelas</td>
                                 <td>: </td>
                                 <td> - </td>
                             </tr>

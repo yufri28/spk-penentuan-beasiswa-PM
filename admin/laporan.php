@@ -124,7 +124,7 @@ Swal.fire({
                                     <th>Status keluarga</th>
                                     <th>Jumlah tanggungan orang tua/wali
                                     </th>
-                                    <th>Semester
+                                    <th>Semester/Kelas
                                     </th>
                                     <th>Rayon</th>
                                     <th>Nilai Akhir</th>
@@ -182,7 +182,7 @@ Swal.fire({
                                     <th>Status keluarga</th>
                                     <th>Jumlah tanggungan orang tua/wali
                                     </th>
-                                    <th>Semester
+                                    <th>Semester/Kelas
                                     </th>
                                     <th>Rayon</th>
                                     <th>Nilai Akhir</th>
