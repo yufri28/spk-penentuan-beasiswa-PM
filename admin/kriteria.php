@@ -74,7 +74,7 @@ Swal.fire({
                                     <th>No</th>
                                     <th>Kode</th>
                                     <th>Nama</th>
-                                    <th>Bobot</th>
+                                    <!-- <th>Bobot</th> -->
                                     <th>Faktor</th>
                                     <th>Profil Target</th>
                                     <th>Aksi</th>
@@ -86,7 +86,7 @@ Swal.fire({
                                     <th scope="row"><?=$key+1;?></th>
                                     <th><?=$kriteria['id_kriteria'];?></th>
                                     <th><?=$kriteria['nama_kriteria'];?></th>
-                                    <td><?=$kriteria['bobot_kriteria'];?></td>
+                                    <!-- <td><?=$kriteria['bobot_kriteria'];?></td> -->
                                     <td><?=$kriteria['faktor'];?></td>
                                     <td><?=$kriteria['profile_target'];?></td>
                                     <td>

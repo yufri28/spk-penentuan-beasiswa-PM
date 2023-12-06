@@ -16,6 +16,12 @@ class Perhitungan{
             dp.nama,
             dp.f_id_rayon,
             dp.f_id_login,
+            dp.pendapatan_ortu,
+            dp.ipk,
+            dp.kartu_keluarga,
+            dp.raport_khs,
+            dp.kartu_pelajar,
+            pdt.f_id_periode,
             r.nama_rayon,
             MAX(CASE WHEN k.id_kriteria = 'K1' THEN sk.nama_sub_kriteria END) AS nama_C1,
             MAX(CASE WHEN k.id_kriteria = 'K2' THEN sk.nama_sub_kriteria END) AS nama_C2,
@@ -167,7 +173,7 @@ class Perhitungan{
             $NMA = ($value['bobotC1'] * $NCF) + ($value['bobotC2'] * $NCF) + ($value['bobotC3'] * $NCF) + ($value['bobotC4'] * $NCF) + ($value['bobotC5'] * $NCF);
             $NSA = ($value['bobotC6'] * $NSF) + ($value['bobotC7'] * $NSF);
             
-            $nilaiAkhir = ((5 / 7) * $NMA) + ((2 / 7) * $NSA);
+            $nilaiAkhir = ((5 / 7) * $NCF) + ((2 / 7) * $NSF);
     
             $ranking[] = [
                 'id_pelamar' => $value['id_pelamar'],
@@ -175,6 +181,17 @@ class Perhitungan{
                 'nama_rayon' => $value['nama_rayon'],
                 'f_id_rayon' => $value['f_id_rayon'],
                 'f_id_login' => $value['f_id_login'],
+                'f_id_periode' => $value['f_id_periode'],
+                'kriteriaSatu' => $value['nama_C1'], 
+                'kriteriaDua' => $value['nama_C2'], 
+                'kriteriaTiga' => $value['nama_C3'], 
+                'pendapatan_ortu' => $value['pendapatan_ortu'], 
+                'kriteriaLima' => $value['nama_C5'], 
+                'ipk' => $value['ipk'], 
+                'kriteriaTujuh' => $value['nama_C7'],
+                'kartu_keluarga' => $value['kartu_keluarga'],
+                'raport_khs' => $value['raport_khs'],
+                'kartu_pelajar' => $value['kartu_pelajar'],
                 'nilaiAkhir' => $nilaiAkhir
             ];
         }
@@ -213,6 +230,24 @@ class Perhitungan{
                 }
             }
             if($this->db->affected_rows > 0 && $insert){
+
+               // Data yang ingin disimpan ke file JSON
+                $data = array(
+                    'id_periode' => $_SESSION['id_periode'],
+                    'isi_pengumuman' => "Hasil Seleksi Penerima Beasiswa",
+                    'tanggal' => date('Y-m-d H:i:s') // Menggunakan format date yang benar
+                );
+
+                // Konversi array menjadi format JSON
+                $jsonData = json_encode($data);
+
+                // Simpan data ke file JSON
+                $namaFile = './data.json';
+                if (file_put_contents($namaFile, $jsonData)) {
+                    echo "Data telah disimpan ke $namaFile";
+                } else {
+                    echo "Gagal menyimpan data ke $namaFile";
+                }
                 return $_SESSION['success'] = "Data berhasil disimpan!";
             }else{
                 return $_SESSION['success'] = "Data gagal disimpan!";
@@ -222,6 +257,22 @@ class Perhitungan{
     
     public function getHasilAkhir($f_id_periode=null,$jenjang=null){
         return $this->db->query("SELECT * FROM hasil_akhir WHERE f_id_periode=$f_id_periode AND jenjang='$jenjang'");
+    }
+
+
+    public function hapusHasil($data)
+    {
+        if(!empty($data))
+        {
+            $id_pelamar = $data['id_pelamar'];
+            $id_periode = $data['id_periode'];
+            $queryDelete = $this->db->query("DELETE FROM pdt WHERE f_id_pelamar='$id_pelamar' AND f_id_periode='$id_periode'");
+            if($queryDelete){
+                return $_SESSION['success'] = "Data berhasil dihapus!";
+            }else{
+                return $_SESSION['success'] = "Data gagal dihapus!";
+            }
+        }
     }
 }
 

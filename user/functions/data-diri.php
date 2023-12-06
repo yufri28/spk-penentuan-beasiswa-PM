@@ -67,16 +67,23 @@ class DataDiri{
                 ];
                 $kartu_keluarga =  $data['kartu_keluarga'];
                 $raport_khs =  $data['raport_khs'];
+                $kartu_pelajar =  $data['kartu_pelajar'];
                 $id_pelamar = $data['id_pelamar'];
-                
+                $id_penerima = $data['id_penerima'];
+
+                $idRayon = $this->db->query("SELECT f_id_rayon FROM data_pelamar WHERE f_id_login='$id_penerima'")->fetch_assoc();
+                $idKoorRayon = $this->db->query("SELECT id_admin FROM admin WHERE f_id_rayon='".$idRayon['f_id_rayon']."'")->fetch_assoc();
+                $f_id_pengirim = $idKoorRayon['id_admin'];
+               
                 $update = $this->db->query(
                     "UPDATE data_pelamar
-                    SET pendapatan_ortu='$pendapatan', ipk='$ipks', kartu_keluarga='$kartu_keluarga',raport_khs='$raport_khs' WHERE id_pelamar=$id_pelamar");
+                    SET pendapatan_ortu='$pendapatan', ipk='$ipks', kartu_keluarga='$kartu_keluarga',raport_khs='$raport_khs',kartu_pelajar='$kartu_pelajar' WHERE id_pelamar=$id_pelamar");
                 foreach ($kriteria_pelamar as $key => $kriteria) {
                     $insert = $this->db->query("INSERT INTO pelamar_kriteria(id_pelamar_kriteria,f_id_kriteria,f_id_sub_kriteria,f_id_pelamar) VALUES (0,'$key',$kriteria,$id_pelamar)");
                 }
-                
                 if($this->db->affected_rows > 0){
+                    $isi_notif = "Periksa kembali data anda sebelum diajukan!";
+                    $this->db->query("INSERT INTO notifikasi_pelamar(id_notif,f_id_pengirim,f_id_penerima,isi_notifikasi,tanggal,dibuka)VALUES(0,$f_id_pengirim,$id_penerima,'$isi_notif',NOW(),'0')");
                     $_SESSION['success'] = "Data berhasil disimpan";
                     echo '<script>window.location.href = "./data_diri.php";</script>';
                 }else{
@@ -147,14 +154,14 @@ class DataDiri{
 
                 $kartu_keluarga =  $data['kartu_keluarga'];
                 $raport_khs =  $data['raport_khs'];
+                $kartu_pelajar =  $data['kartu_pelajar'];
                 $id_pelamar = $data['id_pelamar'];
                 $f_id_penerima = $data['f_id_penerima'];
                 $f_id_pengirim = $data['f_id_pengirim'];
                 $nama_pengirim = $data['nama_pengirim'];
-                
                 $update = $this->db->query(
                     "UPDATE data_pelamar
-                    SET pendapatan_ortu='$pendapatan', ipk='$ipks', kartu_keluarga='$kartu_keluarga',raport_khs='$raport_khs' WHERE id_pelamar=$id_pelamar");
+                    SET pendapatan_ortu='$pendapatan', ipk='$ipks', kartu_keluarga='$kartu_keluarga',raport_khs='$raport_khs',kartu_pelajar='$kartu_pelajar' WHERE id_pelamar=$id_pelamar");
                 foreach ($kriteria_pelamar as $key => $kriteria) {
                     $update = $this->db->query("UPDATE pelamar_kriteria SET f_id_kriteria='$key',f_id_sub_kriteria=$kriteria,f_id_pelamar=$id_pelamar WHERE id_pelamar_kriteria=$data_kriteria[$key]");
                 }

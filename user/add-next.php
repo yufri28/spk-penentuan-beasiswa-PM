@@ -112,11 +112,12 @@ if(mysqli_num_rows($cekDataPelamar) != 1){
 if (isset($_POST["simpan"])) {
     // Pastikan ada file gambar yang diunggah
     if ((isset($_FILES['kartu_keluarga']) && $_FILES['kartu_keluarga']['error'] === UPLOAD_ERR_OK)
-    && isset($_FILES['raport_khs']) && $_FILES['raport_khs']['error'] === UPLOAD_ERR_OK) {
+    && isset($_FILES['raport_khs']) && $_FILES['raport_khs']['error'] === UPLOAD_ERR_OK && isset($_FILES['kartu_pelajar']) && $_FILES['kartu_pelajar']['error'] === UPLOAD_ERR_OK) {
         // Array informasi file yang diunggah
         $files = [
             $_FILES['kartu_keluarga'],
-            $_FILES['raport_khs']
+            $_FILES['raport_khs'],
+            $_FILES['kartu_pelajar']
         ];
 
         $targetDir = './uploads/berkas/';
@@ -176,9 +177,10 @@ if (isset($_POST["simpan"])) {
             'semester' => $semester,
             'kartu_keluarga' => $uploadedFiles[0],
             'raport_khs' => $uploadedFiles[1],
-            'id_pelamar' =>$id_pelamar
+            'kartu_pelajar' => $uploadedFiles[2],
+            'id_pelamar' =>$id_pelamar,
+            'id_penerima' => $_SESSION['id_user']
         ];
-
         $dataDiri->addDataDiriNext($data_diri);
     } else {
         return $_SESSION['error'] = 'Tidak ada file gambar yang diunggah!';
@@ -313,6 +315,12 @@ $dataSemester = $dataDiri->getSemester();
                             <small class="text-danger">*</small></label>
                         <input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="raport_khs"
                             id="raport_khs" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="kartu_pelajar" class="form-label">Kartu Pelajar
+                            <small class="text-danger">*</small></label>
+                        <input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="kartu_pelajar"
+                            id="kartu_pelajar" required />
                     </div>
                 </div>
                 <div class="modal-footer">

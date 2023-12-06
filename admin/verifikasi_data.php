@@ -245,6 +245,16 @@ Swal.fire({
                                     </a>
                                 </td>
                             </tr>
+                            <tr class="border-bottom">
+                                <td><?=$fecthDataPelamar['jenjang'] == 'pt'  ? 'Kartu Tanda Mahasiswa': 'Kartu Pelajar';?> <small><i>(jpg, png,
+                                            jpeg)</i></small></td>
+                                <td>: </td>
+                                <td><a href="../user/uploads/berkas/<?=$fecthDataPelamar['kartu_pelajar'];?>">
+                                        <img style="width:100px;height:100px;"
+                                            src="../user/uploads/berkas/<?=$fecthDataPelamar['kartu_pelajar'];?>" alt="">
+                                    </a>
+                                </td>
+                            </tr>
                             <?php else:?>
                             <tr class="border-bottom">
                                 <td>Status Jemaat</td>
@@ -305,6 +315,15 @@ Swal.fire({
                                     </a>
                                 </td>
                             </tr>
+                            <tr class="border-bottom">
+                                <td>Kartu Tanda Mahasiswa/Kartu Pelajar <small><i>(jpg, png, jpeg)</i></small></td>
+                                <td>: </td>
+                                <td><a href="../assets/images/no_images.png">
+                                        <img style="width:100px;height:100px;" src="../assets/images/no_images.png"
+                                            alt="">
+                                    </a>
+                                </td>
+                            </tr>
                             <?php endif;?>
 
                         </table>
@@ -315,7 +334,7 @@ Swal.fire({
                         </a>
                         <?php if(isset($cekVerifikasiUser['status']) && $cekVerifikasiUser['status'] != 1):?>
                         <button type="submit" name="lengkap" class="btn btn-primary ml-2">
-                            Simpan
+                            Ajukan
                         </button>
                         <?php endif;?>
                         <button type="button" class="btn btn-info ml-2" data-toggle="modal" data-target="#pesan">

@@ -18,7 +18,10 @@ if(mysqli_num_rows($cekDataPelamar) > 0){
     $fetchPelamarKriteria = mysqli_fetch_assoc($cekPelamarKriteria);
     $num_rows = mysqli_num_rows($cekPelamarKriteria);
 }
-
+if(isset($_GET['n'])){
+    $id_notif = base64_decode($_GET['n']);
+    $Notifikasi->updateNotif($id_notif);
+}
 $numRowsVerifikasi = 0;
 $dataVerifikasi = 0;
 if(mysqli_num_rows($cekDataPelamar) > 0){
@@ -125,8 +128,7 @@ Swal.fire({
             <div class="card-body">
                 <div class="alert alert-info" role="alert">
                     <small>
-                        <strong>Untuk surat aktif sekolah dan
-                            Raport/KHS,
+                        <strong>Untuk Kartu Keluarga, Raport/KHS dan Kartu Pelajar/Kartu Tanda Mahasiswa,
                             discan dan diupload berupa file gambar (jpg/jpeg/png).</strong>
                     </small>
                 </div>
@@ -183,6 +185,15 @@ Swal.fire({
                                 </a>
                             </td>
                         </tr>
+                        <tr class="border-bottom">
+                            <td><?= $_SESSION['jenjang'] == 'pt' ? 'Kartu Tanda Mahasiswa':'Kartu Pelajar ';?> <small><i>(jpg, png, jpeg)</i></small></td>
+                            <td>: </td>
+                            <td><a href="./uploads/berkas/<?=$fecthDataPelamar['kartu_pelajar'];?>">
+                                    <img style="width:100px;height:100px;"
+                                        src="./uploads/berkas/<?=$fecthDataPelamar['kartu_pelajar'];?>" alt="">
+                                </a>
+                            </td>
+                        </tr>
                         <?php else:?>
                         <tr class="border-bottom">
                             <td>Status Jemaat</td>
@@ -235,6 +246,14 @@ Swal.fire({
                         <tr class="border-bottom">
                             <td><?= $_SESSION['jenjang'] == 'pt' ? 'KHS ':'Raport ';?> <small><i>(jpg, png,
                                         jpeg)</i></small></td>
+                            <td>: </td>
+                            <td><a href="../assets/images/no_images.png">
+                                    <img style="width:100px;height:100px;" src="../assets/images/no_images.png" alt="">
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td><?= $_SESSION['jenjang'] == 'pt' ? 'Kartu Tanda Mahasiswa':'Kartu Pelajar ';?> <small><i>(jpg, png, jpeg)</i></small></td>
                             <td>: </td>
                             <td><a href="../assets/images/no_images.png">
                                     <img style="width:100px;height:100px;" src="../assets/images/no_images.png" alt="">

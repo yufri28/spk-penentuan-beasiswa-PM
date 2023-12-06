@@ -71,6 +71,35 @@ if(isset($_POST['simpan-pt'])){
 }
 
 
+if(isset($_POST['hapus-sma'])){
+    $id_pelamar = htmlspecialchars($_POST['id_pelamar']);
+    $id_periode = htmlspecialchars($_POST['id_periode']);
+    if($id_pelamar != "" && $id_periode != ""){
+        $data = array(
+            'id_pelamar' => $id_pelamar,
+            'id_periode' => $id_periode,
+        );
+        $Perhitungan->hapusHasil($data);
+    }else{
+        $_SESSION['error'] = "Tidak ada data yang dikirim";
+    }
+}
+
+if(isset($_POST['hapus-pt'])){
+    $id_pelamar = htmlspecialchars($_POST['id_pelamar']);
+    $id_periode = htmlspecialchars($_POST['id_periode']);
+    if($id_pelamar != "" && $id_periode != ""){
+        $data = array(
+            'id_pelamar' => $id_pelamar,
+            'id_periode' => $id_periode,
+        );
+        $Perhitungan->hapusHasil($data);
+    }else{
+        $_SESSION['error'] = "Tidak ada data yang dikirim";
+    }
+}
+
+
 // foreach ($ranking as $key => $value) {
 //     echo ($i++) . ". " . $value['nama'] . " - Nilai Akhir: " . $value['nilaiAkhir'] . "<br>";
 // }
@@ -132,13 +161,24 @@ Swal.fire({
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="hasil-sma" width="100%" cellspacing="0">
+                            <table class="table table-bordered nowrap" id="hasil-sma" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Nama</th>
                                         <th>Rayon</th>
+                                        <th>Status jemaat</th>
+                                        <th>Keaktifan kegiatan bergereja</th>
+                                        <th>Status keluarga</th>
+                                        <th>Pendapatan orang tua/wali</th>
+                                        <th>Jumlah tanggungan orang tua/wali</th>
+                                        <th>IPK/Nilai Raport</th>
+                                        <th>Kelas</th>
+                                        <th>Kartu Keluarga</th>
+                                        <th>Raport/KHS</th>
+                                        <th>Kartu Pelajar/KTM</th>
                                         <th>Nilai Akhir</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -149,7 +189,52 @@ Swal.fire({
                                         <th scope="row"><?=$j++;?>. </th>
                                         <th><?=$rank['nama'];?></th>
                                         <th><?=$rank['nama_rayon'];?></th>
+                                        <th><?=$rank['kriteriaSatu'];?></th>
+                                        <th><?=$rank['kriteriaDua'];?></th>
+                                        <th><?=$rank['kriteriaTiga'];?></th>
+                                        <th>Rp.<?=$rank['pendapatan_ortu'];?></th>
+                                        <th><?=$rank['kriteriaLima'];?></th>
+                                        <th><?=$rank['ipk'];?></th>
+                                        <th><?= explode("/",$rank['kriteriaTujuh'])[1];?></th>
+                                        <td> 
+                                            <?php if($rank['kartu_keluarga'] == "" || $rank['kartu_keluarga'] == NULL): ?>
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                            <?php else:?>
+                                                <a href="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>" target="_blank">
+                                                    <img src="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>" style="height:90px; width:90px;"
+                                                        class="card-img" alt="...">
+                                                </a>
+                                            <?php endif;?>
+                                        </td>
+                                        <td> 
+                                             <?php if($rank['raport_khs'] == "" || $rank['raport_khs'] == NULL): ?>
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                            <?php else:?>
+                                                <a href="../user/uploads/berkas/<?=$rank['raport_khs'];?>" target="_blank">
+                                                    <img src="../user/uploads/berkas/<?=$rank['raport_khs'];?>" style="height:90px; width:90px;"
+                                                        class="card-img" alt="...">
+                                                </a>
+                                            <?php endif;?>
+                                        </td>
+                                        <td> 
+                                             <?php if($rank['kartu_pelajar'] == "" || $rank['kartu_pelajar'] == NULL): ?>
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                            <?php else:?>
+                                                <a href="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>" target="_blank">
+                                                    <img src="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>" style="height:90px; width:90px;"
+                                                        class="card-img" alt="...">
+                                                </a>
+                                            <?php endif;?>
+                                        </td>
                                         <td><?=$rank['nilaiAkhir'];?></td>
+                                        <td>
+                                            <?php if($rankingSMA != null && mysqli_num_rows($hasilAkhirSMA) < 1):?>
+                                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
+                                            data-target="#hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>">Hapus</button>
+                                            <?php else: ?>
+                                                <button type="button" disabled class="btn btn-sm btn-secondary">Tidak ada aksi</button>
+                                            <?php endif; ?>
+                                        </td>
                                     </tr>
                                     <?php endforeach;?>
                                 </tbody>
@@ -179,13 +264,24 @@ Swal.fire({
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="hasil-pt" width="100%" cellspacing="0">
+                            <table class="table table-bordered nowrap" id="hasil-pt" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Nama</th>
                                         <th>Rayon</th>
+                                        <th>Status jemaat</th>
+                                        <th>Keaktifan kegiatan bergereja</th>
+                                        <th>Status keluarga</th>
+                                        <th>Pendapatan orang tua/wali</th>
+                                        <th>Jumlah tanggungan orang tua/wali</th>
+                                        <th>IPK/Nilai Raport</th>
+                                        <th>Kelas</th>
+                                        <th>Kartu Keluarga</th>
+                                        <th>Raport/KHS</th>
+                                        <th>Kartu Pelajar/KTM</th>
                                         <th>Nilai Akhir</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -196,7 +292,52 @@ Swal.fire({
                                         <th scope="row"><?=$k++;?>. </th>
                                         <th><?=$rank['nama'];?></th>
                                         <th><?=$rank['nama_rayon'];?></th>
+                                        <th><?=$rank['kriteriaSatu'];?></th>
+                                        <th><?=$rank['kriteriaDua'];?></th>
+                                        <th><?=$rank['kriteriaTiga'];?></th>
+                                        <th>Rp.<?=$rank['pendapatan_ortu'];?></th>
+                                        <th><?=$rank['kriteriaLima'];?></th>
+                                        <th><?=$rank['ipk'];?></th>
+                                        <th><?= explode("/",$rank['kriteriaTujuh'])[1];?></th>
+                                        <td> 
+                                            <?php if($rank['kartu_keluarga'] == "" || $rank['kartu_keluarga'] == NULL): ?>
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                            <?php else:?>
+                                                <a href="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>" target="_blank">
+                                                    <img src="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>" style="height:90px; width:90px;"
+                                                        class="card-img" alt="...">
+                                                </a>
+                                            <?php endif;?>
+                                        </td>
+                                        <td> 
+                                             <?php if($rank['raport_khs'] == "" || $rank['raport_khs'] == NULL): ?>
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                            <?php else:?>
+                                                <a href="../user/uploads/berkas/<?=$rank['raport_khs'];?>" target="_blank">
+                                                    <img src="../user/uploads/berkas/<?=$rank['raport_khs'];?>" style="height:90px; width:90px;"
+                                                        class="card-img" alt="...">
+                                                </a>
+                                            <?php endif;?>
+                                        </td>
+                                        <td> 
+                                             <?php if($rank['kartu_pelajar'] == "" || $rank['kartu_pelajar'] == NULL): ?>
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                            <?php else:?>
+                                                <a href="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>" target="_blank">
+                                                    <img src="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>" style="height:90px; width:90px;"
+                                                        class="card-img" alt="...">
+                                                </a>
+                                            <?php endif;?>
+                                        </td>
                                         <td><?=$rank['nilaiAkhir'];?></td>
+                                        <td>
+                                        <?php if($rankingPT != null && mysqli_num_rows($hasilAkhirPT) < 1):?>
+                                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
+                                            data-target="#hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>">Hapus</button>
+                                            <?php else: ?>
+                                                <button type="button" disabled class="btn btn-sm btn-secondary">Tidak ada aksi</button>
+                                            <?php endif; ?>
+                                        </td>
                                     </tr>
                                     <?php endforeach;?>
                                 </tbody>
@@ -208,5 +349,65 @@ Swal.fire({
         </div>
     </div>
 </div>
+
+
+<?php foreach ($rankingSMA as $rank):?>
+<div class="modal fade" id="hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" name="id_pelamar" value="<?=$rank['id_pelamar'];?>">
+                        <input type="hidden" name="id_periode" value="<?=$rank['f_id_periode'];?>">
+                        <p>Anda yakin ingin menghapus data <strong><?=$rank['nama'];?></strong> ?
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" name="hapus-sma" class="btn btn-primary">Hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php endforeach;?>
+<?php foreach ($rankingPT as $rank):?>
+<div class="modal fade" id="hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" name="id_pelamar" value="<?=$rank['id_pelamar'];?>">
+                        <input type="hidden" name="id_periode" value="<?=$rank['f_id_periode'];?>">
+                        <p>Anda yakin ingin menghapus data <strong><?=$rank['nama'];?></strong> ?
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" name="hapus-pt" class="btn btn-primary">Hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php endforeach;?>
 
 <?php require './footer.php';?>

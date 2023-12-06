@@ -223,6 +223,21 @@ $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION
                                 <h6 class="dropdown-header">Notifikasi</h6>
                                 <?php if(mysqli_num_rows($showNotif) > 0):?>
                                 <?php foreach ($showNotif as $key => $notifikasi) :?>
+                                <?php if($notifikasi['isi_notifikasi'] == 'Periksa kembali data anda sebelum diajukan!'): ?>
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="./data_diri.php?n=<?=base64_encode($notifikasi['id_notif']);?>">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fas fa-file-alt text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500"><?=modifWaktu($notifikasi['tanggal']);?></div>
+                                        <span
+                                            class="<?=$notifikasi['dibuka'] == '0'?'font-weight-bold':'';?>"><?=$notifikasi['isi_notifikasi'];?>.</span>
+                                    </div>
+                                </a>
+                                <?php else:?>
                                 <a class="dropdown-item d-flex align-items-center"
                                     href="./pengajuan.php?n=<?=base64_encode($notifikasi['id_notif']);?>">
                                     <div class="mr-3">
@@ -236,6 +251,7 @@ $countBelumDibaca = mysqli_num_rows($Notifikasi->countBelumDibaca((int)$_SESSION
                                             class="<?=$notifikasi['dibuka'] == '0'?'font-weight-bold':'';?>"><?=$notifikasi['isi_notifikasi'];?>.</span>
                                     </div>
                                 </a>
+                                <?php endif;?>
                                 <?php endforeach;?>
                                 <?php else:?>
                                 <div class="d-flex justify-content-center mt-2">

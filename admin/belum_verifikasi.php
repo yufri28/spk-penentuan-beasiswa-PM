@@ -53,7 +53,7 @@ $periodeActive = $Setting->getPeriodeActive($_SESSION['id_periode']);
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody>     
                                 <?php foreach ($data_pelamar as $key => $pelamar):?>
                                 <tr>
                                     <th scope="row"><?=$key+1;?></th>

@@ -117,21 +117,20 @@ function filterPendapatan($pendapatan, $kriteriaPendapatan){
 if (isset($_POST["simpan"])) {
     // Pastikan ada file gambar yang diunggah
     if ((isset($_FILES['kartu_keluarga']) && $_FILES['kartu_keluarga']['error'] === UPLOAD_ERR_OK) ||
-        (isset($_FILES['raport_khs']) && $_FILES['raport_khs']['error'] === UPLOAD_ERR_OK)) {
+        (isset($_FILES['raport_khs']) && $_FILES['raport_khs']['error'] === UPLOAD_ERR_OK) || (isset($_FILES['kartu_pelajar']) && $_FILES['kartu_pelajar']['error'] === UPLOAD_ERR_OK)) {
         // Array informasi file yang diunggah
-        $files = [];
+        $files = []; 
         if (isset($_FILES['kartu_keluarga']) && $_FILES['kartu_keluarga']['error'] === UPLOAD_ERR_OK) {
             $files['kartu_keluarga'] = $_FILES['kartu_keluarga'];
         }
-
-        // if (isset($_FILES['suket_beasiswa_lain']) && $_FILES['suket_beasiswa_lain']['error'] === UPLOAD_ERR_OK) {
-        //     $files['suket_beasiswa_lain'] = $_FILES['suket_beasiswa_lain'];
-        // }
-
+ 
         if (isset($_FILES['raport_khs']) && $_FILES['raport_khs']['error'] === UPLOAD_ERR_OK) {
             $files['raport_khs'] = $_FILES['raport_khs'];
         }
-
+        
+        if (isset($_FILES['kartu_pelajar']) && $_FILES['kartu_pelajar']['error'] === UPLOAD_ERR_OK) {
+            $files['kartu_pelajar'] = $_FILES['kartu_pelajar'];
+        }
         $targetDir = './uploads/berkas/';
         $uploadedFiles = [];
 
@@ -199,8 +198,8 @@ if (isset($_POST["simpan"])) {
             'ipk' => $id_sub_ipk,
             'semester' => $semester,
             'kartu_keluarga' => isset($uploadedFiles['kartu_keluarga']) ? $uploadedFiles['kartu_keluarga'] : $_POST["kartu_keluarga_lama"],
-            // 'suket_beasiswa_lain' => isset($uploadedFiles['suket_beasiswa_lain']) ? $uploadedFiles['suket_beasiswa_lain'] : $_POST["suket_beasiswa_lain_lama"],
             'raport_khs' => isset($uploadedFiles['raport_khs']) ? $uploadedFiles['raport_khs'] : $_POST["raport_khs_lama"],
+            'kartu_pelajar' => isset($uploadedFiles['kartu_pelajar']) ? $uploadedFiles['kartu_pelajar'] : $_POST["kartu_pelajar_lama"],
             'id_pelamar' => $id_pelamar,
             'f_id_pengirim' => $_SESSION['id_user'],
             'nama_pengirim' => $fetch_data_pelamar['nama'],
@@ -237,8 +236,8 @@ if (isset($_POST["simpan"])) {
             'ipk' => $id_sub_ipk,
             'semester' => $semester,
             'kartu_keluarga' => $_POST["kartu_keluarga_lama"],
-            // 'suket_beasiswa_lain' => $_POST["suket_beasiswa_lain_lama"],
             'raport_khs' => $_POST["raport_khs_lama"],
+            'kartu_pelajar' => $_POST["kartu_pelajar_lama"],
             'id_pelamar' => $id_pelamar,
             'f_id_pengirim' => $_SESSION['id_user'],
             'nama_pengirim' => $fetch_data_pelamar['nama'],
@@ -396,6 +395,15 @@ $dataSemester = $dataDiri->getSemester();
                         </label>
                         <input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="raport_khs"
                             id="raport_khs" />
+                        <small class="text-secondary"><i>Jika tidak ingin mengubah gambar, maka tidak perlu
+                                menguploadnya lagi.</i></small>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="kartu_pelajar_lama" value="<?=$fetch_data_pelamar['kartu_pelajar'];?>">
+                        <label for="kartu_pelajar" class="form-label"><?= $_SESSION['jenjang'] == 'pt' ? 'Kartu Tanda Mahasiswa':'Kartu Pelajar';?>
+                        </label>
+                        <input type="file" accept=".jpg, .jpeg, .png" class="form-control" name="kartu_pelajar"
+                            id="kartu_pelajar" />
                         <small class="text-secondary"><i>Jika tidak ingin mengubah gambar, maka tidak perlu
                                 menguploadnya lagi.</i></small>
                     </div>
