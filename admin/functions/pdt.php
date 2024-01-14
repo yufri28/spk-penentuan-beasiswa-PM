@@ -17,7 +17,7 @@ class PDT{
             $fetchPeriode = mysqli_fetch_assoc($this->getPeriode());
             $id_periode = $fetchPeriode['id_periode'];
             foreach ($data as $key => $pdt) {
-               $insert = $this->db->query("INSERT INTO pdt(id_pdt,f_id_kriteria,f_id_sub_kriteria,f_id_pelamar,f_id_periode)VALUES(0,'$key',$pdt,$id_pelamar,$id_periode)");
+               $insert = $this->db->query("INSERT INTO pdt(id_pdt,f_id_kriteria,f_id_sub_kriteria,f_id_pelamar,f_id_periode,terima)VALUES(0,'$key',$pdt,$id_pelamar,$id_periode,'1')");
             }
             if($this->db->affected_rows > 0 && $insert){
                 $this->db->query("UPDATE verifikasi SET status='1' WHERE f_id_pelamar=$id_pelamar");

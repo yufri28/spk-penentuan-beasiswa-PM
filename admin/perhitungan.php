@@ -32,19 +32,40 @@ $hasilAkhirPT = $Perhitungan->getHasilAkhir($_SESSION['id_periode'],'pt');
 
 $i = 1;
 
+
 if(isset($_POST['simpan-sma'])){
-    if($jumlahKuotaSMA <= $numRowsSMA){
-        for ($i = 0; $i < $jumlahKuotaSMA; $i++) {
-            $idPelamar = $_POST['id_pelamar'][$i];
-            $nilaiRank = $_POST['nilai_rank'][$i];
-            $combinedArray[] = array(
+    $combinedArray = array();
+    $tampungArray = array(); // Array untuk tampung data gabungan
+
+    for ($i = 0; $i < count($_POST['id_pelamar']); $i++) {
+        $idPelamar = $_POST['id_pelamar'][$i];
+        $nilaiRank = $_POST['nilai_rank'][$i];
+        $terima = $_POST['terima'][$i];
+        if($terima == '1'){
+            $tampungArray[] = array(
                 'id_pelamar' => $idPelamar,
                 'nilai_rank' => $nilaiRank,
                 'f_id_periode' => $_SESSION['id_periode'],
                 'jenjang' => "sma"
             );
         }
-        $Perhitungan->simpanHasil($combinedArray);
+    }
+
+    if($jumlahKuotaSMA <= $numRowsSMA){
+        if(count($tampungArray) > 0){
+            for ($j = 0; $j < $jumlahKuotaSMA; $j++) {
+                    $combinedArray[] = array(
+                        'id_pelamar' => $tampungArray[$j]['id_pelamar'],
+                        'nilai_rank' => $tampungArray[$j]['nilai_rank'],
+                        'f_id_periode' => $tampungArray[$j]['f_id_periode'],
+                        'jenjang' => $tampungArray[$j]['jenjang']
+                    );
+            }
+            $Perhitungan->simpanHasil($combinedArray);
+        } 
+        else{
+            $_SESSION['error'] = "Jumlah pelamar belum mencukupi kuota!";
+        }       
     }else{
         $_SESSION['error'] = "Jumlah pelamar belum mencukupi kuota!";
     }
@@ -52,26 +73,44 @@ if(isset($_POST['simpan-sma'])){
 
 if(isset($_POST['simpan-pt'])){
     $combinedArray = array(); // Array untuk menyimpan data gabungan
-    if($jumlahKuotaPT <= $numRowsPT){
-        for ($i = 0; $i < $jumlahKuotaPT; $i++) {
-            $idPelamar = $_POST['id_pelamar'][$i];
-            $nilaiRank = $_POST['nilai_rank'][$i];
-            $combinedArray[] = array(
+    $tampungArray = array(); // Array untuk tampung data gabungan
+
+    for ($i = 0; $i < count($_POST['id_pelamar']); $i++) {
+        $idPelamar = $_POST['id_pelamar'][$i];
+        $nilaiRank = $_POST['nilai_rank'][$i];
+        $terima = $_POST['terima'][$i];
+        if($terima == '1'){
+            $tampungArray[] = array(
                 'id_pelamar' => $idPelamar,
                 'nilai_rank' => $nilaiRank,
                 'f_id_periode' => $_SESSION['id_periode'],
                 'jenjang' => "pt"
             );
         }
-        
-        $Perhitungan->simpanHasil($combinedArray);
+    }
+
+    if(($jumlahKuotaPT <= $numRowsPT)){
+        if(count($tampungArray) > 0){
+            for ($j = 0; $j < $jumlahKuotaPT; $j++) {           
+                $combinedArray[] = array(
+                    'id_pelamar' => $tampungArray[$j]['id_pelamar'],
+                    'nilai_rank' => $tampungArray[$j]['nilai_rank'],
+                    'f_id_periode' => $tampungArray[$j]['f_id_periode'],
+                    'jenjang' => $tampungArray[$j]['jenjang']
+                );
+                $Perhitungan->simpanHasil($combinedArray);
+            }
+        }
+        else{
+            $_SESSION['error'] = "Jumlah pelamar belum mencukupi kuota!";
+        }
     }else{
         $_SESSION['error'] = "Jumlah pelamar belum mencukupi kuota!";
     }
 }
 
 
-if(isset($_POST['hapus-sma'])){
+if(isset($_POST['tolak-sma'])){
     $id_pelamar = htmlspecialchars($_POST['id_pelamar']);
     $id_periode = htmlspecialchars($_POST['id_periode']);
     if($id_pelamar != "" && $id_periode != ""){
@@ -79,13 +118,13 @@ if(isset($_POST['hapus-sma'])){
             'id_pelamar' => $id_pelamar,
             'id_periode' => $id_periode,
         );
-        $Perhitungan->hapusHasil($data);
+        $Perhitungan->tolak($data);
     }else{
         $_SESSION['error'] = "Tidak ada data yang dikirim";
     }
 }
 
-if(isset($_POST['hapus-pt'])){
+if(isset($_POST['tolak-pt'])){
     $id_pelamar = htmlspecialchars($_POST['id_pelamar']);
     $id_periode = htmlspecialchars($_POST['id_periode']);
     if($id_pelamar != "" && $id_periode != ""){
@@ -93,7 +132,7 @@ if(isset($_POST['hapus-pt'])){
             'id_pelamar' => $id_pelamar,
             'id_periode' => $id_periode,
         );
-        $Perhitungan->hapusHasil($data);
+        $Perhitungan->tolak($data);
     }else{
         $_SESSION['error'] = "Tidak ada data yang dikirim";
     }
@@ -151,6 +190,7 @@ Swal.fire({
                     <?php foreach ($rankingSMA as $key => $rank):?>
                     <input type="hidden" name="id_pelamar[]" value="<?=$rank['id_pelamar']?>">
                     <input type="hidden" name="nilai_rank[]" value="<?=$rank['nilaiAkhir']?>">
+                    <input type="hidden" name="terima[]" value="<?=$rank['terima']?>">
                     <?php endforeach;?>
                     <button type="submit" name="simpan-sma" class="btn btn-primary mb-2">
                         Simpan Hasil
@@ -178,6 +218,7 @@ Swal.fire({
                                         <th>Raport/KHS</th>
                                         <th>Kartu Pelajar/KTM</th>
                                         <th>Nilai Akhir</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -233,13 +274,23 @@ Swal.fire({
                                         </td>
                                         <td><?=$rank['nilaiAkhir'];?></td>
                                         <td>
-                                            <?php if($rankingSMA != null && mysqli_num_rows($hasilAkhirSMA) < 1):?>
+                                            <?php if($rank['terima'] == 1): ?>
+                                            <button type="button" disabled
+                                                class="btn btn-sm btn-success">Diterima</button>
+                                            <?php else: ?>
+                                            <button type="button" disabled
+                                                class="btn btn-sm btn-danger">Ditolak</button>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if($rankingSMA != null && mysqli_num_rows($hasilAkhirSMA) < 1 && $rank['terima'] == 1):?>
                                             <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
                                                 data-target="#hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>">Tolak</button>
                                             <?php else: ?>
                                             <button type="button" disabled class="btn btn-sm btn-secondary">Tidak ada
                                                 aksi</button>
                                             <?php endif; ?>
+
                                         </td>
                                     </tr>
                                     <?php endforeach;?>
@@ -260,6 +311,7 @@ Swal.fire({
                     <?php foreach ($rankingPT as $key => $rank):?>
                     <input type="hidden" name="id_pelamar[]" value="<?=$rank['id_pelamar']?>">
                     <input type="hidden" name="nilai_rank[]" value="<?=$rank['nilaiAkhir']?>">
+                    <input type="hidden" name="terima[]" value="<?=$rank['terima']?>">
                     <?php endforeach;?>
                     <button type="submit" name="simpan-pt" class="btn btn-primary mb-2">
                         Simpan Hasil
@@ -287,6 +339,7 @@ Swal.fire({
                                         <th>Raport/KHS</th>
                                         <th>Kartu Pelajar/KTM</th>
                                         <th>Nilai Akhir</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -342,7 +395,16 @@ Swal.fire({
                                         </td>
                                         <td><?=$rank['nilaiAkhir'];?></td>
                                         <td>
-                                            <?php if($rankingPT != null && mysqli_num_rows($hasilAkhirPT) < 1):?>
+                                            <?php if($rank['terima'] == 1): ?>
+                                            <button type="button" disabled
+                                                class="btn btn-sm btn-success">Diterima</button>
+                                            <?php else: ?>
+                                            <button type="button" disabled
+                                                class="btn btn-sm btn-danger">Ditolak</button>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if($rankingPT != null && mysqli_num_rows($hasilAkhirPT) < 1 && $rank['terima'] == 1):?>
                                             <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
                                                 data-target="#hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>">Tolak</button>
                                             <?php else: ?>
@@ -379,13 +441,14 @@ Swal.fire({
                     <div class="form-group">
                         <input type="hidden" name="id_pelamar" value="<?=$rank['id_pelamar'];?>">
                         <input type="hidden" name="id_periode" value="<?=$rank['f_id_periode'];?>">
-                        <p>Anda yakin ingin menghapus data <strong><?=$rank['nama'];?></strong> ?
+                        <p>Apakah anda yakin ingin menolak <strong><?=$rank['nama'];?> </strong>sebagai calon penerima
+                            beasiswa? Setelah ditolak, data tidak dapat diubah lagi!
                         </p>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" name="hapus-sma" class="btn btn-primary">Hapus</button>
+                    <button type="submit" name="tolak-sma" class="btn btn-primary">Tolak</button>
                 </div>
             </form>
         </div>
@@ -408,13 +471,14 @@ Swal.fire({
                     <div class="form-group">
                         <input type="hidden" name="id_pelamar" value="<?=$rank['id_pelamar'];?>">
                         <input type="hidden" name="id_periode" value="<?=$rank['f_id_periode'];?>">
-                        <p>Anda yakin ingin menghapus data <strong><?=$rank['nama'];?></strong> ?
+                        <p>Apakah anda yakin ingin menolak <strong><?=$rank['nama'];?> </strong>sebagai calon penerima
+                            beasiswa? Setelah ditolak, data tidak dapat diubah lagi!
                         </p>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" name="hapus-pt" class="btn btn-primary">Hapus</button>
+                    <button type="submit" name="tolak-pt" class="btn btn-primary">Tolak</button>
                 </div>
             </form>
         </div>

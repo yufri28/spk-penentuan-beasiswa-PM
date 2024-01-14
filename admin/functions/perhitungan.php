@@ -23,6 +23,7 @@ class Perhitungan{
             dp.kartu_pelajar,
             pdt.f_id_periode,
             r.nama_rayon,
+            pdt.terima,
             MAX(CASE WHEN k.id_kriteria = 'K1' THEN sk.nama_sub_kriteria END) AS nama_C1,
             MAX(CASE WHEN k.id_kriteria = 'K2' THEN sk.nama_sub_kriteria END) AS nama_C2,
             MAX(CASE WHEN k.id_kriteria = 'K3' THEN sk.bobot_sub_kriteria END) AS nama_C3,
@@ -192,7 +193,8 @@ class Perhitungan{
                 'kartu_keluarga' => $value['kartu_keluarga'],
                 'raport_khs' => $value['raport_khs'],
                 'kartu_pelajar' => $value['kartu_pelajar'],
-                'nilaiAkhir' => $nilaiAkhir
+                'nilaiAkhir' => $nilaiAkhir,
+                'terima' => $value['terima'],
             ];
         }
     
@@ -211,7 +213,6 @@ class Perhitungan{
 
 
     public function simpanHasil($data=[]) {
-
         $str_jenjang = "";
         $data_koor = $this->db->query("SELECT * FROM admin WHERE username != 'admin' AND level!=0");
         $data_periode = $this->db->query("SELECT deskripsi FROM periode WHERE id_periode='".$_SESSION['id_periode']."'")->fetch_assoc();
@@ -277,20 +278,34 @@ class Perhitungan{
     }
 
 
-    public function hapusHasil($data)
+    public function tolak($data)
     {
         if(!empty($data))
         {
             $id_pelamar = $data['id_pelamar'];
             $id_periode = $data['id_periode'];
-            $queryDelete = $this->db->query("DELETE FROM pdt WHERE f_id_pelamar='$id_pelamar' AND f_id_periode='$id_periode'");
-            if($queryDelete){
-                return $_SESSION['success'] = "Data berhasil dihapus!";
+            $queryTolak = $this->db->query("UPDATE pdt SET terima='0' WHERE f_id_pelamar='$id_pelamar' AND f_id_periode='$id_periode'");
+            if($queryTolak){
+                return $_SESSION['success'] = "Proses berhasil!";
             }else{
-                return $_SESSION['success'] = "Data gagal dihapus!";
+                return $_SESSION['success'] = "Proses gagal!";
             }
         }
     }
+    // public function hapusHasil($data)
+    // {
+    //     if(!empty($data))
+    //     {
+    //         $id_pelamar = $data['id_pelamar'];
+    //         $id_periode = $data['id_periode'];
+    //         $queryDelete = $this->db->query("DELETE FROM pdt WHERE f_id_pelamar='$id_pelamar' AND f_id_periode='$id_periode'");
+    //         if($queryDelete){
+    //             return $_SESSION['success'] = "Data berhasil dihapus!";
+    //         }else{
+    //             return $_SESSION['success'] = "Data gagal dihapus!";
+    //         }
+    //     }
+    // }
 }
 
 $Perhitungan = new Perhitungan();
