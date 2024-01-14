@@ -211,6 +211,12 @@ class Perhitungan{
 
 
     public function simpanHasil($data=[]) {
+
+        $str_jenjang = "";
+        $data_koor = $this->db->query("SELECT * FROM admin WHERE username != 'admin' AND level!=0");
+        $data_periode = $this->db->query("SELECT deskripsi FROM periode WHERE id_periode='".$_SESSION['id_periode']."'")->fetch_assoc();
+        $str_notifikasi = "";
+        
         if (empty($data)) {
             return $_SESSION['error'] = "Tidak ada data yang dikirim!";
         } else {
@@ -219,7 +225,8 @@ class Perhitungan{
                 $f_id_periode = $value['f_id_periode'];
                 $nilai_rank = $value['nilai_rank'];
                 $jenjang = $value['jenjang'];
-    
+                $str_jenjang = $value['jenjang'] == 'sma' ?'SMA':"Perguruan Tinggi";
+                
                 // Periksa keberadaan data sebelum penyimpanan
                 $checkQuery = $this->db->query("SELECT * FROM hasil_akhir WHERE f_id_pelamar = $f_id_pelamar AND f_id_periode = $f_id_periode");
                 if ($checkQuery->num_rows > 0) {
@@ -227,10 +234,19 @@ class Perhitungan{
                 } else {
                     // Simpan data jika belum ada
                     $insert = $this->db->query("INSERT INTO hasil_akhir (id_hasil, f_id_pelamar, f_id_periode, nilai_rank, jenjang) VALUES (0, $f_id_pelamar, $f_id_periode, $nilai_rank, '$jenjang')");
+                    
                 }
             }
+            
+            $data_koor = $this->db->query("SELECT * FROM admin WHERE username != 'admin' AND level!=0");
             if($this->db->affected_rows > 0 && $insert){
-
+                $id_koor = 0;
+                foreach ($data_koor as $key_koordinator => $koordinator) {
+                    $id_koor = $koordinator['id_admin'];
+                    $str_notifikasi = "Hasil seleksi beasiswa ".$data_periode['deskripsi'].", jenjang ".$str_jenjang." telah disimpan oleh badan diakonat!";
+                    $this->db->query("INSERT INTO notifikasi_admin (id_notif,f_id_penerima,f_id_pengirim,isi_notif,tanggal,dibuka,jenis_notif) VALUES (0,'$id_koor','1','$str_notifikasi',NOW(),'0','simpan-hasil-seleksi')");
+                }
+    
                // Data yang ingin disimpan ke file JSON
                 $data = array(
                     'id_periode' => $_SESSION['id_periode'],
@@ -243,11 +259,12 @@ class Perhitungan{
 
                 // Simpan data ke file JSON
                 $namaFile = './data.json';
-                if (file_put_contents($namaFile, $jsonData)) {
-                    echo "Data telah disimpan ke $namaFile";
-                } else {
-                    echo "Gagal menyimpan data ke $namaFile";
-                }
+                file_put_contents($namaFile, $jsonData);
+                // if (file_put_contents($namaFile, $jsonData)) {
+                //     // echo "Data telah disimpan ke $namaFile";
+                // } else {
+                //     // echo "Gagal menyimpan data ke $namaFile";
+                // }
                 return $_SESSION['success'] = "Data berhasil disimpan!";
             }else{
                 return $_SESSION['success'] = "Data gagal disimpan!";

@@ -196,43 +196,49 @@ Swal.fire({
                                         <th><?=$rank['kriteriaLima'];?></th>
                                         <th><?=$rank['ipk'];?></th>
                                         <th><?= explode("/",$rank['kriteriaTujuh'])[1];?></th>
-                                        <td> 
+                                        <td>
                                             <?php if($rank['kartu_keluarga'] == "" || $rank['kartu_keluarga'] == NULL): ?>
-                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;"
+                                                class="card-img" alt="...">
                                             <?php else:?>
-                                                <a href="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>" target="_blank">
-                                                    <img src="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>" style="height:90px; width:90px;"
-                                                        class="card-img" alt="...">
-                                                </a>
+                                            <a href="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>"
+                                                target="_blank">
+                                                <img src="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>"
+                                                    style="height:90px; width:90px;" class="card-img" alt="...">
+                                            </a>
                                             <?php endif;?>
                                         </td>
-                                        <td> 
-                                             <?php if($rank['raport_khs'] == "" || $rank['raport_khs'] == NULL): ?>
-                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                        <td>
+                                            <?php if($rank['raport_khs'] == "" || $rank['raport_khs'] == NULL): ?>
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;"
+                                                class="card-img" alt="...">
                                             <?php else:?>
-                                                <a href="../user/uploads/berkas/<?=$rank['raport_khs'];?>" target="_blank">
-                                                    <img src="../user/uploads/berkas/<?=$rank['raport_khs'];?>" style="height:90px; width:90px;"
-                                                        class="card-img" alt="...">
-                                                </a>
+                                            <a href="../user/uploads/berkas/<?=$rank['raport_khs'];?>" target="_blank">
+                                                <img src="../user/uploads/berkas/<?=$rank['raport_khs'];?>"
+                                                    style="height:90px; width:90px;" class="card-img" alt="...">
+                                            </a>
                                             <?php endif;?>
                                         </td>
-                                        <td> 
-                                             <?php if($rank['kartu_pelajar'] == "" || $rank['kartu_pelajar'] == NULL): ?>
-                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                        <td>
+                                            <?php if($rank['kartu_pelajar'] == "" || $rank['kartu_pelajar'] == NULL): ?>
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;"
+                                                class="card-img" alt="...">
                                             <?php else:?>
-                                                <a href="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>" target="_blank">
-                                                    <img src="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>" style="height:90px; width:90px;"
-                                                        class="card-img" alt="...">
-                                                </a>
+                                            <a href="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>"
+                                                target="_blank">
+                                                <img src="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>"
+                                                    style="height:90px; width:90px;" class="card-img" alt="...">
+                                            </a>
                                             <?php endif;?>
                                         </td>
                                         <td><?=$rank['nilaiAkhir'];?></td>
                                         <td>
                                             <?php if($rankingSMA != null && mysqli_num_rows($hasilAkhirSMA) < 1):?>
                                             <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
-                                            data-target="#hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>">Hapus</button>
+                                                data-target="#hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>">Tolak</button>
                                             <?php else: ?>
-                                                <button type="button" disabled class="btn btn-sm btn-secondary">Tidak ada aksi</button>
+                                            <button type="button" disabled class="btn btn-sm btn-secondary">Tidak ada
+                                                aksi</button>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
@@ -299,43 +305,49 @@ Swal.fire({
                                         <th><?=$rank['kriteriaLima'];?></th>
                                         <th><?=$rank['ipk'];?></th>
                                         <th><?= explode("/",$rank['kriteriaTujuh'])[1];?></th>
-                                        <td> 
+                                        <td>
                                             <?php if($rank['kartu_keluarga'] == "" || $rank['kartu_keluarga'] == NULL): ?>
-                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;"
+                                                class="card-img" alt="...">
                                             <?php else:?>
-                                                <a href="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>" target="_blank">
-                                                    <img src="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>" style="height:90px; width:90px;"
-                                                        class="card-img" alt="...">
-                                                </a>
+                                            <a href="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>"
+                                                target="_blank">
+                                                <img src="../user/uploads/berkas/<?=$rank['kartu_keluarga'];?>"
+                                                    style="height:90px; width:90px;" class="card-img" alt="...">
+                                            </a>
                                             <?php endif;?>
                                         </td>
-                                        <td> 
-                                             <?php if($rank['raport_khs'] == "" || $rank['raport_khs'] == NULL): ?>
-                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                        <td>
+                                            <?php if($rank['raport_khs'] == "" || $rank['raport_khs'] == NULL): ?>
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;"
+                                                class="card-img" alt="...">
                                             <?php else:?>
-                                                <a href="../user/uploads/berkas/<?=$rank['raport_khs'];?>" target="_blank">
-                                                    <img src="../user/uploads/berkas/<?=$rank['raport_khs'];?>" style="height:90px; width:90px;"
-                                                        class="card-img" alt="...">
-                                                </a>
+                                            <a href="../user/uploads/berkas/<?=$rank['raport_khs'];?>" target="_blank">
+                                                <img src="../user/uploads/berkas/<?=$rank['raport_khs'];?>"
+                                                    style="height:90px; width:90px;" class="card-img" alt="...">
+                                            </a>
                                             <?php endif;?>
                                         </td>
-                                        <td> 
-                                             <?php if($rank['kartu_pelajar'] == "" || $rank['kartu_pelajar'] == NULL): ?>
-                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;" class="card-img" alt="...">
+                                        <td>
+                                            <?php if($rank['kartu_pelajar'] == "" || $rank['kartu_pelajar'] == NULL): ?>
+                                            <img src="../assets/images/no_images.png" style="height:90px; width:90px;"
+                                                class="card-img" alt="...">
                                             <?php else:?>
-                                                <a href="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>" target="_blank">
-                                                    <img src="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>" style="height:90px; width:90px;"
-                                                        class="card-img" alt="...">
-                                                </a>
+                                            <a href="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>"
+                                                target="_blank">
+                                                <img src="../user/uploads/berkas/<?=$rank['kartu_pelajar'];?>"
+                                                    style="height:90px; width:90px;" class="card-img" alt="...">
+                                            </a>
                                             <?php endif;?>
                                         </td>
                                         <td><?=$rank['nilaiAkhir'];?></td>
                                         <td>
-                                        <?php if($rankingPT != null && mysqli_num_rows($hasilAkhirPT) < 1):?>
+                                            <?php if($rankingPT != null && mysqli_num_rows($hasilAkhirPT) < 1):?>
                                             <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
-                                            data-target="#hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>">Hapus</button>
+                                                data-target="#hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>">Tolak</button>
                                             <?php else: ?>
-                                                <button type="button" disabled class="btn btn-sm btn-secondary">Tidak ada aksi</button>
+                                            <button type="button" disabled class="btn btn-sm btn-secondary">Tidak ada
+                                                aksi</button>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
@@ -352,8 +364,8 @@ Swal.fire({
 
 
 <?php foreach ($rankingSMA as $rank):?>
-<div class="modal fade" id="hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -381,8 +393,8 @@ Swal.fire({
 </div>
 <?php endforeach;?>
 <?php foreach ($rankingPT as $rank):?>
-<div class="modal fade" id="hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="hapus<?=$rank['id_pelamar'].$rank['f_id_periode'];?>" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

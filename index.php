@@ -11,6 +11,13 @@ if($res->num_rows < 1){
         $result2 = $koneksi->query($sql2);
     }
 }
+$sql_pelamar = "SELECT * FROM login_pelamar WHERE id_login=1";
+$res_pelamar = $koneksi->query($sql_pelamar);
+if($res_pelamar->num_rows < 1){
+    $password_hash = password_hash("umum",PASSWORD_BCRYPT);
+    $sql2 = "INSERT INTO login_pelamar (id_login,username,password,jenjang) VALUES (1,'umum','$password_hash',NULL)";
+    $result2 = $koneksi->query($sql2);
+}
 // Mengambil URL yang dikirimkan melalui aturan rewriting
 $url = isset($_GET['url']) ? $_GET['url'] : '';
 

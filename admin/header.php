@@ -72,6 +72,13 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
     }
 }
 
+
+// update notif simpan hasil seleksi
+if(isset($_GET['nhs'])){
+    $id_notif = base64_decode($_GET['nhs']);
+    $Notifikasi->updateNotif($id_notif);
+}
+
 ?>
 
 
@@ -243,6 +250,20 @@ if($_SESSION['id_rayon'] != 1 && $_SESSION['level'] == 1){
                                 <?php if($notifikasi['jenis_notif'] == 'data-diri'):?>
                                 <a class="dropdown-item d-flex align-items-center"
                                     href="./verifikasi_data.php?jn=<?=base64_encode('data-diri')?>&id_log=<?=base64_encode($idLog)?>&n=<?=base64_encode($notifikasi['id_notif'])?>">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fas fa-file-alt text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500"><?=modifWaktu($notifikasi['tanggal']);?></div>
+                                        <span
+                                            class="<?=$notifikasi['dibuka'] == '0'?'font-weight-bold':'';?>"><?=$notifikasi['isi_notif'];?>.</span>
+                                    </div>
+                                </a>
+                                <?php elseif($notifikasi['jenis_notif'] == 'simpan-hasil-seleksi'):?>
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="?nhs=<?=base64_encode($notifikasi['id_notif'])?>">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
                                             <i class="fas fa-file-alt text-white"></i>

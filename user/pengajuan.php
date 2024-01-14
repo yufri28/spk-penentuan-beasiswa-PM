@@ -172,7 +172,7 @@ Swal.fire({
                     <p class="text-end">Anda sudah melakukan pengajuan. Silahkan menunggu verifikasi dari koordinator
                         rayon.</p>
                     <?php else:?>
-                    <p class="text-end">Data anda sudah diverifikasi.</p>
+                    <p class="text-end">Data anda telah diverifikasi dan diserahkan kepada badan diakonat.</p>
                     <?php endif;?>
                     <?php endforeach;?>
                     <?php endif;?>
