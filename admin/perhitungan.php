@@ -4,6 +4,7 @@ unset($_SESSION['menu']);
 $_SESSION['menu'] = 'perhitungan';
 require_once './header.php';
 require_once './functions/perhitungan.php';
+require_once './functions/pesan.php';
 require_once './functions/setting.php';
 
 $jumlahKuotaSMA = 0;
@@ -113,11 +114,22 @@ if(isset($_POST['simpan-pt'])){
 if(isset($_POST['tolak-sma'])){
     $id_pelamar = htmlspecialchars($_POST['id_pelamar']);
     $id_periode = htmlspecialchars($_POST['id_periode']);
+    $pesan_sma = htmlspecialchars($_POST['pesan_sma']);
     if($id_pelamar != "" && $id_periode != ""){
         $data = array(
             'id_pelamar' => $id_pelamar,
-            'id_periode' => $id_periode,
+            'id_periode' => $id_periode
         );
+        if($pesan_sma != NULL || $pesan_sma != ""){
+            $dataId = $koneksi->query("SELECT f_id_login FROM data_pelamar WHERE id_pelamar='$id_pelamar'")->fetch_assoc();
+            $id_pengirim = $_SESSION['id_user'];
+            $pesan = [
+                'f_id_penerima' => $dataId['f_id_login'],
+                'f_id_pengirim' =>$id_pengirim,
+                'isi_pesan' => $pesan_sma,
+            ];
+            $Pesan->kirimPesan($pesan);
+        }
         $Perhitungan->tolak($data);
     }else{
         $_SESSION['error'] = "Tidak ada data yang dikirim";
@@ -127,11 +139,22 @@ if(isset($_POST['tolak-sma'])){
 if(isset($_POST['tolak-pt'])){
     $id_pelamar = htmlspecialchars($_POST['id_pelamar']);
     $id_periode = htmlspecialchars($_POST['id_periode']);
+    $pesan_pt = htmlspecialchars($_POST['pesan_pt']);
     if($id_pelamar != "" && $id_periode != ""){
         $data = array(
             'id_pelamar' => $id_pelamar,
-            'id_periode' => $id_periode,
+            'id_periode' => $id_periode
         );
+        if($pesan_pt != NULL || $pesan_pt != ""){
+            $dataId = $koneksi->query("SELECT f_id_login FROM data_pelamar WHERE id_pelamar='$id_pelamar'")->fetch_assoc();
+            $id_pengirim = $_SESSION['id_user'];
+            $pesan = [
+                'f_id_penerima' => $dataId['f_id_login'],
+                'f_id_pengirim' =>$id_pengirim,
+                'isi_pesan' => $pesan_pt,
+            ];
+            $Pesan->kirimPesan($pesan);
+        }
         $Perhitungan->tolak($data);
     }else{
         $_SESSION['error'] = "Tidak ada data yang dikirim";
@@ -431,7 +454,7 @@ Swal.fire({
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Tolak</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -444,6 +467,12 @@ Swal.fire({
                         <p>Apakah anda yakin ingin menolak <strong><?=$rank['nama'];?> </strong>sebagai calon penerima
                             beasiswa? Setelah ditolak, data tidak dapat diubah lagi!
                         </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="floatingTextarea2"><strong>Pesan/Alasan ditolak</strong><small
+                                class="text-danger">*</small></label>
+                        <textarea class="form-control" placeholder="Masukkan pesan atau alasan ditolak..." required
+                            name="pesan_sma" id="floatingTextarea2" cols="30" rows="10"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -461,7 +490,7 @@ Swal.fire({
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Tolak</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -474,6 +503,12 @@ Swal.fire({
                         <p>Apakah anda yakin ingin menolak <strong><?=$rank['nama'];?> </strong>sebagai calon penerima
                             beasiswa? Setelah ditolak, data tidak dapat diubah lagi!
                         </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="floatingTextarea2"><strong>Pesan/Alasan ditolak</strong><small
+                                class="text-danger">*</small></label>
+                        <textarea class="form-control" placeholder="Masukkan pesan atau alasan ditolak..." required
+                            name="pesan_pt" id="floatingTextarea2" cols="30" rows="10"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
